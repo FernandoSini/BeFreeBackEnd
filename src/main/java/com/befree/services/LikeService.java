@@ -1,6 +1,7 @@
 package com.befree.services;
 
 import com.befree.data.model.Like;
+import com.befree.exceptions.ResourceNotFoundException;
 import com.befree.repository.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,6 @@ public class LikeService {
     private LikeRepository likeRepository;
 
     public List<Like> getAll(){
-
         return likeRepository.findAll();
     }
 
@@ -29,6 +29,6 @@ public class LikeService {
 
     public List<Like> allMyLikesSent(String myId) {
         var entity = likeRepository.findAllMyLikesSent(myId);
-        return entity;
+        return entity.orElseThrow(()-> new ResourceNotFoundException("Like Not Found"));
     }
 }

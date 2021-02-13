@@ -42,21 +42,12 @@ public class User implements Serializable {
 
     //   @ManyToOne(targetEntity = Like.class)
    //@JoinColumn(name = "like_id")
-    @OneToMany(mappedBy = "userSendLike")
+    @OneToMany(mappedBy = "userSendLike", orphanRemoval = true)
     @JsonManagedReference
     private List<Like> likesSended;
-//     @ManyToOne(targetEntity = Like.class)
-//     @JoinColumn(name = "like_id")
-//     private Like likesSended;
 
-////      @ManyToOne(targetEntity = Like.class)
-////  @JoinColumn(name = "like_received_id")
-//    @OneToMany(mappedBy = "userLiked")
-//    @JsonManagedReference
-//    private List<Like> likeReceived;
-////    @ManyToOne(targetEntity = Like.class)
-////    @JoinColumn(name ="like_received_id" )
-////    private Like likesReceived;
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Graduation> userGraduations;
 
 
     public User() {
@@ -114,6 +105,17 @@ public class User implements Serializable {
         likesSended.add(like);
     }
 
+    public List<Graduation> getUserGraduations() {
+        return userGraduations;
+    }
+
+    public void setUserGraduations(List<Graduation> userGraduations) {
+        this.userGraduations = userGraduations;
+//        for(Graduation graduation: userGraduations){
+//            graduation.setUser(this);
+//        }
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -123,7 +125,7 @@ public class User implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", gender='" + gender + '\'' +
                 ", likesSended=" + likesSended +
-               // ", likeReceived=" + likeReceived +
+                ", userGraduations=" + userGraduations +
                 '}';
     }
 }

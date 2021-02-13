@@ -66,10 +66,8 @@ public class LikeController {
         like.setIdUserLiked(userLiked.getId());
 
 
-
         System.out.println(like.getUserSendLike());
         System.out.println(like.toString());
-
 
 
 

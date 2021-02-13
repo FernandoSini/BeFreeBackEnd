@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LikeRepository extends JpaRepository<Like, String> {
 
@@ -13,5 +14,5 @@ public interface LikeRepository extends JpaRepository<Like, String> {
     List<Like> findAllMyLikes(@Param("userId") String userId);
 
     @Query("Select l from Like l where l.userSendLike.id =:myId")
-    List<Like> findAllMyLikesSent(String myId);
+    Optional<List<Like>> findAllMyLikesSent(String myId);
 }

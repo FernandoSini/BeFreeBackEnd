@@ -1,49 +1,31 @@
 package com.befree.data.model.vo;
 
+import com.befree.data.model.Graduation;
+import com.befree.data.model.Like;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dozermapper.core.Mapping;
-
-
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
-
 public class UserVO implements Serializable {
 
-    @Mapping
+
+    @Mapping("id")
+    @JsonProperty("id")
     private String id;
-
-
     private String userName;
-
-
     private String firstName;
-
     private String lastName;
-
-
     private String gender;
+    private List<Like> likes;
+    private List<Graduation> graduations;
 
 
     //private List<Like> yourLikes;
 
-    public UserVO(){}
-    public UserVO(String id, @Size(min = 3) String userName, String firstName, String lastName, String gender /*List<Like> yourLikes*/) {
-        this.id = id;
-        this.userName = userName;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-     //   this.yourLikes = yourLikes;
+    public UserVO() {
     }
-
-   // public List<Like> getYourLikes() {
-   //     return yourLikes;
-    //}
-
-    //public void setYourLikes(List<Like> yourLikes) {
-     //   this.yourLikes = yourLikes;
-   //}
 
     public String getId() {
         return id;
@@ -83,6 +65,22 @@ public class UserVO implements Serializable {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
+
+    public List<Graduation> getGraduations() {
+        return graduations;
+    }
+
+    public void setGraduations(List<Graduation> graduations) {
+        this.graduations = graduations;
     }
 }
 

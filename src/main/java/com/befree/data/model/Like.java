@@ -18,7 +18,7 @@ public class Like implements Serializable {
     @GenericGenerator(name = "uuid", strategy = "uuid")
     private String id;
 
-   @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+   @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 ////    @JsonIgnore
     //@OneToMany(targetEntity =User.class, mappedBy = "likesSended")
    @JoinColumn(name = "user_id")
