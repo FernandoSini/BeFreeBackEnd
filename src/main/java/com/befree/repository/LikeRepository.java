@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface LikeRepository extends JpaRepository<Like, String> {
 
-    @Query("Select l from Like l where l.idUserLiked =:userId")
+    @Query("Select l from Like l where l.userLiked.id =:userId")
     List<Like> findAllMyLikes(@Param("userId") String userId);
 
     @Query("Select l from Like l where l.userSendLike.id =:myId")

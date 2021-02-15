@@ -1,7 +1,9 @@
 package com.befree.data.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -10,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "likes")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Like implements Serializable {
 
     @Id
@@ -18,36 +21,25 @@ public class Like implements Serializable {
     @GenericGenerator(name = "uuid", strategy = "uuid")
     private String id;
 
-   @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   @ManyToOne(/*targetEntity = User.class, fetch = FetchType.EAGER*//*, cascade = CascadeType.ALL*/)
 ////    @JsonIgnore
     //@OneToMany(targetEntity =User.class, mappedBy = "likesSended")
-   @JoinColumn(name = "user_id")
+   @JoinColumn(name = "user_send_like_id")
    @JsonBackReference
     private User userSendLike;
 
-   @Column(name = "user_received_like_id")
-   private String idUserLiked;
+   @ManyToOne
+   @JoinColumn(name = "user_received_like_id")
+   private User userLiked;
 
-//   @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-//////    @JsonIgnore
-// //   @OneToMany(targetEntity =User.class , mappedBy = "likeReceived")
-//   @JoinColumn(name = "user_received_liked_id")
-//   @JsonBackReference
-//    private User userLiked;
-////    @OneToMany(mappedBy = "likesSended")
-////    @Column(name = "who_are_sending_like")
-////    private List<User> whoAreSendingLike;
-////    @OneToMany(mappedBy = "likesReceived")
-////    @Column(name = "who_are_receiving_like")
-////    private List<User> whoAreReceivingLike;
 
     public Like() {
     }
 
-    public Like(String id, User userSendLike, String idUserLiked) {
+    public Like(String id, User userSendLike, User userLiked) {
         this.id = id;
         this.userSendLike = userSendLike;
-        this.idUserLiked = idUserLiked;
+        this.userLiked = userLiked;
     }
 
     public String getId() {
@@ -66,12 +58,12 @@ public class Like implements Serializable {
         this.userSendLike = userSendLike;
     }
 
-    public String getIdUserLiked() {
-        return idUserLiked;
+    public User getUserLiked() {
+        return userLiked;
     }
 
-    public void setIdUserLiked(String idUserLiked) {
-        this.idUserLiked = idUserLiked;
+    public void setUserLiked(User userLiked) {
+        this.userLiked = userLiked;
     }
 
     @Override
@@ -79,7 +71,7 @@ public class Like implements Serializable {
         return "Like{" +
                 "id='" + id + '\'' +
                 ", userSendLike=" + userSendLike +
-                ", idUserLiked='" + idUserLiked + '\'' +
+                ", idUserLiked='" + userLiked + '\'' +
                 '}';
     }
 }

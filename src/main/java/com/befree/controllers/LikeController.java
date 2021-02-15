@@ -7,6 +7,7 @@ import com.befree.services.LikeService;
 import com.befree.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -29,19 +30,19 @@ public class LikeController {
         return likeService.getAll();
     }
 
-    @GetMapping("/getLikes/{userId}")
+    @GetMapping(value = "/getLikes/{userId}",produces = {"application/json"})
     public List<Like> getMyLikes(@PathVariable("userId") String userId){
         return likeService.getMyLikes(userId);
     }
 
-    @GetMapping("/likesSent/{myId}")
+    @GetMapping(value = "/likesSent/{myId}", produces = {"application/json"})
     public List<Like> getLikesSentByMe(@PathVariable("myId") String myId){
         return likeService.allMyLikesSent(myId);
     }
 
 
-    @PostMapping("/{userId}")
-    public Like likeUser(@PathVariable("userId") String userId, @RequestBody User userSendLike) {
+    @PostMapping(value = "/{userId}", produces = {"application/json"}, consumes = {"application/json"})
+    public ResponseEntity<Like> likeUser(@PathVariable("userId") String userId, @RequestBody User userSendLike) {
         //pegando o usuário likado
         User userLiked = userRepository.findUserById(userId);
 
@@ -61,17 +62,16 @@ public class LikeController {
         System.out.println("teste"+ usersSendLike.get(0).getUserName());
 
 
+
         Like like = new Like();
         like.setUserSendLike(userSendLike);
-        like.setIdUserLiked(userLiked.getId());
-
-
+        like.setUserLiked(userLiked);
         System.out.println(like.getUserSendLike());
         System.out.println(like.toString());
 
 
 
-        return likeService.setLike(like);
+        return ResponseEntity.ok().body(likeService.setLike(like));
 
 
     }

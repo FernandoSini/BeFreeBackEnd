@@ -14,7 +14,7 @@ public class UserServices {
 
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
 
     //criar o user No banco

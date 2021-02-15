@@ -3,6 +3,7 @@ package com.befree.data.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "graduations")
@@ -16,21 +17,22 @@ public class Graduation {
     @Column(name = "course")
     private String courseName;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = User.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userGraduations")
     //@JoinColumn(name = "user_id")
-    @JoinTable(name = "graduation_user",
-            joinColumns = {@JoinColumn(name = "graduation_id", referencedColumnName = "graduation_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")})
-    @JsonIgnore
-    private User user;
+//    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+//    @JoinTable(name = "graduation_user",
+//            joinColumns = {@JoinColumn(name = "graduation_id", referencedColumnName = "graduation_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")})
+   @JsonIgnore
+    private List<User> users;
 
     public Graduation() {
     }
 
-    public Graduation(int id, String courseName, User user) {
+    public Graduation(int id, String courseName, List<User> users) {
         this.id = id;
         this.courseName = courseName;
-        this.user = user;
+        this.users = users;
     }
 
     public int getId() {
@@ -49,11 +51,19 @@ public class Graduation {
         this.courseName = courseName;
     }
 
-    public User getUser() {
-        return user;
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

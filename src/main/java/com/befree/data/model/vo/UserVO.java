@@ -18,13 +18,23 @@ public class UserVO implements Serializable {
     private String firstName;
     private String lastName;
     private String gender;
+    private String age;
     private List<Like> likes;
     private List<Graduation> graduations;
+
 
 
     //private List<Like> yourLikes;
 
     public UserVO() {
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 
     public String getId() {
