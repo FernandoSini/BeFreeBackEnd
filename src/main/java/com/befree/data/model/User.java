@@ -1,6 +1,8 @@
 package com.befree.data.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler", "likeReceived"})
 public class User implements Serializable {
 
     @Id
@@ -43,11 +46,11 @@ public class User implements Serializable {
 
     //   @ManyToOne(targetEntity = Like.class)
     //@JoinColumn(name = "like_id")
-    @OneToMany(mappedBy = "userSendLike",orphanRemoval = true)
-    //@JsonManagedReference
+    @OneToMany(mappedBy = "userSendLike",orphanRemoval = true, fetch = FetchType.EAGER)
+    //@JsonBackReference
     private List<Like> likesSended;
 
-    @OneToMany(mappedBy = "userLiked", orphanRemoval = true)
+    @OneToMany(mappedBy = "userLiked", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Like> likeReceived;
 //    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
 //    private List<Graduation> userGraduations;
@@ -58,6 +61,9 @@ public class User implements Serializable {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "graduation_id", referencedColumnName = "graduation_id")})
     private List<Graduation> userGraduations;
+
+    @Enumerated(EnumType.ORDINAL)
+    private Usertype usertype;
 
     @Column(name = "age")
     private String age;
@@ -106,22 +112,44 @@ public class User implements Serializable {
         this.gender = gender;
     }
 
+//    public List<Like> getLikesSended() {
+//        return likesSended;
+//    }
+
+
     public List<Like> getLikesSended() {
         return likesSended;
     }
 
-    public void setLikesSended(List<Like> likesSended) {
-        this.likesSended = likesSended;
+    public List<Like> getLikeReceived() {
+        return likeReceived;
     }
 
-    public void addLikeSent(Like like) {
-        likesSended.add(like);
-        like.setUserSendLike(this);
+    public Usertype getUsertype() {
+        return usertype;
     }
 
-    public void removeLikeSent(Like like) {
-        likesSended.remove(like);
-        like.setUserSendLike(null);
+    public void setUsertype(Usertype usertype) {
+        this.usertype = usertype;
+    }
+
+    public void addLikeSended(Like like) {
+        this.likesSended.add(like);
+//        like.setUserSendLike(this);
+    }
+
+    public void removeLikeSended(Like like) {
+        this.likesSended.remove(like);
+      //  like.setUserSendLike(null);
+    }
+    public void addLikeReceived(Like like) {
+        this.likeReceived.add(like);
+//        like.setUserLiked(this);
+    }
+
+    public void removeLikeReceived(Like like) {
+       this.likeReceived.remove(like);
+      //  like.setUserLiked(null);
     }
 
 //    public List<Graduation> getUserGraduations() {
@@ -136,13 +164,8 @@ public class User implements Serializable {
 //    }
 
 
-    public List<Like> getLikeReceived() {
-        return likeReceived;
-    }
 
-    public void setLikeReceived(List<Like> likeReceived) {
-        this.likeReceived = likeReceived;
-    }
+
 
     public List<Graduation> getUserGraduations() {
         return userGraduations;

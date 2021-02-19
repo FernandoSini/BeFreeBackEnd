@@ -2,6 +2,7 @@ package com.befree.controllers;
 
 import com.befree.data.model.Graduation;
 import com.befree.data.model.User;
+import com.befree.data.model.Usertype;
 import com.befree.services.GraduationServices;
 import com.befree.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,8 @@ public class UserController {
         graduationList.add(graduation);
         graduationList.add(graduation1);
         graduationList.add(graduation2);
+
+        userData.setUsertype(Usertype.FREE);
         userData.setUserGraduations(graduationList);
 
         return userServices.criandoUser(userData);

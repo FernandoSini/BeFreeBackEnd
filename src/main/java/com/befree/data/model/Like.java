@@ -25,7 +25,7 @@ public class Like implements Serializable {
 ////    @JsonIgnore
     //@OneToMany(targetEntity =User.class, mappedBy = "likesSended")
    @JoinColumn(name = "user_send_like_id")
-   @JsonBackReference
+//   @JsonBackReference
     private User userSendLike;
 
    @ManyToOne

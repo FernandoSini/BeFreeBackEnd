@@ -41,11 +41,12 @@ public class LikeController {
     }
 
 
-    @PostMapping(value = "/{userId}", produces = {"application/json"}, consumes = {"application/json"})
-    public ResponseEntity<Like> likeUser(@PathVariable("userId") String userId, @RequestBody User userSendLike) {
+    @PostMapping(value = "/sendLikeTo/{userId}/{yourId}", produces = {"application/json"}/*, consumes = {"application/json"}*/)
+    public ResponseEntity<Like> likeUser(@PathVariable("userId") String userId, @PathVariable("yourId") String yourId) {
         //pegando o usuário likado
         User userLiked = userRepository.findUserById(userId);
-
+        User userSendLike = userRepository.findUserById(yourId);
+        
 
         //criando um array de usuários que receberam o like
         List<User> usersLiked = new ArrayList<>();
@@ -66,8 +67,10 @@ public class LikeController {
         Like like = new Like();
         like.setUserSendLike(userSendLike);
         like.setUserLiked(userLiked);
-        System.out.println(like.getUserSendLike());
-        System.out.println(like.toString());
+
+        userLiked.addLikeReceived(like);
+        userSendLike.addLikeSended(like);
+
 
 
 
