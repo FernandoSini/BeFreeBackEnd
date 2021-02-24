@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface GraduationRepository extends JpaRepository<Graduation,Integer> {
 
-    Graduation findById(int id);
+
     @Query("Select g from Graduation g where g.courseName =:name")
     Graduation findByName(String name);
 }

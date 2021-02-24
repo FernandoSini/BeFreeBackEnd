@@ -2,29 +2,40 @@ package com.befree.data.model.vo;
 
 import com.befree.data.model.Graduation;
 import com.befree.data.model.Like;
+import com.befree.data.model.Usertype;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
+import org.springframework.hateoas.RepresentationModel;
+
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
-public class UserVO implements Serializable {
+@JsonPropertyOrder({"id", "userName", "firstName",
+        "lastName", "gender", "age", "userGraduations","usertype",
+        "likesSended", "likeReceived"})
+public class UserVO extends RepresentationModel implements Serializable {
 
 
     @Mapping("id")
-    @JsonProperty("id")
+    @JsonProperty("id_user")
     private String id;
+    @JsonProperty("user_name")
     private String userName;
+    @JsonProperty("first_name")
     private String firstName;
+    @JsonProperty("last_name")
     private String lastName;
     private String gender;
     private String age;
-    private List<Like> likes;
-    private List<Graduation> graduations;
+    private List<Like> likesSended;
+    private List<Like> likeReceived;
+    @JsonProperty("userGraduations")
+    private List<GraduationVO> graduations;
+    @JsonProperty(value = "usertype")
+    private Usertype usertype;
 
-
-
-    //private List<Like> yourLikes;
 
     public UserVO() {
     }
@@ -77,20 +88,36 @@ public class UserVO implements Serializable {
         this.gender = gender;
     }
 
-    public List<Like> getLikes() {
-        return likes;
+    public List<Like> getLikesSended() {
+        return likesSended;
     }
 
-    public void setLikes(List<Like> likes) {
-        this.likes = likes;
+    public void setLikesSended(List<Like> likesSended) {
+        this.likesSended = likesSended;
     }
 
-    public List<Graduation> getGraduations() {
+    public List<Like> getLikeReceived() {
+        return likeReceived;
+    }
+
+    public void setLikeReceived(List<Like> likeReceived) {
+        this.likeReceived = likeReceived;
+    }
+
+    public List<GraduationVO> getGraduations() {
         return graduations;
     }
 
-    public void setGraduations(List<Graduation> graduations) {
+    public void setGraduations(List<GraduationVO> graduations) {
         this.graduations = graduations;
+    }
+
+    public Usertype getUsertype() {
+        return usertype;
+    }
+
+    public void setUsertype(Usertype usertype) {
+        this.usertype = usertype;
     }
 }
 

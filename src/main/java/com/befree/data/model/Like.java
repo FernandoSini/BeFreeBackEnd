@@ -1,9 +1,6 @@
 package com.befree.data.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -24,11 +21,13 @@ public class Like implements Serializable {
    @ManyToOne(/*targetEntity = User.class, fetch = FetchType.EAGER*//*, cascade = CascadeType.ALL*/)
 ////    @JsonIgnore
     //@OneToMany(targetEntity =User.class, mappedBy = "likesSended")
+   @JsonIgnoreProperties({"likesSended","likeReceived"})
    @JoinColumn(name = "user_send_like_id")
 //   @JsonBackReference
     private User userSendLike;
 
    @ManyToOne
+   @JsonIgnoreProperties({"likesSended","likeReceived"})
    @JoinColumn(name = "user_received_like_id")
    private User userLiked;
 

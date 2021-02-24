@@ -1,9 +1,6 @@
 package com.befree.data.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -15,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler", "likeReceived"})
 public class User implements Serializable {
 
@@ -135,8 +132,9 @@ public class User implements Serializable {
 
     public void addLikeSended(Like like) {
         this.likesSended.add(like);
-//        like.setUserSendLike(this);
+        like.setUserSendLike(this);
     }
+
 
     public void removeLikeSended(Like like) {
         this.likesSended.remove(like);
@@ -144,7 +142,7 @@ public class User implements Serializable {
     }
     public void addLikeReceived(Like like) {
         this.likeReceived.add(like);
-//        like.setUserLiked(this);
+        like.setUserLiked(this);
     }
 
     public void removeLikeReceived(Like like) {
@@ -152,7 +150,18 @@ public class User implements Serializable {
       //  like.setUserLiked(null);
     }
 
-//    public List<Graduation> getUserGraduations() {
+    public void setLikesSended(List<Like> likes) {
+        for(Like l: likes){
+            this.likesSended.add(l);
+        }
+    }
+
+    public void setLikeReceived(List<Like> likes) {
+        for(Like l : likes){
+            this.likeReceived.add(l);
+        }
+    }
+    //    public List<Graduation> getUserGraduations() {
 //        return userGraduations;
 //    }
 //
@@ -200,7 +209,10 @@ public class User implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", gender='" + gender + '\'' +
                 ", likesSended=" + likesSended +
+                ", likeReceived=" + likeReceived +
                 ", userGraduations=" + userGraduations +
+                ", usertype=" + usertype +
+                ", age='" + age + '\'' +
                 '}';
     }
 }

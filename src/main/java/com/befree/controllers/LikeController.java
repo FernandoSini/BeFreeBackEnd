@@ -2,6 +2,7 @@ package com.befree.controllers;
 
 import com.befree.data.model.Like;
 import com.befree.data.model.User;
+import com.befree.exceptions.UserNotFoundException;
 import com.befree.repository.UserRepository;
 import com.befree.services.LikeService;
 import com.befree.services.UserServices;
@@ -44,29 +45,27 @@ public class LikeController {
     @PostMapping(value = "/sendLikeTo/{userId}/{yourId}", produces = {"application/json"}/*, consumes = {"application/json"}*/)
     public ResponseEntity<Like> likeUser(@PathVariable("userId") String userId, @PathVariable("yourId") String yourId) {
         //pegando o usuário likado
-        User userLiked = userRepository.findUserById(userId);
-        User userSendLike = userRepository.findUserById(yourId);
+        User userLiked = userRepository.findUserById(userId).orElseThrow(()-> new UserNotFoundException("User not found!"));
+        User userSendLike = userRepository.findUserById(yourId).orElseThrow(()-> new UserNotFoundException("User not found!"));
         
 
-        //criando um array de usuários que receberam o like
-        List<User> usersLiked = new ArrayList<>();
-        //Criando um array de usuarios que deram o like
-        List<User> usersSendLike = new ArrayList<>();
-
-        System.out.println("teste" + userSendLike.toString());
-        System.out.println("teste" + userLiked.toString());
-        //adicionando o usuario likados na lista de usuarios que receberam o like
-        usersLiked.add(userLiked);
-        //adicionando o usuario que  deram um like para a lista de quem enviou um like
-        usersSendLike.add(userSendLike);
-        System.out.println("teste"+ usersLiked.get(0).getUserName());
-        System.out.println("teste"+ usersSendLike.get(0).getUserName());
+//        //criando um array de usuários que receberam o like
+//        List<User> usersLiked = new ArrayList<>();
+//        //Criando um array de usuarios que deram o like
+//        List<User> usersSendLike = new ArrayList<>();
+//
+//        //adicionando o usuario likados na lista de usuarios que receberam o like
+//        usersLiked.add(userLiked);
+//        //adicionando o usuario que  deram um like para a lista de quem enviou um like
+////        usersSendLike.add(userSendLike);
+//        System.out.println("teste"+ usersLiked.get(0).getUserName());
+//        System.out.println("teste"+ usersSendLike.get(0).getUserName());
 
 
 
         Like like = new Like();
-        like.setUserSendLike(userSendLike);
-        like.setUserLiked(userLiked);
+//        like.setUserSendLike(userSendLike);
+//        like.setUserLiked(userLiked);
 
         userLiked.addLikeReceived(like);
         userSendLike.addLikeSended(like);
