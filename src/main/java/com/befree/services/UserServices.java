@@ -12,6 +12,7 @@ import com.befree.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,14 +28,15 @@ public class UserServices {
     //criar o user No banco
     //o problema é que o converter n esta convertendo a graduacao do vo
     public UserVO criandoUser(UserVO userVO) {
-        var user = userConverter.convertUserVoToUser(userVO);
-        var vo = userRepository.findOneUserByUserName(user.getUserName());
-        Optional<UserVO> userExists = Optional.ofNullable(convertToUserVo(vo));
+        var entity = userConverter.convertUserVoToUser(userVO);
+        Optional<User> userExists = userRepository.findOneUserByUserName(entity.getUserName());
+
         if (!userExists.isPresent()|| userExists.isEmpty() || userExists ==null) {
-            System.out.println(user.getUserGraduations());
-            var entity = DozerConverter.parseObject(userRepository.saveAndFlush(user),UserVO.class);
+            System.out.println(entity.getUserGraduations());
+            var voUser = userConverter.convertUserToVO(userRepository.saveAndFlush(entity));
             System.out.println(entity.getUserName());
-            return entity;
+
+            return voUser;
         } else {
             throw new CreateUserException("User already exist");
         }
@@ -45,10 +47,15 @@ public class UserServices {
         var entity = userRepository.findUserById(id).orElseThrow(() -> new UserNotFoundException("User Not Found"));
         return entity;
     }
+    //buscando um usuário pelo nome dele
+    public UserVO getUserByUserName(String yourName) {
+        var entity = userRepository.getUserByUserName(yourName).orElseThrow(()-> new UserNotFoundException("We not with this username not found in our database"));
+        return convertToUserVo(entity);
+    }
 
     public List<UserVO> getAllUsers() {
-        var entity = DozerConverter.parseListObjects(userRepository.findAll(),UserVO.class);
-        return entity;
+        var vo = DozerConverter.parseListObjects(userRepository.findAll(),UserVO.class);
+        return vo;
     }
 
     public void deleteUser(String id) {
@@ -65,6 +72,7 @@ public class UserServices {
         if(entity == null) return null;
         return DozerConverter.parseObject(entity,User.class);
     }
+
 
 
 }

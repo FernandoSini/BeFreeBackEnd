@@ -2,6 +2,7 @@ package com.befree.data.model.vo;
 
 
 import com.befree.data.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
@@ -11,13 +12,14 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@JsonPropertyOrder({"id", "course"})
+@JsonPropertyOrder({"id", "courseName","users"})
 public class GraduationVO extends RepresentationModel implements Serializable {
 
     @Mapping("id")
     @JsonProperty("id")
     private int id;
     private String courseName;
+    @JsonIgnoreProperties({"userGraduations"})
     private List<UserVO> users;
 
     public GraduationVO(){}

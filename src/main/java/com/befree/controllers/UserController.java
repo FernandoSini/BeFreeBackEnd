@@ -26,7 +26,7 @@ public class UserController {
     private GraduationServices graduationServices;
 
 
-//    @PostMapping(value = "/create")
+    //    @PostMapping(value = "/create")
 //    public User createUser(@RequestBody User userData) {
 ////
 ////        Graduation graduation = graduationServices.getGraduationById(1);
@@ -62,7 +62,8 @@ public class UserController {
 //        return userServices.criandoUser(userData);
 //
 //    }
-    @PostMapping(value = "/create")
+    @PostMapping(value = "/create", produces = {"application/json", "application/xml", "application/x-yaml"},
+            consumes = {"application/json", "application/xml", "application/x-yaml"})
     public UserVO createUser(@RequestBody UserVO userData) {
 
 
@@ -77,20 +78,27 @@ public class UserController {
 //        graduationList.add(graduation);
 //        graduationList.add(graduation1);
 //        graduationList.add(graduation2);
-        GraduationVO graduationVO = graduationServices.getGraduationById(1);
-        graduationVO.getUsers().add(userData);
-        GraduationVO graduationVO2 = graduationServices.getGraduationById(2);
-        graduationVO2.getUsers().add(userData);
-        GraduationVO graduationVO3 = graduationServices.getGraduationById(3);
-        graduationVO3.getUsers().add(userData);
+//        GraduationVO graduationVO = graduationServices.getGraduationById(userData.getGraduations().get(1).getId());
+//        graduationVO.getUsers().add(userData);
+//        GraduationVO graduationVO2 = graduationServices.getGraduationById(2);
+//        graduationVO2.getUsers().add(userData);
+//        GraduationVO graduationVO3 = graduationServices.getGraduationById(3);
+//        graduationVO3.getUsers().add(userData);
+//        for (int i = 0; i <userData.getGraduations().size() ; i++) {
+//            GraduationVO graduationVO2 = graduationServices.getGraduationById(userData.getGraduations().get(i).getId())
+//        }
         List<GraduationVO> graduations = new ArrayList<>();
-
-        graduations.add(graduationVO);
-        graduations.add(graduationVO2);
-        graduations.add(graduationVO3);
+//
+//        graduations.add(graduationVO);
+//        graduations.add(graduationVO2);
+//        graduations.add(graduationVO3);
+        for (GraduationVO graduationVO : userData.getUserGraduations()
+        ) {
+            var voGraduation = graduationServices.getGraduationById(graduationVO.getId());
+            graduations.add(voGraduation);
+        }
         userData.setUsertype(Usertype.FREE);
-        userData.setGraduations(graduations);
-
+        userData.setUserGraduations(graduations);
         return userServices.criandoUser(userData);
 
     }
@@ -104,13 +112,19 @@ public class UserController {
     @GetMapping(value = "/all", produces = {"application/json", "application/xml", "application/x-yaml"})
     public List<UserVO> getAllUsers() {
         List<UserVO> users = userServices.getAllUsers();
-
         return users;
 
     }
 
+    @GetMapping(value = "/finduser/{yourName}")
+    public ResponseEntity<UserVO> getUserByName(@PathVariable("yourName") String yourName) {
+        UserVO user = userServices.getUserByUserName(yourName);
+        return ResponseEntity.ok(user);
 
-    @DeleteMapping("/delete/{userName}")
+    }
+
+
+    @DeleteMapping(value = "/delete/{userName}")
     public ResponseEntity deleteUser(@PathVariable("userName") String userName) {
         userServices.deleteUser(userName);
         return ResponseEntity.ok().build();

@@ -41,4 +41,11 @@ public class GraduationServices {
         if(entity ==null) return null;
         return DozerConverter.parseObject(entity, GraduationVO.class);
     }
+
+    public List<GraduationVO> getGraduationsByuserName(String userName) {
+        var entity = graduationRepository.findGraduationByUserName(userName);
+
+        return DozerConverter.parseListObjects(entity, GraduationVO.class);
+    }
+    
 }

@@ -2,13 +2,21 @@ package com.befree.data.model;
 
 import com.befree.data.model.vo.UserVO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "graduations")
-public class Graduation {
+public class Graduation  implements Serializable{
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +32,7 @@ public class Graduation {
 //    @JoinTable(name = "graduation_user",
 //            joinColumns = {@JoinColumn(name = "graduation_id", referencedColumnName = "graduation_id")},
 //            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")})
-   @JsonIgnore
+   @JsonIgnoreProperties({"userGraduations"})
     private List<User> users;
 
     public Graduation() {
@@ -51,15 +59,6 @@ public class Graduation {
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
-
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-
 
     public List<User> getUsers() {
         return users;

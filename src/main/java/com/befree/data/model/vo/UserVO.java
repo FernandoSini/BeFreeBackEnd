@@ -3,6 +3,7 @@ package com.befree.data.model.vo;
 import com.befree.data.model.Graduation;
 import com.befree.data.model.Like;
 import com.befree.data.model.Usertype;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
@@ -32,13 +33,15 @@ public class UserVO extends RepresentationModel implements Serializable {
     private List<Like> likesSended;
     private List<Like> likeReceived;
     @JsonProperty("userGraduations")
-    private List<GraduationVO> graduations;
+    @JsonIgnoreProperties("users")
+    private List<GraduationVO> userGraduations;
     @JsonProperty(value = "usertype")
     private Usertype usertype;
 
 
     public UserVO() {
     }
+
 
     public String getAge() {
         return age;
@@ -104,12 +107,12 @@ public class UserVO extends RepresentationModel implements Serializable {
         this.likeReceived = likeReceived;
     }
 
-    public List<GraduationVO> getGraduations() {
-        return graduations;
+    public List<GraduationVO> getUserGraduations() {
+        return userGraduations;
     }
 
-    public void setGraduations(List<GraduationVO> graduations) {
-        this.graduations = graduations;
+    public void setUserGraduations(List<GraduationVO> userGraduations) {
+        this.userGraduations = userGraduations;
     }
 
     public Usertype getUsertype() {

@@ -34,4 +34,12 @@ public class GraduationController {
         return ResponseEntity.ok(graduationVO);
     }
 
+
+    @GetMapping("/userName/{nomeDoUsuario}")
+    public ResponseEntity<List<GraduationVO>> getUserGraduations(
+            @PathVariable("nomeDoUsuario")String nomeDoUsuario){
+        List<GraduationVO> graduationsVO = graduationServices.getGraduationsByuserName(nomeDoUsuario);
+        return ResponseEntity.ok(graduationsVO);
+    }
+
 }

@@ -16,6 +16,11 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler", "likeReceived"})
 public class User implements Serializable {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name = "user_id")
     @GeneratedValue(generator = "uuid", strategy = GenerationType.IDENTITY)
@@ -57,6 +62,7 @@ public class User implements Serializable {
     @JoinTable(name = "graduation_user",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "graduation_id", referencedColumnName = "graduation_id")})
+    @JsonIgnoreProperties({"users"})
     private List<Graduation> userGraduations;
 
     @Enumerated(EnumType.ORDINAL)
@@ -68,6 +74,18 @@ public class User implements Serializable {
     public User() {
     }
 
+    public User(String id, @Size(min = 3) String userName, String firstName, String lastName, String gender, List<Like> likesSended, List<Like> likeReceived, List<Graduation> userGraduations, Usertype usertype, String age) {
+        this.id = id;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.likesSended = likesSended;
+        this.likeReceived = likeReceived;
+        this.userGraduations = userGraduations;
+        this.usertype = usertype;
+        this.age = age;
+    }
 
     public String getId() {
         return id;
@@ -161,17 +179,6 @@ public class User implements Serializable {
             this.likeReceived.add(l);
         }
     }
-    //    public List<Graduation> getUserGraduations() {
-//        return userGraduations;
-//    }
-//
-//    public void setUserGraduations(List<Graduation> userGraduations) {
-//        this.userGraduations = userGraduations;
-////        for(Graduation graduation: userGraduations){
-////            graduation.setUser(this);
-////        }
-//    }
-
 
 
 
@@ -188,12 +195,13 @@ public class User implements Serializable {
 //        LocalDate localDateTime =  LocalDate.now();
 //        DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 //        localDateTime.format(dateFormat);
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        int birthdayYear = LocalDate.parse(age, dateTimeFormatter).getYear();
-        int yearNow = LocalDate.now().getYear();
+        // DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        // int birthdayYear = LocalDate.parse(age, dateTimeFormatter).getYear();
+        // int yearNow = LocalDate.now().getYear();
 
-        int data = (yearNow - birthdayYear);
-        return String.valueOf(data);
+        // int data = (yearNow - birthdayYear);
+        // return String.valueOf(data);
+        return age;
     }
 
     public void setAge(String age) {

@@ -9,10 +9,12 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, String> {
 
-    List<User> findUserByUserName(String userName);
 
 
-    User findOneUserByUserName(String userName);
+    Optional<User>getUserByUserName(String userName);
+
+    //ESSE é usado na verificação de cadastro
+    Optional<User> findOneUserByUserName(String userName);
 
     Optional<User> findUserById(String id);
 }

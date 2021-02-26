@@ -12,6 +12,11 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Like implements Serializable {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name = "like_id")
     @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
@@ -21,14 +26,15 @@ public class Like implements Serializable {
    @ManyToOne(/*targetEntity = User.class, fetch = FetchType.EAGER*//*, cascade = CascadeType.ALL*/)
 ////    @JsonIgnore
     //@OneToMany(targetEntity =User.class, mappedBy = "likesSended")
-   @JsonIgnoreProperties({"likesSended","likeReceived"})
+
    @JoinColumn(name = "user_send_like_id")
-//   @JsonBackReference
+    @JsonIgnoreProperties({"likesSended","likeReceived"})
     private User userSendLike;
 
    @ManyToOne
-   @JsonIgnoreProperties({"likesSended","likeReceived"})
+
    @JoinColumn(name = "user_received_like_id")
+   @JsonIgnoreProperties({"likesSended","likeReceived"})
    private User userLiked;
 
 
