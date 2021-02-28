@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "likes")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Like implements Serializable {
 
     /**
@@ -24,15 +24,11 @@ public class Like implements Serializable {
     private String id;
 
    @ManyToOne(/*targetEntity = User.class, fetch = FetchType.EAGER*//*, cascade = CascadeType.ALL*/)
-////    @JsonIgnore
-    //@OneToMany(targetEntity =User.class, mappedBy = "likesSended")
-
    @JoinColumn(name = "user_send_like_id")
-    @JsonIgnoreProperties({"likesSended","likeReceived"})
+   @JsonIgnoreProperties({"likesSended","likeReceived"})
     private User userSendLike;
 
    @ManyToOne
-
    @JoinColumn(name = "user_received_like_id")
    @JsonIgnoreProperties({"likesSended","likeReceived"})
    private User userLiked;
@@ -71,12 +67,12 @@ public class Like implements Serializable {
         this.userLiked = userLiked;
     }
 
-    @Override
-    public String toString() {
-        return "Like{" +
-                "id='" + id + '\'' +
-                ", userSendLike=" + userSendLike +
-                ", idUserLiked='" + userLiked + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Like{" +
+//                "id='" + id + '\'' +
+//                ", userSendLike=" + userSendLike +
+//                ", idUserLiked='" + userLiked + '\'' +
+//                '}';
+//    }
 }

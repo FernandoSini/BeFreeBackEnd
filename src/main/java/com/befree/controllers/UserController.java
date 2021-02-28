@@ -119,7 +119,7 @@ public class UserController {
     @GetMapping(value = "/finduser/{yourName}")
     public ResponseEntity<UserVO> getUserByName(@PathVariable("yourName") String yourName) {
         UserVO user = userServices.getUserByUserName(yourName);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok().body(user);
 
     }
 

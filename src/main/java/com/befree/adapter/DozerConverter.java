@@ -16,7 +16,9 @@ public class DozerConverter {
     }
 
     public static <O, D> List<D> parseListObjects(List<O> origin, Class<D> destination) {
-
+        if(origin ==null){
+            return null;
+        }
         List<D> destinationObjects = new ArrayList<>();
         //para cada objeto de origem dentro da lista, vamos adicionálo no destino
         for (Object o : origin) {

@@ -24,6 +24,12 @@ public class GraduationVO extends RepresentationModel implements Serializable {
 
     public GraduationVO(){}
 
+    public GraduationVO(int id, String courseName, List<UserVO> users) {
+        this.id = id;
+        this.courseName = courseName;
+        this.users = users;
+    }
+
     public int getId() {
         return id;
     }

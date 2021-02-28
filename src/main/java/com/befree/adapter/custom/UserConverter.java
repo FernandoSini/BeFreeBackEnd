@@ -2,8 +2,10 @@ package com.befree.adapter.custom;
 
 import com.befree.adapter.DozerConverter;
 import com.befree.data.model.Graduation;
+import com.befree.data.model.Like;
 import com.befree.data.model.User;
 import com.befree.data.model.vo.GraduationVO;
+import com.befree.data.model.vo.LikeVO;
 import com.befree.data.model.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +22,13 @@ public class UserConverter {
         userVO.setUserName(user.getUserName());
         userVO.setAge(user.getAge());
         userVO.setFirstName(user.getFirstName());
+        userVO.setLastName(user.getLastName());
         userVO.setGender(user.getGender());
         userVO.setId(user.getId());
         userVO.setUsertype(user.getUsertype());
         userVO.setUserGraduations(DozerConverter.parseListObjects(user.getUserGraduations(), GraduationVO.class));
-//        userVO.setLikesSended(user.getLikesSended());
-//        userVO.setLikeReceived(user.getLikeReceived());
+        userVO.setLikesSended(DozerConverter.parseListObjects(user.getLikesSended(), LikeVO.class));
+        userVO.setLikeReceived(DozerConverter.parseListObjects(user.getLikeReceived(),LikeVO.class));
 
         return userVO;
     }
@@ -40,12 +43,12 @@ public class UserConverter {
         userObject.setUserGraduations(DozerConverter.parseListObjects(voUser.getUserGraduations(), Graduation.class)/*voUser.getUserGraduations().stream().map(data-> graduationConverter.convertVoToEntity(data)).collect(Collectors.toList())*/);
         userObject.setUsertype(voUser.getUsertype());
         userObject.setAge(voUser.getAge());
-//        userObject.setLikesSended(voUser.getLikesSended());
-      // userObject.setLikeReceived(voUser.getLikeReceived());
-
-
+        userObject.setLikesSended(DozerConverter.parseListObjects(voUser.getLikesSended(),Like.class));
+         userObject.setLikeReceived(DozerConverter.parseListObjects(voUser.getLikeReceived(),Like.class));
 
         return userObject;
     }
+
+
 
 }

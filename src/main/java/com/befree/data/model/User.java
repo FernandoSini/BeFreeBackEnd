@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler", "likeReceived"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer","handler", "likeReceived"})
 public class User implements Serializable {
 
     /**
@@ -40,25 +40,16 @@ public class User implements Serializable {
     @Column(name = "gender")
     private String gender;
 
-//    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-//    @JoinTable(name = "user_likes",
-//            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-//            inverseJoinColumns = @JoinColumn(name = "like_id", referencedColumnName = "id"))
-
-
-    //   @ManyToOne(targetEntity = Like.class)
-    //@JoinColumn(name = "like_id")
     @OneToMany(mappedBy = "userSendLike",orphanRemoval = true, fetch = FetchType.EAGER)
     //@JsonBackReference
     private List<Like> likesSended;
 
     @OneToMany(mappedBy = "userLiked", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Like> likeReceived;
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-//    private List<Graduation> userGraduations;
 
-
-    @ManyToMany(targetEntity = Graduation.class, fetch = FetchType.LAZY/*, cascade = CascadeType.ALL*/)
+    @ManyToMany(targetEntity = Graduation.class,
+            fetch = FetchType.LAZY
+            /*, cascade = CascadeType.ALL*/)
     @JoinTable(name = "graduation_user",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "graduation_id", referencedColumnName = "graduation_id")})
@@ -127,17 +118,21 @@ public class User implements Serializable {
         this.gender = gender;
     }
 
-//    public List<Like> getLikesSended() {
-//        return likesSended;
-//    }
-
 
     public List<Like> getLikesSended() {
         return likesSended;
     }
 
+    public void setLikesSended(List<Like> likesSended) {
+        this.likesSended = likesSended;
+    }
+
     public List<Like> getLikeReceived() {
         return likeReceived;
+    }
+
+    public void setLikeReceived(List<Like> likeReceived) {
+        this.likeReceived = likeReceived;
     }
 
     public Usertype getUsertype() {
@@ -148,39 +143,37 @@ public class User implements Serializable {
         this.usertype = usertype;
     }
 
-    public void addLikeSended(Like like) {
-        this.likesSended.add(like);
-        like.setUserSendLike(this);
-    }
-
-
-    public void removeLikeSended(Like like) {
-        this.likesSended.remove(like);
-      //  like.setUserSendLike(null);
-    }
-    public void addLikeReceived(Like like) {
-        this.likeReceived.add(like);
-        like.setUserLiked(this);
-    }
-
-    public void removeLikeReceived(Like like) {
-       this.likeReceived.remove(like);
-      //  like.setUserLiked(null);
-    }
-
-    public void setLikesSended(List<Like> likes) {
-        for(Like l: likes){
-            this.likesSended.add(l);
-        }
-    }
-
-    public void setLikeReceived(List<Like> likes) {
-        for(Like l : likes){
-            this.likeReceived.add(l);
-        }
-    }
-
-
+//    public void addLikeSended(Like like) {
+//        this.likesSended.add(like);
+//        like.setUserSendLike(this);
+//    }
+//
+//
+//    public void removeLikeSended(Like like) {
+//        this.likesSended.remove(like);
+//      //  like.setUserSendLike(null);
+//    }
+//    public void addLikeReceived(Like like) {
+//        this.likeReceived.add(like);
+//        like.setUserLiked(this);
+//    }
+//
+//    public void removeLikeReceived(Like like) {
+//       this.likeReceived.remove(like);
+//      //  like.setUserLiked(null);
+//    }
+//
+////    public void setLikesSended(List<Like> likes) {
+////        for(Like l: likes){
+////            this.likesSended.add(l);
+////        }
+////    }
+////
+////    public void setLikeReceived(List<Like> likes) {
+////        for(Like l : likes){
+////            this.likeReceived.add(l);
+////        }
+////    }
 
 
     public List<Graduation> getUserGraduations() {
@@ -208,19 +201,5 @@ public class User implements Serializable {
         this.age = age;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", userName='" + userName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", gender='" + gender + '\'' +
-                ", likesSended=" + likesSended +
-                ", likeReceived=" + likeReceived +
-                ", userGraduations=" + userGraduations +
-                ", usertype=" + usertype +
-                ", age='" + age + '\'' +
-                '}';
-    }
+
 }

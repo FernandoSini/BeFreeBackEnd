@@ -28,12 +28,12 @@ public class UserServices {
     //criar o user No banco
     //o problema é que o converter n esta convertendo a graduacao do vo
     public UserVO criandoUser(UserVO userVO) {
-        var entity = userConverter.convertUserVoToUser(userVO);
+        var entity = DozerConverter.parseObject(userVO, User.class);
         Optional<User> userExists = userRepository.findOneUserByUserName(entity.getUserName());
 
         if (!userExists.isPresent()|| userExists.isEmpty() || userExists ==null) {
             System.out.println(entity.getUserGraduations());
-            var voUser = userConverter.convertUserToVO(userRepository.saveAndFlush(entity));
+            var voUser = DozerConverter.parseObject(userRepository.saveAndFlush(entity),UserVO.class);
             System.out.println(entity.getUserName());
 
             return voUser;

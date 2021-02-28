@@ -1,6 +1,8 @@
 package com.befree.services;
 
+import com.befree.adapter.custom.LikeConverter;
 import com.befree.data.model.Like;
+import com.befree.data.model.vo.LikeVO;
 import com.befree.exceptions.LikedException;
 import com.befree.exceptions.ResourceNotFoundException;
 import com.befree.repository.LikeRepository;
@@ -15,6 +17,8 @@ public class LikeService {
 
     @Autowired
     private LikeRepository likeRepository;
+    @Autowired
+    private LikeConverter likeConverter;
 
     public List<Like> getAll() {
         return likeRepository.findAll();
@@ -24,11 +28,12 @@ public class LikeService {
         return likeRepository.findAllMyLikes(userId);
     }
 
-    public Like setLike(Like likeData) {
-        Optional<Like> likeExists = likeRepository.findIfUserWasLikedByMe(likeData.getUserSendLike().getId(), likeData.getUserLiked().getId());
-        if (!likeExists.isPresent()) {
-            var entity = likeRepository.saveAndFlush(likeData);
-            return entity;
+    public LikeVO setLike(LikeVO likeData) {
+        var likeEntity = likeConverter.convertLikeVoToEntity(likeData);
+        Optional<Like> likeExists = likeRepository.findIfUserWasLikedByMe(likeEntity.getUserSendLike().getId(), likeEntity.getUserLiked().getId());
+        if (!likeExists.isPresent() || likeExists.isEmpty()) {
+            var likeVo = likeConverter.convertEntityToVO(likeRepository.saveAndFlush(likeEntity));
+            return likeVo;
 
         } else {
             throw new LikedException("This user was already liked by you");

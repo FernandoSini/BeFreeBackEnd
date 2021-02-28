@@ -1,7 +1,10 @@
 package com.befree.controllers;
 
+import com.befree.adapter.custom.UserConverter;
 import com.befree.data.model.Like;
 import com.befree.data.model.User;
+import com.befree.data.model.vo.LikeVO;
+import com.befree.data.model.vo.UserVO;
 import com.befree.exceptions.UserNotFoundException;
 import com.befree.repository.UserRepository;
 import com.befree.services.LikeService;
@@ -22,6 +25,8 @@ public class LikeController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserConverter userConverter;
 
     @Autowired
     private LikeService likeService;
@@ -42,11 +47,12 @@ public class LikeController {
     }
 
 
-    @PostMapping(value = "/sendLikeTo/{userId}/{yourId}", produces = {"application/json"}/*, consumes = {"application/json"}*/)
-    public ResponseEntity<Like> likeUser(@PathVariable("userId") String userId, @PathVariable("yourId") String yourId) {
+    @PostMapping(value = "/sendLikeTo/{userId}/{yourId}",
+            produces = {"application/json", "application/xml", "application/x-yaml"})
+    public ResponseEntity<LikeVO> likeUser(@PathVariable("userId") String userId, @PathVariable("yourId") String yourId) {
         //pegando o usuário likado
-        User userLiked = userRepository.findUserById(userId).orElseThrow(()-> new UserNotFoundException("User not found!"));
-        User userSendLike = userRepository.findUserById(yourId).orElseThrow(()-> new UserNotFoundException("User not found!"));
+        UserVO userLiked = userConverter.convertUserToVO(userRepository.findUserById(userId).orElseThrow(()-> new UserNotFoundException("User not found!")));
+        UserVO userSendLike = userConverter.convertUserToVO(userRepository.findUserById(yourId).orElseThrow(() -> new UserNotFoundException("User not found!")));
         
 
 //        //criando um array de usuários que receberam o like
@@ -63,17 +69,19 @@ public class LikeController {
 
 
 
-        Like like = new Like();
-//        like.setUserSendLike(userSendLike);
-//        like.setUserLiked(userLiked);
+        LikeVO likeVO = new LikeVO();
+//        likeVO.setUserSendLike(userSendLike);
+//        likeVO.setUserLiked(userLiked);
 
-        userLiked.addLikeReceived(like);
-        userSendLike.addLikeSended(like);
+//        userLiked.getLikeReceived().add(likeVO);
+//        userSendLike.getLikesSended().add(likeVO);
+        userSendLike.addLikeSended(likeVO);
+        userLiked.addLikeReceived(likeVO);
 
 
 
 
-        return ResponseEntity.ok().body(likeService.setLike(like));
+        return ResponseEntity.ok().body(likeService.setLike(likeVO));
 
 
     }

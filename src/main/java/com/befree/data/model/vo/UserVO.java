@@ -30,8 +30,8 @@ public class UserVO extends RepresentationModel implements Serializable {
     private String lastName;
     private String gender;
     private String age;
-    private List<Like> likesSended;
-    private List<Like> likeReceived;
+    private List<LikeVO> likesSended;
+    private List<LikeVO> likeReceived;
     @JsonProperty("userGraduations")
     @JsonIgnoreProperties("users")
     private List<GraduationVO> userGraduations;
@@ -39,9 +39,29 @@ public class UserVO extends RepresentationModel implements Serializable {
     private Usertype usertype;
 
 
+
     public UserVO() {
     }
 
+    public UserVO(String id, String userName,
+                  String firstName,
+                  String lastName, String gender,
+                  String age,
+                  List<LikeVO> likesSended,
+                  List<LikeVO> likeReceived,
+                  List<GraduationVO> userGraduations,
+                  Usertype usertype) {
+        this.id = id;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.age = age;
+        this.likesSended = likesSended;
+        this.likeReceived = likeReceived;
+        this.userGraduations = userGraduations;
+        this.usertype = usertype;
+    }
 
     public String getAge() {
         return age;
@@ -91,19 +111,19 @@ public class UserVO extends RepresentationModel implements Serializable {
         this.gender = gender;
     }
 
-    public List<Like> getLikesSended() {
+    public List<LikeVO> getLikesSended() {
         return likesSended;
     }
 
-    public void setLikesSended(List<Like> likesSended) {
+    public void setLikesSended(List<LikeVO> likesSended) {
         this.likesSended = likesSended;
     }
 
-    public List<Like> getLikeReceived() {
+    public List<LikeVO> getLikeReceived() {
         return likeReceived;
     }
 
-    public void setLikeReceived(List<Like> likeReceived) {
+    public void setLikeReceived(List<LikeVO> likeReceived) {
         this.likeReceived = likeReceived;
     }
 
@@ -121,6 +141,27 @@ public class UserVO extends RepresentationModel implements Serializable {
 
     public void setUsertype(Usertype usertype) {
         this.usertype = usertype;
+    }
+
+    public void addLikeSended(LikeVO likeVO) {
+        this.likesSended.add(likeVO);
+        likeVO.setUserSendLike(this);
+    }
+
+
+    public void removeLikeSended(LikeVO likeVO) {
+        this.likesSended.remove(likeVO);
+        //  like.setUserSendLike(null);
+    }
+    public void addLikeReceived(LikeVO likeVO) {
+        this.likeReceived.add(likeVO);
+        likeVO.setUserLiked(this);
+    }
+
+
+    public void removeLikeReceived(LikeVO likeVO) {
+        this.likeReceived.remove(likeVO);
+        //  like.setUserSendLike(null);
     }
 }
 
