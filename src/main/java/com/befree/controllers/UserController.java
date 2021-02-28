@@ -104,15 +104,15 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable("id") String id) {
-        User user = userServices.getUserById(id);
-        return user;
+    public ResponseEntity<UserVO> getUserById(@PathVariable("id") String id) {
+        UserVO userVO = DozerConverter.parseObject(userServices.getUserById(id),UserVO.class);
+        return ResponseEntity.ok().body(userVO);
     }
 
     @GetMapping(value = "/all", produces = {"application/json", "application/xml", "application/x-yaml"})
-    public List<UserVO> getAllUsers() {
+    public ResponseEntity<List<UserVO>> getAllUsers() {
         List<UserVO> users = userServices.getAllUsers();
-        return users;
+        return ResponseEntity.ok(users);
 
     }
 
@@ -127,7 +127,7 @@ public class UserController {
     @DeleteMapping(value = "/delete/{userName}")
     public ResponseEntity deleteUser(@PathVariable("userName") String userName) {
         userServices.deleteUser(userName);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("User deleted successfully");
     }
 
 

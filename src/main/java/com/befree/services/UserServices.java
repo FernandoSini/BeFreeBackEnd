@@ -58,8 +58,8 @@ public class UserServices {
         return vo;
     }
 
-    public void deleteUser(String id) {
-        User entity = userRepository.findUserById(id)
+    public void deleteUser(String userName) {
+        User entity = userRepository.findOneUserByUserName(userName)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         userRepository.delete(entity);
 
