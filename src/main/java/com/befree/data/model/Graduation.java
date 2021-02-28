@@ -1,11 +1,8 @@
 package com.befree.data.model;
 
-import com.befree.data.model.vo.UserVO;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.util.List;
 

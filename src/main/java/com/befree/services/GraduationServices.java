@@ -2,9 +2,7 @@ package com.befree.services;
 
 import com.befree.adapter.DozerConverter;
 import com.befree.data.model.Graduation;
-import com.befree.data.model.User;
 import com.befree.data.model.vo.GraduationVO;
-import com.befree.data.model.vo.UserVO;
 import com.befree.exceptions.ResourceNotFoundException;
 import com.befree.repository.GraduationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +36,7 @@ public class GraduationServices {
     }
 
     public GraduationVO convertEntityToGraduationVo(Graduation entity) {
-        if(entity ==null) return null;
+        if (entity == null) return null;
         return DozerConverter.parseObject(entity, GraduationVO.class);
     }
 
@@ -47,5 +45,5 @@ public class GraduationServices {
 
         return DozerConverter.parseListObjects(entity, GraduationVO.class);
     }
-    
+
 }

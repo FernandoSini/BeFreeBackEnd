@@ -1,14 +1,12 @@
 package com.befree.data.model.vo;
 
 
-import com.befree.data.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 

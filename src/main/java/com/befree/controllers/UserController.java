@@ -1,9 +1,6 @@
 package com.befree.controllers;
 
 import com.befree.adapter.DozerConverter;
-import com.befree.adapter.custom.UserConverter;
-import com.befree.data.model.Graduation;
-import com.befree.data.model.User;
 import com.befree.data.model.Usertype;
 import com.befree.data.model.vo.GraduationVO;
 import com.befree.data.model.vo.UserVO;

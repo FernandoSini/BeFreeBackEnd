@@ -1,6 +1,5 @@
 package com.befree.controllers;
 
-import com.befree.data.model.Graduation;
 import com.befree.data.model.vo.GraduationVO;
 import com.befree.services.GraduationServices;
 import org.springframework.beans.factory.annotation.Autowired;

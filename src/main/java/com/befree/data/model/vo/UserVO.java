@@ -1,7 +1,5 @@
 package com.befree.data.model.vo;
 
-import com.befree.data.model.Graduation;
-import com.befree.data.model.Like;
 import com.befree.data.model.Usertype;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -30,7 +27,9 @@ public class UserVO extends RepresentationModel implements Serializable {
     private String lastName;
     private String gender;
     private String age;
+    @JsonIgnoreProperties({"userSendLike"})
     private List<LikeVO> likesSended;
+    @JsonIgnoreProperties({"userLiked"})
     private List<LikeVO> likeReceived;
     @JsonProperty("userGraduations")
     @JsonIgnoreProperties("users")

@@ -12,7 +12,6 @@ import com.befree.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,9 +30,9 @@ public class UserServices {
         var entity = DozerConverter.parseObject(userVO, User.class);
         Optional<User> userExists = userRepository.findOneUserByUserName(entity.getUserName());
 
-        if (!userExists.isPresent()|| userExists.isEmpty() || userExists ==null) {
+        if (!userExists.isPresent() || userExists.isEmpty() || userExists == null) {
             System.out.println(entity.getUserGraduations());
-            var voUser = DozerConverter.parseObject(userRepository.saveAndFlush(entity),UserVO.class);
+            var voUser = DozerConverter.parseObject(userRepository.saveAndFlush(entity), UserVO.class);
             System.out.println(entity.getUserName());
 
             return voUser;
@@ -47,14 +46,15 @@ public class UserServices {
         var entity = userRepository.findUserById(id).orElseThrow(() -> new UserNotFoundException("User Not Found"));
         return entity;
     }
+
     //buscando um usuário pelo nome dele
     public UserVO getUserByUserName(String yourName) {
-        var entity = userRepository.getUserByUserName(yourName).orElseThrow(()-> new UserNotFoundException("We not with this username not found in our database"));
+        var entity = userRepository.getUserByUserName(yourName).orElseThrow(() -> new UserNotFoundException("We not with this username not found in our database"));
         return convertToUserVo(entity);
     }
 
     public List<UserVO> getAllUsers() {
-        var vo = DozerConverter.parseListObjects(userRepository.findAll(),UserVO.class);
+        var vo = DozerConverter.parseListObjects(userRepository.findAll(), UserVO.class);
         return vo;
     }
 
@@ -64,15 +64,16 @@ public class UserServices {
         userRepository.delete(entity);
 
     }
-    public UserVO convertToUserVo(User entity){
-        if(entity == null) return null;
-        return DozerConverter.parseObject(entity,UserVO.class);
-    }
-    public User convertVoToUser(UserVO entity){
-        if(entity == null) return null;
-        return DozerConverter.parseObject(entity,User.class);
+
+    public UserVO convertToUserVo(User entity) {
+        if (entity == null) return null;
+        return DozerConverter.parseObject(entity, UserVO.class);
     }
 
+    public User convertVoToUser(UserVO entity) {
+        if (entity == null) return null;
+        return DozerConverter.parseObject(entity, User.class);
+    }
 
 
 }
