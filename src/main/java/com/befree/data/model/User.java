@@ -1,5 +1,6 @@
 package com.befree.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,7 +17,7 @@ import java.util.List;
 @Table(name = "users")
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 //@JsonIgnoreProperties({"hibernateLazyInitializer","handler", "likeReceived"})
-public class User implements UserDetails,Serializable {
+public class User implements UserDetails, Serializable {
 
     /**
      *
@@ -35,6 +36,8 @@ public class User implements UserDetails,Serializable {
 
     @Column(name = "first_name")
     private String firstName;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "last_name")
     private String lastName;
@@ -42,7 +45,7 @@ public class User implements UserDetails,Serializable {
     @Column(name = "gender")
     private String gender;
 
-    @OneToMany(mappedBy = "userSendLike",orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userSendLike", orphanRemoval = true, fetch = FetchType.LAZY)
     //@JsonBackReference
     private List<Like> likesSended;
 
@@ -61,10 +64,11 @@ public class User implements UserDetails,Serializable {
     @Enumerated(EnumType.ORDINAL)
     private Usertype usertype;
 
-    @Column(name = "age")
-    private String age;
+    @Column(name = "birthDay")
+    private String birthDay;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @Column(name = "account_non_expired")
@@ -81,16 +85,16 @@ public class User implements UserDetails,Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_permissions", joinColumns = {@JoinColumn(name = "id_user")},
-    inverseJoinColumns = {@JoinColumn(name = "id_permission")})
-    private List<Permission>permissions;
+            inverseJoinColumns = {@JoinColumn(name = "id_permission")})
+    private List<Permission> permissions;
 
     public User() {
     }
 
-    public User(String id, @Size(min = 3) String userName, String firstName, String lastName, String gender,
-                List<Like> likesSended, List<Like> likeReceived,
-                List<Graduation> userGraduations,
-                Usertype usertype, String age,
+    public User(String id, @Size(min = 3) String userName, String firstName,
+                String lastName, String gender, List<Like> likesSended,
+                List<Like> likeReceived, List<Graduation> userGraduations,
+                String email, Usertype usertype, String birthDay,
                 String password) {
         this.id = id;
         this.userName = userName;
@@ -100,8 +104,9 @@ public class User implements UserDetails,Serializable {
         this.likesSended = likesSended;
         this.likeReceived = likeReceived;
         this.userGraduations = userGraduations;
+        this.email = email;
         this.usertype = usertype;
-        this.age = age;
+        this.birthDay = birthDay;
         this.password = password;
     }
 
@@ -113,9 +118,9 @@ public class User implements UserDetails,Serializable {
         this.id = id;
     }
 
-//    public String getUserName() {
-//        return userName;
-//    }
+    public String getUserName() {
+        return userName;
+    }
 
     public void setUserName(String userName) {
         this.userName = userName;
@@ -139,6 +144,14 @@ public class User implements UserDetails,Serializable {
 
     public String getGender() {
         return gender;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setGender(String gender) {
@@ -177,7 +190,7 @@ public class User implements UserDetails,Serializable {
         this.userGraduations = userGraduations;
     }
 
-    public String getAge() {
+    public String getBirthDay() {
 //        LocalDate localDateTime =  LocalDate.now();
 //        DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 //        localDateTime.format(dateFormat);
@@ -187,8 +200,9 @@ public class User implements UserDetails,Serializable {
 
         // int data = (yearNow - birthdayYear);
         // return String.valueOf(data);
-        return age;
+        return birthDay;
     }
+
     //pegando as funcoes dos usuários
     public List<String> getRoles() {
         List<String> roles = new ArrayList<>();
@@ -198,8 +212,8 @@ public class User implements UserDetails,Serializable {
         return roles;
     }
 
-    public void setAge(String age) {
-        this.age = age;
+    public void setBirthday(String birthDay) {
+        this.birthDay = birthDay;
     }
 
     public List<Permission> getPermissions() {
@@ -263,5 +277,23 @@ public class User implements UserDetails,Serializable {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+
+
+    public Boolean getAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    public Boolean getAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public Boolean getCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
     }
 }

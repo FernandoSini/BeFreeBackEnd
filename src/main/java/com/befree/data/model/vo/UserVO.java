@@ -2,22 +2,29 @@ package com.befree.data.model.vo;
 
 import com.befree.data.model.Permission;
 import com.befree.data.model.Usertype;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
+import lombok.Data;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @JsonPropertyOrder({"id", "userName", "firstName",
-        "lastName", "gender", "age", "userGraduations", "usertype",
+        "lastName", "gender", "birthday","email","userGraduations", "usertype",
         "likesSended", "likeReceived"})
+@JsonIgnoreProperties({"accountNonExpired",
+        "accountNonLocked", "credentialsNonExpired",
+        "enabled","username","authorities", "roles"})
+@Data
 public class UserVO extends RepresentationModel implements UserDetails, Serializable {
 
 
@@ -31,7 +38,10 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     @JsonProperty("last_name")
     private String lastName;
     private String gender;
-    private String age;
+    @JsonProperty("birthday")
+    private String birthday;
+    @JsonProperty("email")
+    private String email;
     @JsonIgnoreProperties({"userSendLike"})
     private List<LikeVO> likesSended;
     @JsonIgnoreProperties({"userLiked"})
@@ -41,16 +51,12 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     private List<GraduationVO> userGraduations;
     @JsonProperty(value = "usertype")
     private Usertype usertype;
+    @JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-
     private Boolean accountNonExpired;
-
     private Boolean accountNonLocked;
-
     private Boolean credentialsNonExpired;
-
     private Boolean enabled;
-
     private List<Permission> permissions;
 
 
@@ -60,7 +66,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     public UserVO(String id, String userName,
                   String firstName,
                   String lastName, String gender,
-                  String age,
+                  String birthday,
                   List<LikeVO> likesSended,
                   List<LikeVO> likeReceived,
                   List<GraduationVO> userGraduations,
@@ -70,7 +76,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
-        this.age = age;
+        this.birthday = birthday;
         this.likesSended = likesSended;
         this.likeReceived = likeReceived;
         this.userGraduations = userGraduations;
@@ -78,12 +84,28 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         this.password = password;
     }
 
-    public String getAge() {
-        return age;
+    public List<String> getRoles() {
+        List<String> roles = new ArrayList<>();
+        for (Permission permission : this.permissions) {
+            roles.add(permission.getDescription());
+        }
+        return roles;
     }
 
-    public void setAge(String age) {
-        this.age = age;
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getId() {
@@ -94,9 +116,9 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         this.id = id;
     }
 
-//    public String getUserName() {
-//        return userName;
-//    }
+    public String getUserName() {
+        return userName;
+    }
 
     public void setUserName(String userName) {
         this.userName = userName;
@@ -198,6 +220,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         return this.permissions;
     }
 
+
     @Override
     public String getPassword() {
         return this.password;
@@ -243,5 +266,6 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
+
 }
 

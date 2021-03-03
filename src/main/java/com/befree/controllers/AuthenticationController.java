@@ -1,5 +1,6 @@
 package com.befree.controllers;
 
+import com.befree.data.model.Permission;
 import com.befree.data.model.Usertype;
 import com.befree.data.model.vo.GraduationVO;
 import com.befree.data.model.vo.UserVO;
@@ -33,41 +34,29 @@ public class AuthenticationController {
     public UserVO createUser(@RequestBody UserVO userData) {
 
 
-//        Graduation graduation = graduationServices.getGraduationById(1);
-//        graduation.getUsers().add(userData);
-//
-//        Graduation graduation1 = graduationServices.getGraduationById(2);
-//        graduation1.getUsers().add(userData);
-//        Graduation graduation2 = graduationServices.getGraduationById(3);
-//        graduation2.getUsers().add(userData);
-//        List<Graduation> graduationList = new ArrayList<>();
-//        graduationList.add(graduation);
-//        graduationList.add(graduation1);
-//        graduationList.add(graduation2);
-//        GraduationVO graduationVO = graduationServices.getGraduationById(userData.getGraduations().get(1).getId());
-//        graduationVO.getUsers().add(userData);
-//        GraduationVO graduationVO2 = graduationServices.getGraduationById(2);
-//        graduationVO2.getUsers().add(userData);
-//        GraduationVO graduationVO3 = graduationServices.getGraduationById(3);
-//        graduationVO3.getUsers().add(userData);
-//        for (int i = 0; i <userData.getGraduations().size() ; i++) {
-//            GraduationVO graduationVO2 = graduationServices.getGraduationById(userData.getGraduations().get(i).getId())
-//        }
         List<GraduationVO> graduations = new ArrayList<>();
-//
-//        graduations.add(graduationVO);
-//        graduations.add(graduationVO2);
-//        graduations.add(graduationVO3);
-        for (GraduationVO graduationVO : userData.getUserGraduations()
-        ) {
+
+        for (GraduationVO graduationVO : userData.getUserGraduations()) {
+            System.out.println((graduationVO.getId()));
             var voGraduation = graduationServices.getGraduationById(graduationVO.getId());
             graduations.add(voGraduation);
         }
+
+        userData.setUserName(userData.getUsername());
         userData.setUsertype(Usertype.FREE);
         userData.setUserGraduations(graduations);
-        BCryptPasswordEncoder bCrypt =new  BCryptPasswordEncoder();
+        BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
         userData.setPassword(bCrypt.encode(userData.getPassword()));
-        //userData.setEnabled();
+        userData.setEnabled(true);
+        userData.setAccountNonExpired(true);
+        userData.setAccountNonLocked(true);
+        userData.setCredentialsNonExpired(true);
+
+        Permission permission = new Permission();
+        permission.setId(3L);
+        List<Permission> permissions = new ArrayList<>();
+        permissions.add(permission);
+        userData.setPermissions(permissions);
 
 
         return userServices.criandoUser(userData);

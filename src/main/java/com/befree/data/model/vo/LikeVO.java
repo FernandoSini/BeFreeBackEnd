@@ -64,12 +64,5 @@ public class LikeVO extends RepresentationModel implements Serializable {
         this.userLiked = userLiked;
     }
 
-    @Override
-    public String toString() {
-        return "Like{" +
-                "id='" + id + '\'' +
-                ", userSendLike=" + userSendLike +
-                ", idUserLiked='" + userLiked + '\'' +
-                '}';
-    }
+
 }
