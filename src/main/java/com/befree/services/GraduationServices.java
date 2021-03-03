@@ -20,6 +20,7 @@ public class GraduationServices {
     //buscar todas as graduações no banco
     public List<GraduationVO> getAllGraduations() {
         var graduations = graduationRepository.findAll();
+        if(graduations.isEmpty() || graduations==null) throw new ResourceNotFoundException("Not Found");
         return DozerConverter.parseListObjects(graduations, GraduationVO.class);
     }
 

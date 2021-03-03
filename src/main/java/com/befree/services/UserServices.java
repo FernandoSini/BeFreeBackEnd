@@ -10,13 +10,16 @@ import com.befree.exceptions.ResourceNotFoundException;
 import com.befree.exceptions.UserNotFoundException;
 import com.befree.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class UserServices {
+@Service("userDetailsService")
+public class UserServices implements UserDetailsService {
 
 
     @Autowired
@@ -24,16 +27,20 @@ public class UserServices {
     @Autowired
     private UserConverter userConverter;
 
+    public UserServices(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     //criar o user No banco
     //o problema é que o converter n esta convertendo a graduacao do vo
     public UserVO criandoUser(UserVO userVO) {
         var entity = DozerConverter.parseObject(userVO, User.class);
-        Optional<User> userExists = userRepository.findOneUserByUserName(entity.getUserName());
+        Optional<User> userExists = userRepository.findOneUserByUserName(entity.getUsername());
 
         if (!userExists.isPresent() || userExists.isEmpty() || userExists == null) {
             System.out.println(entity.getUserGraduations());
             var voUser = DozerConverter.parseObject(userRepository.saveAndFlush(entity), UserVO.class);
-            System.out.println(entity.getUserName());
+            System.out.println(entity.getUsername());
 
             return voUser;
         } else {
@@ -70,10 +77,14 @@ public class UserServices {
         return DozerConverter.parseObject(entity, UserVO.class);
     }
 
-    public User convertVoToUser(UserVO entity) {
-        if (entity == null) return null;
-        return DozerConverter.parseObject(entity, User.class);
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        var user = userRepository.findByUsername(username);
+        if(user !=null){
+            return user;
+        } else{
+            throw new UsernameNotFoundException("User with this username not found" +username);
+        }
     }
-
-
 }

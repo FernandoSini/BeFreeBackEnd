@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
@@ -59,46 +59,7 @@ public class UserController {
 //        return userServices.criandoUser(userData);
 //
 //    }
-    @PostMapping(value = "/create", produces = {"application/json", "application/xml", "application/x-yaml"},
-            consumes = {"application/json", "application/xml", "application/x-yaml"})
-    public UserVO createUser(@RequestBody UserVO userData) {
 
-
-//        Graduation graduation = graduationServices.getGraduationById(1);
-//        graduation.getUsers().add(userData);
-//
-//        Graduation graduation1 = graduationServices.getGraduationById(2);
-//        graduation1.getUsers().add(userData);
-//        Graduation graduation2 = graduationServices.getGraduationById(3);
-//        graduation2.getUsers().add(userData);
-//        List<Graduation> graduationList = new ArrayList<>();
-//        graduationList.add(graduation);
-//        graduationList.add(graduation1);
-//        graduationList.add(graduation2);
-//        GraduationVO graduationVO = graduationServices.getGraduationById(userData.getGraduations().get(1).getId());
-//        graduationVO.getUsers().add(userData);
-//        GraduationVO graduationVO2 = graduationServices.getGraduationById(2);
-//        graduationVO2.getUsers().add(userData);
-//        GraduationVO graduationVO3 = graduationServices.getGraduationById(3);
-//        graduationVO3.getUsers().add(userData);
-//        for (int i = 0; i <userData.getGraduations().size() ; i++) {
-//            GraduationVO graduationVO2 = graduationServices.getGraduationById(userData.getGraduations().get(i).getId())
-//        }
-        List<GraduationVO> graduations = new ArrayList<>();
-//
-//        graduations.add(graduationVO);
-//        graduations.add(graduationVO2);
-//        graduations.add(graduationVO3);
-        for (GraduationVO graduationVO : userData.getUserGraduations()
-        ) {
-            var voGraduation = graduationServices.getGraduationById(graduationVO.getId());
-            graduations.add(voGraduation);
-        }
-        userData.setUsertype(Usertype.FREE);
-        userData.setUserGraduations(graduations);
-        return userServices.criandoUser(userData);
-
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserVO> getUserById(@PathVariable("id") String id) {

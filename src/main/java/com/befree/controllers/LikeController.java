@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/like")
+@RequestMapping("/api/like")
 public class LikeController {
 
     @Autowired

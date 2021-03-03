@@ -11,15 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+
 @RestController
-@RequestMapping("/graduations")
+@RequestMapping("/api/graduations")
 public class GraduationController {
 
     @Autowired
     private GraduationServices graduationServices;
 
 
-    @GetMapping("/all")
+    @GetMapping(value = "/all",
+            produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<List<GraduationVO>> getAllGraduations() {
         List<GraduationVO> graduations = graduationServices.getAllGraduations();
         return ResponseEntity.ok().body(graduations);
@@ -36,7 +38,7 @@ public class GraduationController {
 
     @GetMapping("/userName/{nomeDoUsuario}")
     public ResponseEntity<List<GraduationVO>> getUserGraduations(
-            @PathVariable("nomeDoUsuario")String nomeDoUsuario){
+            @PathVariable("nomeDoUsuario") String nomeDoUsuario) {
         List<GraduationVO> graduationsVO = graduationServices.getGraduationsByuserName(nomeDoUsuario);
         return ResponseEntity.ok(graduationsVO);
     }

@@ -19,7 +19,7 @@ public class UserConverter {
 
     public UserVO convertUserToVO(User user) {
         UserVO userVO = new UserVO();
-        userVO.setUserName(user.getUserName());
+        userVO.setUserName(user.getUsername());
         userVO.setAge(user.getAge());
         userVO.setFirstName(user.getFirstName());
         userVO.setLastName(user.getLastName());
@@ -36,7 +36,7 @@ public class UserConverter {
     public User convertUserVoToUser(UserVO voUser) {
         User userObject = new User();
         userObject.setId(voUser.getId());
-        userObject.setUserName(voUser.getUserName());
+        userObject.setUserName(voUser.getUsername());
         userObject.setFirstName(voUser.getFirstName());
         userObject.setLastName(voUser.getLastName());
         userObject.setGender(voUser.getGender());

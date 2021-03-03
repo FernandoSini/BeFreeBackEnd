@@ -1,0 +1,31 @@
+//    public void addLikeSended(Like like) {
+//        this.likesSended.add(like);
+//        like.setUserSendLike(this);
+//    }
+//
+//
+//    public void removeLikeSended(Like like) {
+//        this.likesSended.remove(like);
+//      //  like.setUserSendLike(null);
+//    }
+//    public void addLikeReceived(Like like) {
+//        this.likeReceived.add(like);
+//        like.setUserLiked(this);
+//    }
+//
+//    public void removeLikeReceived(Like like) {
+//       this.likeReceived.remove(like);
+//      //  like.setUserLiked(null);
+//    }
+//
+////    public void setLikesSended(List<Like> likes) {
+////        for(Like l: likes){
+////            this.likesSended.add(l);
+////        }
+////    }
+////
+////    public void setLikeReceived(List<Like> likes) {
+////        for(Like l : likes){
+////            this.likeReceived.add(l);
+////        }
+////    }

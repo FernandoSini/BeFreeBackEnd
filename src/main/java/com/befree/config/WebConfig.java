@@ -5,11 +5,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
 @Configuration
+//@EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
     //permitindo no header adicionar .json, .xml etc
 
@@ -20,8 +23,6 @@ public class WebConfig implements WebMvcConfigurer {
         converters.add(new YamlJackson2HttpMessageConverter());
     }
 
-    public WebConfig() {
-    }
 
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
@@ -36,24 +37,31 @@ public class WebConfig implements WebMvcConfigurer {
 //                .mediaType("xml", MediaType.APPLICATION_XML);
 
         //enviando via query parameter  example:localhost:8080/user/teste?format=xml (é só depois do interrogacao)
-        configurer.favorParameter(true)
-                .ignoreAcceptHeader(false)
-                .parameterName("format")
-                .useRegisteredExtensionsOnly(false)
-                .useRegisteredExtensionsOnly(false)
-                .defaultContentType(MediaType.APPLICATION_JSON)
-                .mediaType("json", MediaType.APPLICATION_JSON)
-                .mediaType("xml", MediaType.APPLICATION_XML)
-                .mediaType("yml", MEDIA_TYPE_YML);
-
-//        //enviando via header parameter(nos headers temos que passar o application/xml (exemplo))
-//        configurer.favorParameter(false)
+//        configurer.favorParameter(true)
 //                .ignoreAcceptHeader(false)
+//                .parameterName("format")
+//                .useRegisteredExtensionsOnly(false)
 //                .useRegisteredExtensionsOnly(false)
 //                .defaultContentType(MediaType.APPLICATION_JSON)
 //                .mediaType("json", MediaType.APPLICATION_JSON)
 //                .mediaType("xml", MediaType.APPLICATION_XML)
 //                .mediaType("yml", MEDIA_TYPE_YML);
 
+        //enviando via header parameter(nos headers temos que passar o application/xml (exemplo))
+        configurer.favorParameter(false)
+                .ignoreAcceptHeader(false)
+                .useRegisteredExtensionsOnly(false)
+                .defaultContentType(MediaType.APPLICATION_JSON)
+                .mediaType("json", MediaType.APPLICATION_JSON)
+                .mediaType("xml", MediaType.APPLICATION_XML)
+                .mediaType("yml", MEDIA_TYPE_YML);
+
+    }
+
+    //PERMITINDO O CORS
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedMethods("GET", "POST", "PUT", "PATCH","DELETE", "OPTIONS")
+        .allowedHeaders("*");
     }
 }

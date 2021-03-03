@@ -2,17 +2,21 @@ package com.befree.data.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 //@JsonIgnoreProperties({"hibernateLazyInitializer","handler", "likeReceived"})
-public class User implements Serializable {
+public class User implements UserDetails,Serializable {
 
     /**
      *
@@ -38,11 +42,11 @@ public class User implements Serializable {
     @Column(name = "gender")
     private String gender;
 
-    @OneToMany(mappedBy = "userSendLike",orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userSendLike",orphanRemoval = true, fetch = FetchType.LAZY)
     //@JsonBackReference
     private List<Like> likesSended;
 
-    @OneToMany(mappedBy = "userLiked", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userLiked", orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Like> likeReceived;
 
     @ManyToMany(targetEntity = Graduation.class,
@@ -60,10 +64,34 @@ public class User implements Serializable {
     @Column(name = "age")
     private String age;
 
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "account_non_expired")
+    private Boolean accountNonExpired;
+
+    @Column(name = "account_non_locked")
+    private Boolean accountNonLocked;
+
+    @Column(name = "credentials_non_expired")
+    private Boolean credentialsNonExpired;
+
+    @Column(name = "enabled")
+    private Boolean enabled;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_permissions", joinColumns = {@JoinColumn(name = "id_user")},
+    inverseJoinColumns = {@JoinColumn(name = "id_permission")})
+    private List<Permission>permissions;
+
     public User() {
     }
 
-    public User(String id, @Size(min = 3) String userName, String firstName, String lastName, String gender, List<Like> likesSended, List<Like> likeReceived, List<Graduation> userGraduations, Usertype usertype, String age) {
+    public User(String id, @Size(min = 3) String userName, String firstName, String lastName, String gender,
+                List<Like> likesSended, List<Like> likeReceived,
+                List<Graduation> userGraduations,
+                Usertype usertype, String age,
+                String password) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -74,6 +102,7 @@ public class User implements Serializable {
         this.userGraduations = userGraduations;
         this.usertype = usertype;
         this.age = age;
+        this.password = password;
     }
 
     public String getId() {
@@ -84,9 +113,9 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
-    }
+//    public String getUserName() {
+//        return userName;
+//    }
 
     public void setUserName(String userName) {
         this.userName = userName;
@@ -116,7 +145,6 @@ public class User implements Serializable {
         this.gender = gender;
     }
 
-
     public List<Like> getLikesSended() {
         return likesSended;
     }
@@ -141,39 +169,6 @@ public class User implements Serializable {
         this.usertype = usertype;
     }
 
-//    public void addLikeSended(Like like) {
-//        this.likesSended.add(like);
-//        like.setUserSendLike(this);
-//    }
-//
-//
-//    public void removeLikeSended(Like like) {
-//        this.likesSended.remove(like);
-//      //  like.setUserSendLike(null);
-//    }
-//    public void addLikeReceived(Like like) {
-//        this.likeReceived.add(like);
-//        like.setUserLiked(this);
-//    }
-//
-//    public void removeLikeReceived(Like like) {
-//       this.likeReceived.remove(like);
-//      //  like.setUserLiked(null);
-//    }
-//
-////    public void setLikesSended(List<Like> likes) {
-////        for(Like l: likes){
-////            this.likesSended.add(l);
-////        }
-////    }
-////
-////    public void setLikeReceived(List<Like> likes) {
-////        for(Like l : likes){
-////            this.likeReceived.add(l);
-////        }
-////    }
-
-
     public List<Graduation> getUserGraduations() {
         return userGraduations;
     }
@@ -194,10 +189,79 @@ public class User implements Serializable {
         // return String.valueOf(data);
         return age;
     }
+    //pegando as funcoes dos usuários
+    public List<String> getRoles() {
+        List<String> roles = new ArrayList<>();
+        for (Permission permission : this.permissions) {
+            roles.add(permission.getDescription());
+        }
+        return roles;
+    }
 
     public void setAge(String age) {
         this.age = age;
     }
 
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
 
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.permissions;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.userName;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.credentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    public void setAccountNonExpired(Boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 }

@@ -1,19 +1,24 @@
 package com.befree.data.model.vo;
 
+import com.befree.data.model.Permission;
 import com.befree.data.model.Usertype;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 @JsonPropertyOrder({"id", "userName", "firstName",
-        "lastName", "gender", "age", "userGraduations","usertype",
+        "lastName", "gender", "age", "userGraduations", "usertype",
         "likesSended", "likeReceived"})
-public class UserVO extends RepresentationModel implements Serializable {
+public class UserVO extends RepresentationModel implements UserDetails, Serializable {
 
 
     @Mapping("id")
@@ -36,7 +41,17 @@ public class UserVO extends RepresentationModel implements Serializable {
     private List<GraduationVO> userGraduations;
     @JsonProperty(value = "usertype")
     private Usertype usertype;
+    private String password;
 
+    private Boolean accountNonExpired;
+
+    private Boolean accountNonLocked;
+
+    private Boolean credentialsNonExpired;
+
+    private Boolean enabled;
+
+    private List<Permission> permissions;
 
 
     public UserVO() {
@@ -49,7 +64,7 @@ public class UserVO extends RepresentationModel implements Serializable {
                   List<LikeVO> likesSended,
                   List<LikeVO> likeReceived,
                   List<GraduationVO> userGraduations,
-                  Usertype usertype) {
+                  Usertype usertype, String password) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -60,6 +75,7 @@ public class UserVO extends RepresentationModel implements Serializable {
         this.likeReceived = likeReceived;
         this.userGraduations = userGraduations;
         this.usertype = usertype;
+        this.password = password;
     }
 
     public String getAge() {
@@ -78,9 +94,9 @@ public class UserVO extends RepresentationModel implements Serializable {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
-    }
+//    public String getUserName() {
+//        return userName;
+//    }
 
     public void setUserName(String userName) {
         this.userName = userName;
@@ -152,6 +168,7 @@ public class UserVO extends RepresentationModel implements Serializable {
         this.likesSended.remove(likeVO);
         //  like.setUserSendLike(null);
     }
+
     public void addLikeReceived(LikeVO likeVO) {
         this.likeReceived.add(likeVO);
         likeVO.setUserLiked(this);
@@ -161,6 +178,70 @@ public class UserVO extends RepresentationModel implements Serializable {
     public void removeLikeReceived(LikeVO likeVO) {
         this.likeReceived.remove(likeVO);
         //  like.setUserSendLike(null);
+    }
+
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.permissions;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.userName;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.credentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    public void setAccountNonExpired(Boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }
 
