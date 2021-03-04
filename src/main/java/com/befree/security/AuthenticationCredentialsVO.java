@@ -1,10 +1,15 @@
 package com.befree.security;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 public class AuthenticationCredentialsVO implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    @JsonProperty("user_name")
     private String username;
+    @JsonProperty("password")
     private String password;
 
     public String getUsername() {
