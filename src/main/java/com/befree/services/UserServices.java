@@ -36,13 +36,17 @@ public class UserServices implements UserDetailsService {
     public UserVO criandoUser(UserVO userVO) {
         var entity = DozerConverter.parseObject(userVO, User.class);
         Optional<User> userExists = userRepository.findOneUserByUserName(entity.getUsername());
+        Optional<Boolean> emailExists = userRepository.findUserByEmail(entity.getEmail());
+        if (!userExists.isPresent() || userExists.isEmpty() || userExists == null || !emailExists.isPresent()|| emailExists.isEmpty()) {
+           if(!emailExists.isPresent() || emailExists.isEmpty() || emailExists ==null) {
+                System.out.println(entity.getUserGraduations());
+                var voUser = DozerConverter.parseObject(userRepository.saveAndFlush(entity), UserVO.class);
+                System.out.println(entity.getUsername());
 
-        if (!userExists.isPresent() || userExists.isEmpty() || userExists == null) {
-            System.out.println(entity.getUserGraduations());
-            var voUser = DozerConverter.parseObject(userRepository.saveAndFlush(entity), UserVO.class);
-            System.out.println(entity.getUsername());
-
-            return voUser;
+                return voUser;
+            }else{
+               throw new CreateUserException("Email already in use");
+           }
         } else {
             throw new CreateUserException("User already exist");
         }

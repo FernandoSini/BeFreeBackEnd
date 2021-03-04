@@ -36,7 +36,7 @@ public class User implements UserDetails, Serializable {
 
     @Column(name = "first_name")
     private String firstName;
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "last_name")
@@ -84,7 +84,7 @@ public class User implements UserDetails, Serializable {
     private Boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_permissions", joinColumns = {@JoinColumn(name = "id_user")},
+    @JoinTable(name = "user_permissions", joinColumns = {@JoinColumn(name = "id_user",referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "id_permission")})
     private List<Permission> permissions;
 
