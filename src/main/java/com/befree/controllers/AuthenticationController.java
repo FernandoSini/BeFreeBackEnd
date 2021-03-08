@@ -20,10 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -58,6 +55,7 @@ public class AuthenticationController {
                 throw new UsernameNotFoundException("Username: " + username + "not found!");
             }
             HashMap<Object, Object> userModel = new HashMap<>();
+            HashMap<Object, Object> userModelOrdered = new HashMap<>();
             userModel.put("id_user", user.getId());
             userModel.put("user_name", user.getUserName());
             userModel.put("first_name", user.getFirstName());
@@ -71,7 +69,7 @@ public class AuthenticationController {
             userModel.put("likeReceived", user.getLikeReceived());
             userModel.put("token", token);
 //           var vo= DozerConverter.parseObject(userModel, UserVO.class);
-
+      
             return ResponseEntity.ok(userModel);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password! " + e);

@@ -1,9 +1,6 @@
 package com.befree.exceptions.handler;
 
-import com.befree.exceptions.ExceptionResponse;
-import com.befree.exceptions.InvalidJwtAuthenticationException;
-import com.befree.exceptions.ResourceNotFoundException;
-import com.befree.exceptions.UnsupportedMediaException;
+import com.befree.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -48,6 +45,13 @@ public class CustomizedExceptionsHandler extends ResponseEntityExceptionHandler 
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(new Date(), exception.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+    //Controlando as bad requests exceptions caso o jwt seja invalido
+    @ExceptionHandler(ExpiredJwtToken.class)
+    public final ResponseEntity<ExceptionResponse> expiredJwtException(Exception exception, WebRequest request) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(new Date(), exception.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

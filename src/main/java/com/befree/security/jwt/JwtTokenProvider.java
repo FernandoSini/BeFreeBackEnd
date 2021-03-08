@@ -1,10 +1,7 @@
 package com.befree.security.jwt;
 
 import com.befree.exceptions.InvalidJwtAuthenticationException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -100,8 +97,12 @@ public class JwtTokenProvider {
                 return false;
             }
             return true;
-        } catch (Exception e) {
-            throw new InvalidJwtAuthenticationException("Expired or inválid token");
+        } catch (ExpiredJwtException e) {
+
+//            throw new ExpiredJwtException(Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getHeader(),
+//                    (Claims) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token), e.getMessage());
+            throw new InvalidJwtAuthenticationException("Expired or invalid token! \n" + "error: " + e.getMessage());
+
         }
     }
 }
