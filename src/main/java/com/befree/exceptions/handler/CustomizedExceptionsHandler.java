@@ -46,12 +46,6 @@ public class CustomizedExceptionsHandler extends ResponseEntityExceptionHandler 
                 new ExceptionResponse(new Date(), exception.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
-    //Controlando as bad requests exceptions caso o jwt seja invalido
-    @ExceptionHandler(ExpiredJwtToken.class)
-    public final ResponseEntity<ExceptionResponse> expiredJwtException(Exception exception, WebRequest request) {
-        ExceptionResponse exceptionResponse =
-                new ExceptionResponse(new Date(), exception.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+
 
 }
