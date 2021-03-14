@@ -64,7 +64,7 @@ public class User implements UserDetails, Serializable {
     @Enumerated(EnumType.ORDINAL)
     private Usertype usertype;
 
-    @Column(name = "birthDay")
+    @Column(name = "birthday")
     private String birthDay;
 
     @Column(name = "password")

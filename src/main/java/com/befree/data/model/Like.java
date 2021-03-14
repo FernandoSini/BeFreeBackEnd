@@ -22,7 +22,7 @@ public class Like implements Serializable {
     @GenericGenerator(name = "uuid", strategy = "uuid")
     private String id;
 
-   @ManyToOne(/*targetEntity = User.class, fetch = FetchType.EAGER*//*, cascade = CascadeType.ALL*/)
+   @ManyToOne
    @JoinColumn(name = "user_send_like_id")
    @JsonIgnoreProperties({"likesSended","likeReceived"})
     private User userSendLike;

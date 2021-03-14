@@ -1,0 +1,10 @@
+{
+  "name": "BeFreeBackEnd",
+  "version": "1.0.0",
+  "dependencies": {
+    "stompjs": "^2.3.3"
+  },
+  "devDependencies": {
+    "sockjs-client": "^1.5.0"
+  }
+}
