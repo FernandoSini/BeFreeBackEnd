@@ -1,5 +1,6 @@
 package com.befree.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,12 @@ import java.io.Serializable;
 @Table(name = "Matches")
 public class Match implements Serializable {
 
+        /**
+         *
+         */
+        private static final long serialVersionUID = 1L;
+
+
         @Id
         @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
         @GenericGenerator(name = "uuid", strategy = "uuid")
@@ -24,13 +31,15 @@ public class Match implements Serializable {
         private String id;
 
 
-        @Column(name = "your_id")
-        private String yourId;
+        @ManyToOne(targetEntity = User.class)
+        @JsonIgnoreProperties({"likesSended","matches","likeReceived","accountNonLocked",
+                "accountNonExpired","credentialsNonExpired", "enabled","username"})
+        private User you;
 
-        @Column(name = "your_match_id")
-        private String yourMatchId;
+        @Column(name = "hisHer_id")
+        private String hisHerId;
 
-        @OneToOne(cascade = CascadeType.PERSIST)
+        @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "match")
         private ChatRoom matchRoom;
 
 //        @Column(name = "id_userMatched")

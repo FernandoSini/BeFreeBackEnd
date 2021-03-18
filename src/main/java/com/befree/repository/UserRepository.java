@@ -22,7 +22,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     //esse é usado para verificar o login e é usado no metodo que contém o userDetails
     @Query("Select u from User u WHERE u.userName =:username")
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
 
     Optional<User> findUserById(String id);
 }

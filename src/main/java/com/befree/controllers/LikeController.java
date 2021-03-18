@@ -2,13 +2,11 @@ package com.befree.controllers;
 
 import com.befree.adapter.custom.UserConverter;
 import com.befree.data.model.Like;
-import com.befree.data.model.Match;
 import com.befree.data.model.vo.LikeVO;
 import com.befree.data.model.vo.UserVO;
 import com.befree.exceptions.UserNotFoundException;
 import com.befree.repository.UserRepository;
 import com.befree.services.LikeService;
-import com.befree.services.MatchServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +24,7 @@ public class LikeController {
 
     @Autowired
     private LikeService likeService;
-    @Autowired
-    private MatchServices matchServices;
+   
 
     @GetMapping("/all")
     public List<Like> getAllLikes() {

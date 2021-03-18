@@ -1,9 +1,7 @@
-/*
 package com.befree.controllers;
 
 import com.befree.data.model.ChatMessage;
-import com.befree.data.model.ChatRoom;
-import com.befree.data.model.vo.ChatNotification;
+import com.befree.data.model.ChatNotification;
 import com.befree.services.ChatMessageServices;
 import com.befree.services.ChatRoomServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/api/chat")
 public class ChatController {
 
     @Autowired
@@ -24,8 +22,9 @@ public class ChatController {
     @Autowired
     private ChatRoomServices chatRoomServices;
 
-    @MessageMapping("/send")
-    //@MessageMapping garante que se a mensagem for enviada para o /app/chat o metodo process message é chamado
+
+    @MessageMapping(value = "/send")
+    //@MessageMapping garante que se a mensagem for enviada para o /app/chat/send o metodo process message é chamado
     public void processMessage(@Payload ChatMessage chatMessage) {
         var chatId = chatRoomServices.getChatId(chatMessage.getSenderId(), chatMessage.getReceiverId(), true);
         chatMessage.setChatId(chatId.get());
@@ -35,14 +34,13 @@ public class ChatController {
 
         messagingTemplate.convertAndSendToUser(
                 chatMessage.getReceiverId(),
-                "/queue/messages",
+                "/queue/messages", // "/user/{recipientId}/queue/Messages
                 new ChatNotification(
                         messageSaved.getId(),
                         messageSaved.getSenderId(),
                         messageSaved.getSenderName()
                 )
-                );
+        );
     }
 
 }
-*/

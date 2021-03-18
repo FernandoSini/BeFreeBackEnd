@@ -13,6 +13,7 @@ public class LikeConverter {
 
     @Autowired
     private UserConverter userConverter;
+
     public LikeVO convertEntityToVO(Like likeObject) {
         LikeVO likeVO = new LikeVO();
 

@@ -1,5 +1,6 @@
 package com.befree.data.model.vo;
 
+import com.befree.data.model.Match;
 import com.befree.data.model.Permission;
 import com.befree.data.model.Usertype;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,11 +20,11 @@ import java.util.Collection;
 import java.util.List;
 
 @JsonPropertyOrder({"id", "userName", "firstName",
-        "lastName", "gender", "birthday","email","userGraduations", "usertype",
+        "lastName", "gender", "birthday", "email", "userGraduations", "usertype", "matches",
         "likesSended", "likeReceived"})
 @JsonIgnoreProperties({"accountNonExpired",
         "accountNonLocked", "credentialsNonExpired",
-        "enabled","username","authorities", "roles"})
+        "enabled", "username", "authorities", "roles", "links"})
 @Data
 public class UserVO extends RepresentationModel implements UserDetails, Serializable {
 
@@ -42,12 +43,12 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     private String birthday;
     @JsonProperty("email")
     private String email;
-    @JsonIgnoreProperties({"userSendLike"})
+    @JsonIgnoreProperties({"userSendLike","matches"})
     private List<LikeVO> likesSended;
-    @JsonIgnoreProperties({"userLiked"})
+    @JsonIgnoreProperties({"userLiked","matches"})
     private List<LikeVO> likeReceived;
     @JsonProperty("userGraduations")
-    @JsonIgnoreProperties("users")
+    @JsonIgnoreProperties({"users","links"})
     private List<GraduationVO> userGraduations;
     @JsonProperty(value = "usertype")
     private Usertype usertype;
@@ -58,6 +59,9 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     private Boolean credentialsNonExpired;
     private Boolean enabled;
     private List<Permission> permissions;
+    @JsonProperty(value = "matches")
+    @JsonIgnoreProperties({"userSendLike","userLiked"})
+    private List<MatchVO> matches;
 
 
     public UserVO() {
@@ -70,7 +74,9 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
                   List<LikeVO> likesSended,
                   List<LikeVO> likeReceived,
                   List<GraduationVO> userGraduations,
-                  Usertype usertype, String password) {
+                  Usertype usertype, String password,
+                  List<MatchVO> matches
+    ) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -82,6 +88,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         this.userGraduations = userGraduations;
         this.usertype = usertype;
         this.password = password;
+        this.matches = matches;
     }
 
     public List<String> getRoles() {
@@ -180,6 +187,23 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         this.usertype = usertype;
     }
 
+    public List<MatchVO> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(List<MatchVO> matches) {
+        this.matches = matches;
+    }
+
+    public void addMatch(MatchVO matchVO) {
+        this.matches.add(matchVO);
+        matchVO.setYou(this);
+    }
+
+    public void removeMatch(MatchVO matchVO) {
+        this.matches.remove(matchVO);
+    }
+
     public void addLikeSended(LikeVO likeVO) {
         this.likesSended.add(likeVO);
         likeVO.setUserSendLike(this);
@@ -209,6 +233,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     public void setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
     }
+
 
     public void setPassword(String password) {
         this.password = password;

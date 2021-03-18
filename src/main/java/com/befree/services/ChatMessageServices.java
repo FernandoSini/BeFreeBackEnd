@@ -1,4 +1,3 @@
-/*
 package com.befree.services;
 
 import com.befree.data.model.ChatMessage;
@@ -21,4 +20,3 @@ public class ChatMessageServices {
         return chatMessage;
     }
 }
-*/

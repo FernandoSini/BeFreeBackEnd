@@ -23,11 +23,11 @@ public class LikeVO extends RepresentationModel implements Serializable {
     private String id;
 
     @JsonProperty("userSendLike")
-    @JsonIgnoreProperties({"likesSended", "likeReceived"})
+    @JsonIgnoreProperties({"likesSended", "likeReceived","matches"})
     private UserVO userSendLike;
 
     @JsonProperty("userLiked")
-    @JsonIgnoreProperties({"likesSended", "likeReceived"})
+    @JsonIgnoreProperties({"likesSended", "likeReceived","matches"})
     private UserVO userLiked;
 
 

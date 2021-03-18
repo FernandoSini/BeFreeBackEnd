@@ -28,9 +28,9 @@ public class AuthenticationController {
 
     @Autowired
     private UserServices userServices;
-    @Autowired
-    private UserConverter userConverter;
-    @Autowired
+//    @Autowired
+//    private UserConverter userConverter;
+//    @Autowired
     private GraduationServices graduationServices;
     @Autowired
     AuthenticationManager authenticationManager;
@@ -68,8 +68,8 @@ public class AuthenticationController {
             userModel.put("likesSended", user.getLikesSended());
             userModel.put("likeReceived", user.getLikeReceived());
             userModel.put("token", token);
-//           var vo= DozerConverter.parseObject(userModel, UserVO.class);
-      
+            userModel.put("matches",user.getMatches());
+
             return ResponseEntity.ok(userModel);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password! " + e);

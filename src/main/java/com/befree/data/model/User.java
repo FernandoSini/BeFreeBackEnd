@@ -84,9 +84,12 @@ public class User implements UserDetails, Serializable {
     private Boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_permissions", joinColumns = {@JoinColumn(name = "id_user",referencedColumnName = "user_id")},
+    @JoinTable(name = "user_permissions", joinColumns = {@JoinColumn(name = "id_user", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "id_permission")})
     private List<Permission> permissions;
+
+    @OneToMany(mappedBy = "you")
+    private List<Match> matches;
 
     public User() {
     }
@@ -94,6 +97,7 @@ public class User implements UserDetails, Serializable {
     public User(String id, @Size(min = 3) String userName, String firstName,
                 String lastName, String gender, List<Like> likesSended,
                 List<Like> likeReceived, List<Graduation> userGraduations,
+                List<Match> matches,
                 String email, Usertype usertype, String birthDay,
                 String password) {
         this.id = id;
@@ -108,6 +112,16 @@ public class User implements UserDetails, Serializable {
         this.usertype = usertype;
         this.birthDay = birthDay;
         this.password = password;
+        this.matches = matches;
+    }
+
+
+    public List<Match> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(List<Match> matches) {
+        this.matches = matches;
     }
 
     public String getId() {
@@ -278,7 +292,6 @@ public class User implements UserDetails, Serializable {
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
-
 
 
     public Boolean getAccountNonExpired() {

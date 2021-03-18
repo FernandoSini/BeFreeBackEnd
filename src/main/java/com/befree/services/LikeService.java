@@ -5,6 +5,7 @@ import com.befree.data.model.ChatRoom;
 import com.befree.data.model.Like;
 import com.befree.data.model.Match;
 import com.befree.data.model.vo.LikeVO;
+import com.befree.data.model.vo.UserVO;
 import com.befree.exceptions.LikedException;
 import com.befree.exceptions.ResourceNotFoundException;
 import com.befree.repository.LikeRepository;
@@ -39,6 +40,12 @@ public class LikeService {
         Optional<Like> likeExists = likeRepository.findIfUserWasLikedByMe(likeEntity.getUserSendLike().getId(), likeEntity.getUserLiked().getId());
         if (!likeExists.isPresent() || likeExists.isEmpty()) {
             var likeVo = likeConverter.convertEntityToVO(likeRepository.saveAndFlush(likeEntity));
+            System.out.println(likeVo.getUserLiked().getLikesSended().contains(likeVo.getUserSendLike()));
+                if(likeVo.getUserLiked().getLikesSended().contains(likeVo.getUserSendLike())){
+                    System.out.println("we have a match!");
+                matchServices.setMatch(likeVo.getUserSendLike(),likeVo.getUserLiked());
+                }
+
             return likeVo;
 
         } else {
@@ -58,7 +65,7 @@ public class LikeService {
 ////                ChatRoom chatRoom = new ChatRoom();
 ////                chatRoom.set
 //              //  matchServices.saveMatch(match2);
-            matchServices.getMatch(likeEntity.getUserSendLike().getId(),likeEntity.getUserLiked().getId(),true);
+            matchServices.setMatch(likeData.getUserSendLike(),likeData.getUserLiked());
             throw new LikedException("This user was already liked by you");
         }
 
