@@ -1,15 +1,12 @@
 package com.befree.services;
 
+import com.befree.adapter.DozerConverter;
 import com.befree.adapter.custom.LikeConverter;
-import com.befree.data.model.ChatRoom;
 import com.befree.data.model.Like;
-import com.befree.data.model.Match;
 import com.befree.data.model.vo.LikeVO;
-import com.befree.data.model.vo.UserVO;
 import com.befree.exceptions.LikedException;
 import com.befree.exceptions.ResourceNotFoundException;
 import com.befree.repository.LikeRepository;
-import com.befree.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +24,16 @@ public class LikeService {
     private MatchServices matchServices;
 
 
-    public List<Like> getAll() {
-        return likeRepository.findAll();
+    public List<LikeVO> getAll() {
+        var entity = likeRepository.findAll();
+        var vo = DozerConverter.parseListObjects(entity, LikeVO.class);
+        return vo;
     }
 
-    public List<Like> getMyLikes(String userId) {
-        return likeRepository.findAllMyLikes(userId);
+    public List<LikeVO> getMyLikes(String userId) {
+        var entity = likeRepository.findAllMyLikes(userId);
+        var vo = DozerConverter.parseListObjects(entity, LikeVO.class);
+        return vo;
     }
 
     public LikeVO setLike(LikeVO likeData) {
@@ -40,12 +41,6 @@ public class LikeService {
         Optional<Like> likeExists = likeRepository.findIfUserWasLikedByMe(likeEntity.getUserSendLike().getId(), likeEntity.getUserLiked().getId());
         if (!likeExists.isPresent() || likeExists.isEmpty()) {
             var likeVo = likeConverter.convertEntityToVO(likeRepository.saveAndFlush(likeEntity));
-            System.out.println(likeVo.getUserLiked().getLikesSended().contains(likeVo.getUserSendLike()));
-                if(likeVo.getUserLiked().getLikesSended().contains(likeVo.getUserSendLike())){
-                    System.out.println("we have a match!");
-                matchServices.setMatch(likeVo.getUserSendLike(),likeVo.getUserLiked());
-                }
-
             return likeVo;
 
         } else {

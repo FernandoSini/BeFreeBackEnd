@@ -2,6 +2,9 @@ package com.befree.security.jwt;
 
 import com.befree.exceptions.InvalidJwtAuthenticationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -64,6 +67,14 @@ public class JwtTokenFilter extends GenericFilterBean {
           response1.getWriter().printf(exception.getMessage());
 //          response1.sendError(403);
 
+      }catch (SignatureException e){
+          response1.setStatus(400);
+          response1.getWriter().printf(e.getMessage());
+          throw new SignatureException(e.getMessage());
+      } catch (MalformedJwtException e){
+          response1.setStatus(400);
+          response1.getWriter().printf("Token error: "+e.getMessage());
+          throw new MalformedJwtException(e.getMessage());
       }
 
     }

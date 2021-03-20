@@ -27,12 +27,13 @@ public class LikeController {
    
 
     @GetMapping("/all")
-    public List<Like> getAllLikes() {
+    public List<LikeVO> getAllLikes() {
+
         return likeService.getAll();
     }
 
     @GetMapping(value = "/getLikes/{userId}",produces = {"application/json"})
-    public List<Like> getMyLikes(@PathVariable("userId") String userId){
+    public List<LikeVO> getMyLikes(@PathVariable("userId") String userId){
         return likeService.getMyLikes(userId);
     }
 

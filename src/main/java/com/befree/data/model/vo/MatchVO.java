@@ -1,8 +1,6 @@
 package com.befree.data.model.vo;
 
-import com.befree.data.model.ChatRoom;
 import com.befree.data.model.ChatRoomVO;
-import com.befree.data.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -11,10 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
@@ -44,7 +40,7 @@ public class MatchVO extends RepresentationModel implements Serializable {
         private String hisHerId;
 
         @JsonProperty("match_room")
-        private ChatRoomVO chatRoomVO;
+        private ChatRoomVO matchRoomVO;
 
 
 //        @Column(name = "id_userMatched")

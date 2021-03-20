@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +24,8 @@ import java.util.List;
         "lastName", "gender", "birthday", "email", "userGraduations", "usertype", "matches",
         "likesSended", "likeReceived"})
 @JsonIgnoreProperties({"accountNonExpired",
-        "accountNonLocked", "credentialsNonExpired",
-        "enabled", "username", "authorities", "roles", "links"})
+        "accountNonLocked", "credentialsNonExpired", "roles",
+        "enabled", "username", "authorities", "permissions", "links"})
 @Data
 public class UserVO extends RepresentationModel implements UserDetails, Serializable {
 
@@ -60,6 +61,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     private Boolean enabled;
     private List<Permission> permissions;
     @JsonProperty(value = "matches")
+    @ToString.Exclude
     @JsonIgnoreProperties({"userSendLike","userLiked"})
     private List<MatchVO> matches;
 

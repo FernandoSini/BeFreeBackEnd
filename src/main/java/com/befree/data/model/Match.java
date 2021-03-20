@@ -32,14 +32,15 @@ public class Match implements Serializable {
 
 
         @ManyToOne(targetEntity = User.class)
-        @JsonIgnoreProperties({"likesSended","matches","likeReceived","accountNonLocked",
+        @JsonIgnoreProperties({"likesSended","likeReceived","accountNonLocked",
                 "accountNonExpired","credentialsNonExpired", "enabled","username"})
         private User you;
 
         @Column(name = "hisHer_id")
         private String hisHerId;
 
-        @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "match")
+        @OneToOne(cascade = CascadeType.PERSIST, targetEntity = ChatRoom.class)
+        @JoinColumn(name="chat_room_id")
         private ChatRoom matchRoom;
 
 //        @Column(name = "id_userMatched")

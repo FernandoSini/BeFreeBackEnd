@@ -25,5 +25,5 @@ public class ChatRoomVO extends RepresentationModel implements Serializable {
     private String receiverId;
 
     @JsonProperty("match_chat_room")
-    private MatchVO match;
+    private MatchVO matchVO;
 }

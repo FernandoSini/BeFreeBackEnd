@@ -16,7 +16,7 @@ public class LikeConverter {
 
     public LikeVO convertEntityToVO(Like likeObject) {
         LikeVO likeVO = new LikeVO();
-
+        likeVO.setId(likeObject.getId());
         likeVO.setUserLiked(userConverter.convertUserToVO(likeObject.getUserLiked()));
         likeVO.setUserSendLike(userConverter.convertUserToVO(likeObject.getUserSendLike()));
 
@@ -25,6 +25,7 @@ public class LikeConverter {
 
     public Like convertLikeVoToEntity(LikeVO voLike) {
         Like like = new Like();
+        like.setId(voLike.getId());
         like.setUserLiked(userConverter.convertUserVoToUser(voLike.getUserLiked()));
         like.setUserSendLike(DozerConverter.parseObject(voLike.getUserSendLike(),User.class));
         return like;

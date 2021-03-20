@@ -27,7 +27,7 @@ public class ChatRoom implements Serializable {
     private String senderId;
     private String receiverId;
 
-    @OneToOne/*(mappedBy = "matchRoom")*/
+    @OneToOne(mappedBy = "matchRoom")
 //    @JsonIgnoreProperties("matchRoom")
     private Match match;
 }
