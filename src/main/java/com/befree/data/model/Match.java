@@ -39,7 +39,7 @@ public class Match implements Serializable {
         @Column(name = "hisHer_id")
         private String hisHerId;
 
-        @OneToOne(cascade = CascadeType.PERSIST, targetEntity = ChatRoom.class)
+        @OneToOne
         @JoinColumn(name="chat_room_id")
         private ChatRoom matchRoom;
 

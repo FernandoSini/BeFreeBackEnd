@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Data
@@ -17,8 +18,15 @@ import javax.persistence.Table;
 @Builder
 @Table(name = "ChatNotification")
 public class ChatNotification {
+    //antigo
+//    @Id
+//    private String id;
+////    private String senderId;
+////    private String senderName;
+
     @Id
     private String id;
-    private String senderId;
-    private String senderName;
+
+    @OneToOne
+    private User sender;
 }

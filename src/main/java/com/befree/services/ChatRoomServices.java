@@ -79,35 +79,39 @@ public class ChatRoomServices {
                             var recipientSenderEntity = DozerConverter.parseObject(recipientSenderVO, ChatRoom.class);
 
                             //salvando as entidades
-                            repository.saveAndFlush(senderRecipientEntity);
-                            repository.saveAndFlush(recipientSenderEntity);
+//                            repository.saveAndFlush(senderRecipientEntity);
+//                            repository.saveAndFlush(recipientSenderEntity);
+                    createChatRoom(senderRecipientVO);
+                    createChatRoom(senderRecipientVO);
                             return Optional.of(chatId);
 
                         }
                 );
     }
 
+
     public ChatRoomVO getChatRoom(String senderId, String receiverId) {
-        MatchVO matchVO = matchServices.getMatchToChatRoom(senderId, receiverId);
-
-        var chatId = String.format("%s_%s", senderId, receiverId);
-        ChatRoomVO senderRecipientVO = new ChatRoomVO();
-        senderRecipientVO.setSenderId(senderId);
-        senderRecipientVO.setChatId(chatId);
-        senderRecipientVO.setReceiverId(receiverId);
-        senderRecipientVO.setMatchVO(matchVO);
-        ChatRoomVO recipientSenderVO = new ChatRoomVO();
-        recipientSenderVO.setSenderId(receiverId);
-        senderRecipientVO.setChatId(chatId);
-        senderRecipientVO.setMatchVO(matchVO);
-        var senderRecipientEntity = DozerConverter.parseObject(senderRecipientVO, ChatRoom.class);
-        var recipientSenderEntity = DozerConverter.parseObject(recipientSenderVO, ChatRoom.class);
-        var dataSender = DozerConverter.parseObject(repository.save(senderRecipientEntity), ChatRoomVO.class);
-        var dataReceiver = DozerConverter.parseObject(repository.save(recipientSenderEntity), ChatRoomVO.class);
-
-        return  dataSender;
+        Optional<MatchVO> matchVO = Optional.ofNullable(matchServices.getMatchToChatRoom(senderId, receiverId));
 
 
-    }
+            var chatId = String.format("%s_%s", senderId, receiverId);
+            ChatRoomVO senderRecipientVO = new ChatRoomVO();
+            senderRecipientVO.setSenderId(senderId);
+            senderRecipientVO.setChatId(chatId);
+            senderRecipientVO.setReceiverId(receiverId);
+            senderRecipientVO.setMatchVO(matchVO.get());
+            ChatRoomVO recipientSenderVO = new ChatRoomVO();
+            recipientSenderVO.setSenderId(receiverId);
+            senderRecipientVO.setChatId(chatId);
+            senderRecipientVO.setMatchVO(matchVO.get());
+            var senderRecipientEntity = DozerConverter.parseObject(senderRecipientVO, ChatRoom.class);
+            var recipientSenderEntity = DozerConverter.parseObject(recipientSenderVO, ChatRoom.class);
+            var dataSender = DozerConverter.parseObject(repository.save(senderRecipientEntity), ChatRoomVO.class);
+            var dataReceiver = DozerConverter.parseObject(repository.save(recipientSenderEntity), ChatRoomVO.class);
+
+            return dataSender;
+        }
+
+
 
 }

@@ -18,4 +18,7 @@ public interface LikeRepository extends JpaRepository<Like, String> {
 
     @Query("Select l from Like l where l.userSendLike.id =:myId AND l.userLiked.id =:hisId")
     Optional<Like> findIfUserWasLikedByMe(@Param("myId") String myId, @Param("hisId") String hisId);
+
+    @Query("SELECT l FROM Like l WHERE l.userLiked.id =:myId AND l.userSendLike.id =:hisHerId")
+    Optional<Like> findIfIwasLikedByHim(@Param("myId") String myId, @Param("hisHerId") String hisHerId);
 }

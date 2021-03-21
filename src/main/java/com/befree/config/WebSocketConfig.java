@@ -20,11 +20,17 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     //configuracao que vai controlar as mensagens
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
+        // o /user é usado pelo metodo convert and send to user do simple messaging template
+        //para prefixar todos os usuarios especificos de destinocom o /user
         registry.enableSimpleBroker("/user");
         registry.setApplicationDestinationPrefixes("/app");
         registry.setUserDestinationPrefix("/user");
     }
 
+
+    //aqui estamos registrando um endpoint Stomp /ws, para conectar com o stomp server
+    //e também estamos permitindo as opções de fallback do Sockjs, então
+    //outros servicos de mensagem podem ser usados caso o ws não esteja disponível
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
 //        registry.addEndpoint("/ws").setAllowedOrigins("*");
@@ -33,6 +39,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .withSockJS();
     }
 
+
+    //aqui estamos configurando um Json conversor de mensagens
+    // que será usado pelo spring para  converter as mensagens de/para json
     @Override
     public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
         DefaultContentTypeResolver resolver = new DefaultContentTypeResolver();

@@ -4,6 +4,7 @@ import com.befree.adapter.DozerConverter;
 import com.befree.adapter.custom.LikeConverter;
 import com.befree.data.model.Like;
 import com.befree.data.model.vo.LikeVO;
+import com.befree.data.model.vo.UserVO;
 import com.befree.exceptions.LikedException;
 import com.befree.exceptions.ResourceNotFoundException;
 import com.befree.repository.LikeRepository;
@@ -38,9 +39,18 @@ public class LikeService {
 
     public LikeVO setLike(LikeVO likeData) {
         var likeEntity = likeConverter.convertLikeVoToEntity(likeData);
-        Optional<Like> likeExists = likeRepository.findIfUserWasLikedByMe(likeEntity.getUserSendLike().getId(), likeEntity.getUserLiked().getId());
+        Optional<Like> likeExists = likeRepository.findIfUserWasLikedByMe(
+                likeEntity.getUserSendLike().getId(), likeEntity.getUserLiked().getId());
         if (!likeExists.isPresent() || likeExists.isEmpty()) {
             var likeVo = likeConverter.convertEntityToVO(likeRepository.saveAndFlush(likeEntity));
+            //vamos verificar se o usuário que ele/ela curtiu já deu like nele, caso sim vamos realizar o match
+            var himHerLikesYou = likeRepository.findIfIwasLikedByHim(
+                    likeVo.getUserSendLike().getId(), likeVo.getUserLiked().getId());
+            if(himHerLikesYou.isPresent() || !himHerLikesYou.isEmpty()){
+                System.out.println("we have a match");
+                matchServices.setMatch(likeVo.getUserSendLike(),likeVo.getUserLiked());
+            }
+
             return likeVo;
 
         } else {
@@ -60,7 +70,7 @@ public class LikeService {
 ////                ChatRoom chatRoom = new ChatRoom();
 ////                chatRoom.set
 //              //  matchServices.saveMatch(match2);
-            matchServices.setMatch(likeData.getUserSendLike(),likeData.getUserLiked());
+//            matchServices.setMatch(likeData.getUserSendLike(),likeData.getUserLiked());
             throw new LikedException("This user was already liked by you");
         }
 

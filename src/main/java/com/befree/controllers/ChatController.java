@@ -24,9 +24,9 @@ public class ChatController {
 
 
     @MessageMapping(value = "/send")
-    //@MessageMapping garante que se a mensagem for enviada para o /app/chat/send o metodo process message é chamado
+    //@MessageMapping garante que se a mensagem for enviada para /api/chat/app/send o metodo process message é chamado
     public void processMessage(@Payload ChatMessage chatMessage) {
-      var chatId = chatRoomServices.getChatId(chatMessage.getSenderId(), chatMessage.getReceiverId(), true);
+      var chatId = chatRoomServices.getChatId(chatMessage.getSender().getId(), chatMessage.getReceiver().getId(), true);
 //        var chatRoom = chatRoomServices.getChatRoom(chatMessage.getSenderId(),chatMessage.getReceiverId());
         chatMessage.setChatId(chatId.get());
 
@@ -34,12 +34,11 @@ public class ChatController {
         ChatMessage messageSaved = chatMessageServices.saveMessage(chatMessage);
 
         messagingTemplate.convertAndSendToUser(
-                chatMessage.getReceiverId(),
+                chatMessage.getReceiver().getId(),
                 "/queue/messages", // "/user/{recipientId}/queue/Messages
                 new ChatNotification(
                         messageSaved.getId(),
-                        messageSaved.getSenderId(),
-                        messageSaved.getSenderName()
+                        messageSaved.getSender()
                 )
         );
     }

@@ -87,8 +87,8 @@ public class MatchServices {
                     .id(matchId)
                     .you(yourData)
                     .hisHerId(hisOrHerData.getId())
-                    .matchRoomVO(chatRoomVO).
-                            build();
+                    .matchRoomVO(chatRoomVO)
+                    .build();
             MatchVO hisHerMatch = MatchVO.builder()
                     .id(matchId)
                     .you(hisOrHerData)
@@ -118,8 +118,7 @@ public class MatchServices {
     }
 
     public MatchVO getMatchToChatRoom(String yourId, String herHisId){
-        var match = matchRepository.findMatchByHisHerIdAndYouId(yourId,herHisId)
-                .orElseThrow(()->new ResourceNotFoundException("Not found match with these two ids"));
+        var match = matchRepository.findMatchByHisHerIdAndYouId(yourId,herHisId);
         var matchVO = DozerConverter.parseObject(match, MatchVO.class);
         return matchVO;
     }
