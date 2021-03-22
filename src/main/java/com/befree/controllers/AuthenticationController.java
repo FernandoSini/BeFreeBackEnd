@@ -41,7 +41,7 @@ public class AuthenticationController {
 
     @PostMapping(value = "/login", produces = {"application/json", "application/xml", "application/x-yaml"},
             consumes = {"application/json", "application/xml", "application/x-yaml"})
-    public ResponseEntity login(@RequestBody AuthenticationCredentialsVO data) {
+    public ResponseEntity<UserVO> login(@RequestBody AuthenticationCredentialsVO data) {
         try {
             var username = data.getUsername();
             var password = data.getPassword();
@@ -50,27 +50,27 @@ public class AuthenticationController {
             var user = userServices.getUserByUserName(username);
             var token = "";
             if (user != null) {
-                token = tokenProvider.createToken(username, user.getRoles());
+                user.setToken(tokenProvider.createToken(username, user.getRoles()));
             } else {
                 throw new UsernameNotFoundException("Username: " + username + "not found!");
             }
-            HashMap<Object, Object> userModel = new HashMap<>();
-            HashMap<Object, Object> userModelOrdered = new HashMap<>();
-            userModel.put("id_user", user.getId());
-            userModel.put("user_name", user.getUserName());
-            userModel.put("first_name", user.getFirstName());
-            userModel.put("last_name", user.getLastName());
-            userModel.put("email", user.getEmail());
-            userModel.put("gender", user.getGender());
-            userModel.put("birthday", user.getBirthday());
-            userModel.put("roles", user.getRoles());
-            userModel.put("permissions", user.getPermissions());
-            userModel.put("likesSended", user.getLikesSended());
-            userModel.put("likeReceived", user.getLikeReceived());
-            userModel.put("token", token);
-            userModel.put("matches",user.getMatches());
+//            HashMap<Object, Object> userModel = new HashMap<>();
+//            HashMap<Object, Object> userModelOrdered = new HashMap<>();
+//            userModel.put("id_user", user.getId());
+//            userModel.put("user_name", user.getUserName());
+//            userModel.put("first_name", user.getFirstName());
+//            userModel.put("last_name", user.getLastName());
+//            userModel.put("email", user.getEmail());
+//            userModel.put("gender", user.getGender());
+//            userModel.put("birthday", user.getBirthday());
+//            userModel.put("roles", user.getRoles());
+//            userModel.put("permissions", user.getPermissions());
+//            userModel.put("likesSended", user.getLikesSended());
+//            userModel.put("likeReceived", user.getLikeReceived());
+//            userModel.put("token", token);
+//            userModel.put("matches",user.getMatches());
 
-            return ResponseEntity.ok(userModel);
+            return ResponseEntity.ok(user);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password! " + e);
         }

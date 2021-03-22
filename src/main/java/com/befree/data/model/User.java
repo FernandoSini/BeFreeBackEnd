@@ -91,6 +91,9 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy = "you")
     private List<Match> matches;
 
+    @Transient
+    private String token;
+
     public User() {
     }
 
@@ -99,7 +102,7 @@ public class User implements UserDetails, Serializable {
                 List<Like> likeReceived, List<Graduation> userGraduations,
                 List<Match> matches,
                 String email, Usertype usertype, String birthDay,
-                String password) {
+                String password, String token) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -113,6 +116,7 @@ public class User implements UserDetails, Serializable {
         this.birthDay = birthDay;
         this.password = password;
         this.matches = matches;
+        this.token = token;
     }
 
 
@@ -240,6 +244,14 @@ public class User implements UserDetails, Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override

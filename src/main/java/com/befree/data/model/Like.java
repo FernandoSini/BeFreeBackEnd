@@ -24,12 +24,12 @@ public class Like implements Serializable {
 
    @ManyToOne
    @JoinColumn(name = "user_send_like_id")
-   @JsonIgnoreProperties({"likesSended","likeReceived"})
+   @JsonIgnoreProperties({"likesSended","likeReceived", "token"})
     private User userSendLike;
 
    @ManyToOne
    @JoinColumn(name = "user_received_like_id")
-   @JsonIgnoreProperties({"likesSended","likeReceived"})
+   @JsonIgnoreProperties({"likesSended","likeReceived", "token"})
    private User userLiked;
 
 

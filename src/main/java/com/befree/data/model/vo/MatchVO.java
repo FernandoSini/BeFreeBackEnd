@@ -33,7 +33,7 @@ public class MatchVO extends RepresentationModel implements Serializable {
                 "likesSended",
                 "likeReceived",
 //            "matchRoom",
-                "accountNonExpired","accountNonLocked","credentialsNonExpired", "enabled","username"})
+                "accountNonExpired","accountNonLocked","credentialsNonExpired", "enabled","username", "token"})
         private UserVO you;
 
         @JsonProperty("hisHer_id")

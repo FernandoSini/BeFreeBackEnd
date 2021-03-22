@@ -17,7 +17,7 @@ public class GraduationVO extends RepresentationModel implements Serializable {
     @JsonProperty("id")
     private int id;
     private String courseName;
-    @JsonIgnoreProperties({"userGraduations"})
+    @JsonIgnoreProperties({"userGraduations","token"})
     private List<UserVO> users;
 
     public GraduationVO(){}

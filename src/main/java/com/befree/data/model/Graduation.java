@@ -29,7 +29,7 @@ public class Graduation  implements Serializable{
 //    @JoinTable(name = "graduation_user",
 //            joinColumns = {@JoinColumn(name = "graduation_id", referencedColumnName = "graduation_id")},
 //            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")})
-   @JsonIgnoreProperties({"userGraduations"})
+   @JsonIgnoreProperties({"userGraduations","token"})
     private List<User> users;
 
     public Graduation() {

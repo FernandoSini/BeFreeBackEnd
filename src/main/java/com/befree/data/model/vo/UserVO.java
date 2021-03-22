@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 
 @JsonPropertyOrder({"id", "userName", "firstName",
-        "lastName", "gender", "birthday", "email", "userGraduations", "usertype", "matches",
+        "lastName", "gender", "birthday", "email","usertype", "userGraduations",  "matches",
         "likesSended", "likeReceived"})
 @JsonIgnoreProperties({"accountNonExpired",
         "accountNonLocked", "credentialsNonExpired", "roles",
@@ -64,6 +64,8 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     @ToString.Exclude
     @JsonIgnoreProperties({"userSendLike","userLiked"})
     private List<MatchVO> matches;
+    @JsonProperty(value = "token", access = JsonProperty.Access.READ_ONLY)
+    private String token;
 
 
     public UserVO() {
@@ -240,6 +242,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     public void setPassword(String password) {
         this.password = password;
     }
+
 
 
     @Override

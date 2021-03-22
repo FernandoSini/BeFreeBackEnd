@@ -33,7 +33,7 @@ public class Match implements Serializable {
 
         @ManyToOne(targetEntity = User.class)
         @JsonIgnoreProperties({"likesSended","likeReceived","accountNonLocked",
-                "accountNonExpired","credentialsNonExpired", "enabled","username"})
+                "accountNonExpired","credentialsNonExpired", "enabled","username", "token"})
         private User you;
 
         @Column(name = "hisHer_id")
