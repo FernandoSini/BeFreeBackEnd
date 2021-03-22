@@ -88,7 +88,7 @@ public class User implements UserDetails, Serializable {
             inverseJoinColumns = {@JoinColumn(name = "id_permission")})
     private List<Permission> permissions;
 
-    @OneToMany(mappedBy = "you")
+    @OneToMany(mappedBy = "you", orphanRemoval = true)
     private List<Match> matches;
 
     @Transient

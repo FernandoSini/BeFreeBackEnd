@@ -1,6 +1,7 @@
 package com.befree.security.jwt;
 
 import com.befree.exceptions.InvalidJwtAuthenticationException;
+import com.befree.exceptions.UserNotFoundException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -62,8 +63,12 @@ public class JwtTokenProvider {
     //pegar a authenitcation
     public Authentication getAuthentication(String token) {
         //vamos procurar pelo usuario e associá-lo ao token
+        try{
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        }catch (UserNotFoundException e){
+            throw new UserNotFoundException("User was deleted or not found in our database with this token");
+        }
     }
 
     //parei aqui

@@ -1,6 +1,7 @@
 package com.befree.security.jwt;
 
 import com.befree.exceptions.InvalidJwtAuthenticationException;
+import com.befree.exceptions.UserNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -75,6 +76,11 @@ public class JwtTokenFilter extends GenericFilterBean {
           response1.setStatus(400);
           response1.getWriter().printf("Token error: "+e.getMessage());
           throw new MalformedJwtException(e.getMessage());
+      } catch (UserNotFoundException userNotFoundException){
+          response1.setContentType("application/json");
+          response1.setStatus(400);
+          response1.getWriter().printf(userNotFoundException.getMessage());
+         // throw new UserNotFoundException(userNotFoundException.getMessage());
       }
 
     }

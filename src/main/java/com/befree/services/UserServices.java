@@ -53,9 +53,10 @@ public class UserServices implements UserDetailsService {
     }
 
     //buscando um usuário pelo id
-    public User getUserById(String id) {
+    public UserVO getUserById(String id) {
         var entity = userRepository.findUserById(id).orElseThrow(() -> new UserNotFoundException("User Not Found"));
-        return entity;
+        var vo = DozerConverter.parseObject(entity, UserVO.class);
+        return vo;
     }
 
     //buscando um usuário pelo nome dele
@@ -84,7 +85,8 @@ public class UserServices implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = userRepository.findByUsername(username).orElseThrow(()-> new ResourceNotFoundException("User "+username+" not found"));
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(()-> new UserNotFoundException("User "+username+" not found"));
         if(user !=null){
             return user;
         } else{
