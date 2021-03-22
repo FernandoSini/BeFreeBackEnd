@@ -1,5 +1,6 @@
 package com.befree.data.model.vo;
 
+import com.befree.data.model.Gender;
 import com.befree.data.model.Match;
 import com.befree.data.model.Permission;
 import com.befree.data.model.Usertype;
@@ -39,7 +40,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     private String firstName;
     @JsonProperty("last_name")
     private String lastName;
-    private String gender;
+    private Gender gender;
     @JsonProperty("birthday")
     private String birthday;
     @JsonProperty("email")
@@ -73,7 +74,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
 
     public UserVO(String id, String userName,
                   String firstName,
-                  String lastName, String gender,
+                  String lastName, Gender gender,
                   String birthday,
                   List<LikeVO> likesSended,
                   List<LikeVO> likeReceived,
@@ -151,11 +152,11 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         this.lastName = lastName;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 

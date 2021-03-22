@@ -43,7 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()//autorizando requisicoes
-                .antMatchers("/auth/login", "/api-docs/**", "swagger-ui.html**", "/auth/register").permitAll()
+                .antMatchers("/auth/login", "/api-docs/**", "swagger-ui.html**",
+                        "/auth/register","/graduations").permitAll()
                 // os endpoints que permitirao acesso o/** permitira acesso a tudo de api docs, ou seja,
                 //(continuacao de cima) todas as urls compativeis com essas definidas vai permitir acesso sem autenticacao
                 .antMatchers("/api/**").authenticated()//todos que chegarem em /api precisam estar autenticados, todos os /apis precisam de senha

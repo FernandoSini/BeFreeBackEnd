@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @JsonPropertyOrder({"id", "courseName","users"})
+@JsonIgnoreProperties({"users","links"})
 public class GraduationVO extends RepresentationModel implements Serializable {
 
     @Mapping("id")

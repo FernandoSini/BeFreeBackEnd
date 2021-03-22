@@ -43,7 +43,7 @@ public class User implements UserDetails, Serializable {
     private String lastName;
 
     @Column(name = "gender")
-    private String gender;
+    private Gender gender;
 
     @OneToMany(mappedBy = "userSendLike", orphanRemoval = true, fetch = FetchType.LAZY)
     //@JsonBackReference
@@ -98,7 +98,7 @@ public class User implements UserDetails, Serializable {
     }
 
     public User(String id, @Size(min = 3) String userName, String firstName,
-                String lastName, String gender, List<Like> likesSended,
+                String lastName, Gender gender, List<Like> likesSended,
                 List<Like> likeReceived, List<Graduation> userGraduations,
                 List<Match> matches,
                 String email, Usertype usertype, String birthDay,
@@ -160,7 +160,7 @@ public class User implements UserDetails, Serializable {
         this.lastName = lastName;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
@@ -172,7 +172,7 @@ public class User implements UserDetails, Serializable {
         this.email = email;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 

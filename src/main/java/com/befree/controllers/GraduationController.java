@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/graduations")
+@RequestMapping("/graduations")
 public class GraduationController {
 
     @Autowired
