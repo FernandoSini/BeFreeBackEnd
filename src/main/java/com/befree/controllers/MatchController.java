@@ -19,13 +19,15 @@ public class MatchController {
     @Autowired
     private MatchServices matchServices;
 
-    @GetMapping("/{yourId}")
+    @GetMapping(value="/{yourId}",
+            produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<List<MatchVO>> getAllYourMatches(@PathVariable("yourId") String yourId){
             var vo = matchServices.getYourMatchesByYourId(yourId);
             return ResponseEntity.ok(vo);
     }
 
-    @GetMapping("/{id}/{senderId}")
+    @GetMapping(value = "/{id}/{senderId}",
+            produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<MatchVO> getMatches(@PathVariable("id") String id, @PathVariable("senderId")String senderId){
             var vo = matchServices.getMatchToChatRoom(id,senderId);
             return ResponseEntity.ok(vo);

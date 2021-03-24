@@ -21,6 +21,8 @@ public class Image implements Serializable {
     private String imageLink;
 
     @ManyToOne
+    @JsonIgnoreProperties({"likesSended","likeReceived","accountNonLocked",
+            "accountNonExpired","credentialsNonExpired", "enabled","username", "token","images"})
     private User user;
 
     public Image(String id, String imageLink, User user) {

@@ -39,7 +39,8 @@ public class AuthenticationController {
     private JwtTokenProvider tokenProvider;
 
 
-    @PostMapping(value = "/login", produces = {"application/json", "application/xml", "application/x-yaml"},
+    @PostMapping(value = "/login",
+            produces = {"application/json", "application/xml", "application/x-yaml"},
             consumes = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<UserVO> login(@RequestBody AuthenticationCredentialsVO data) {
         try {

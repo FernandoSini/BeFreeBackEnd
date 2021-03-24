@@ -74,7 +74,8 @@ public class UserController {
 
     }
 
-    @GetMapping(value = "/finduser/{yourName}")
+    @GetMapping(value = "/finduser/{yourName}",
+            produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<UserVO> getUserByName(@PathVariable("yourName") String yourName) {
         UserVO user = userServices.getUserByUserName(yourName);
         return ResponseEntity.ok().body(user);

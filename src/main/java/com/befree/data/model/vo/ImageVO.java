@@ -1,12 +1,15 @@
 package com.befree.data.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 
-
+@JsonPropertyOrder({"image_id", "image_link","user_reference"})
+@JsonIgnoreProperties("links")
 public class ImageVO extends RepresentationModel implements Serializable {
 
     @Mapping("id")
@@ -16,7 +19,10 @@ public class ImageVO extends RepresentationModel implements Serializable {
     @JsonProperty("image_link")
     private String imageLink;
 
-    @JsonProperty("user_reference_id")
+    @JsonProperty("user_reference")
+    @JsonIgnoreProperties({"accountNonExpired",
+            "accountNonLocked", "credentialsNonExpired", "roles",
+            "enabled", "username", "authorities", "permissions", "links","images"})
     private UserVO userVO;
 
     public ImageVO(String id, String imageLink, UserVO userVO) {

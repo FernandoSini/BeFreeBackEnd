@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@JsonPropertyOrder({"id", "userName", "firstName",
+@JsonPropertyOrder({"id","avatar", "userName", "firstName",
         "lastName", "gender", "birthday", "email", "usertype", "userGraduations", "matches",
-        "likesSended", "likeReceived"})
+        "likesSended", "likeReceived","images"})
 @JsonIgnoreProperties({"accountNonExpired",
         "accountNonLocked", "credentialsNonExpired", "roles",
         "enabled", "username", "authorities", "permissions", "links"})
@@ -68,6 +68,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     @JsonProperty(value = "token", access = JsonProperty.Access.READ_ONLY)
     private String token;
     @JsonProperty(value = "images")
+    @JsonIgnoreProperties({"user"})
     private List<ImageVO> images;
     @JsonProperty(value = "avatar")
     private String avatar;
@@ -294,34 +295,51 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
 
     @Override
     public boolean isAccountNonExpired() {
-        return this.accountNonExpired;
+        return false;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.accountNonLocked;
+        return false;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return this.credentialsNonExpired;
+        return false;
     }
 
     @Override
     public boolean isEnabled() {
-        return this.enabled;
+        return false;
+    }
+
+
+    public Boolean getAccountNonExpired() {
+        return accountNonExpired;
     }
 
     public void setAccountNonExpired(Boolean accountNonExpired) {
         this.accountNonExpired = accountNonExpired;
     }
 
+    public Boolean getAccountNonLocked() {
+        return accountNonLocked;
+    }
+
     public void setAccountNonLocked(Boolean accountNonLocked) {
         this.accountNonLocked = accountNonLocked;
     }
 
+    public Boolean getCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
     public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
         this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
     }
 
     public void setEnabled(Boolean enabled) {

@@ -28,7 +28,8 @@ public class GraduationController {
 
     }
 
-    @GetMapping("/{graduationId}")
+    @GetMapping(value = "/{graduationId}",
+            produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<GraduationVO> getGraduationByID(
             @PathVariable("graduationId") int graduationId) {
         GraduationVO graduationVO = graduationServices.getGraduationById(graduationId);
@@ -36,7 +37,8 @@ public class GraduationController {
     }
 
 
-    @GetMapping("/userName/{nomeDoUsuario}")
+    @GetMapping(value = "/userName/{nomeDoUsuario}",
+            produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<List<GraduationVO>> getUserGraduations(
             @PathVariable("nomeDoUsuario") String nomeDoUsuario) {
         List<GraduationVO> graduationsVO = graduationServices.getGraduationsByuserName(nomeDoUsuario);

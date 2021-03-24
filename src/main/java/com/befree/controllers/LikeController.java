@@ -32,12 +32,14 @@ public class LikeController {
         return likeService.getAll();
     }
 
-    @GetMapping(value = "/getLikes/{userId}",produces = {"application/json"})
+    @GetMapping(value = "/getLikes/{userId}",
+            produces = {"application/json", "application/xml", "application/x-yaml"})
     public List<LikeVO> getMyLikes(@PathVariable("userId") String userId){
         return likeService.getMyLikes(userId);
     }
 
-    @GetMapping(value = "/likesSent/{myId}", produces = {"application/json"})
+    @GetMapping(value = "/likesSent/{myId}",
+            produces = {"application/json","application/xml", "application/x-yaml"})
     public List<Like> getLikesSentByMe(@PathVariable("myId") String myId){
         return likeService.allMyLikesSent(myId);
     }
