@@ -91,6 +91,12 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy = "you", orphanRemoval = true)
     private List<Match> matches;
 
+    @OneToMany(mappedBy = "user")
+    private List<Image> images;
+
+    @Column(name = "avatar")
+    private String avatar;
+
     @Transient
     private String token;
 
@@ -102,6 +108,7 @@ public class User implements UserDetails, Serializable {
                 List<Like> likeReceived, List<Graduation> userGraduations,
                 List<Match> matches,
                 String email, Usertype usertype, String birthDay,
+                List<Image> images, String avatar,
                 String password, String token) {
         this.id = id;
         this.userName = userName;
@@ -117,8 +124,25 @@ public class User implements UserDetails, Serializable {
         this.password = password;
         this.matches = matches;
         this.token = token;
+        this.images = images;
+        this.avatar = avatar;
     }
 
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public List<Match> getMatches() {
         return matches;

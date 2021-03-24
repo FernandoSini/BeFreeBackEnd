@@ -1,10 +1,13 @@
 package com.befree.controllers;
 
+import com.befree.data.model.Image;
 import com.befree.data.model.Permission;
 import com.befree.data.model.Usertype;
 import com.befree.data.model.vo.GraduationVO;
+import com.befree.data.model.vo.ImageVO;
 import com.befree.data.model.vo.UserVO;
 import com.befree.services.GraduationServices;
+import com.befree.services.ImageServices;
 import com.befree.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +26,8 @@ public class RegisterController {
     private UserServices userServices;
     @Autowired
     private GraduationServices graduationServices;
+    @Autowired
+    private ImageServices imageServices;
 
 
     @PostMapping(value = "/register", produces = {"application/json", "application/xml", "application/x-yaml"},
@@ -53,6 +58,14 @@ public class RegisterController {
         List<Permission> permissions = new ArrayList<>();
         permissions.add(permission);
         userData.setPermissions(permissions);
+
+        List<ImageVO> images =new ArrayList<>();
+        for (ImageVO imageObject: userData.getImages()) {
+            var imageVo = imageServices.saveImage(imageObject);
+            images.add(imageVo);
+        }
+        userData.setImages(images);
+
 
 
         return userServices.criandoUser(userData);

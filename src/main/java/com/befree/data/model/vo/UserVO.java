@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.List;
 
 @JsonPropertyOrder({"id", "userName", "firstName",
-        "lastName", "gender", "birthday", "email","usertype", "userGraduations",  "matches",
+        "lastName", "gender", "birthday", "email", "usertype", "userGraduations", "matches",
         "likesSended", "likeReceived"})
 @JsonIgnoreProperties({"accountNonExpired",
         "accountNonLocked", "credentialsNonExpired", "roles",
@@ -45,12 +45,12 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     private String birthday;
     @JsonProperty("email")
     private String email;
-    @JsonIgnoreProperties({"userSendLike","matches"})
+    @JsonIgnoreProperties({"userSendLike", "matches"})
     private List<LikeVO> likesSended;
-    @JsonIgnoreProperties({"userLiked","matches"})
+    @JsonIgnoreProperties({"userLiked", "matches"})
     private List<LikeVO> likeReceived;
     @JsonProperty("userGraduations")
-    @JsonIgnoreProperties({"users","links"})
+    @JsonIgnoreProperties({"users", "links"})
     private List<GraduationVO> userGraduations;
     @JsonProperty(value = "usertype")
     private Usertype usertype;
@@ -63,11 +63,14 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     private List<Permission> permissions;
     @JsonProperty(value = "matches")
     @ToString.Exclude
-    @JsonIgnoreProperties({"userSendLike","userLiked"})
+    @JsonIgnoreProperties({"userSendLike", "userLiked"})
     private List<MatchVO> matches;
     @JsonProperty(value = "token", access = JsonProperty.Access.READ_ONLY)
     private String token;
-
+    @JsonProperty(value = "images")
+    private List<ImageVO> images;
+    @JsonProperty(value = "avatar")
+    private String avatar;
 
     public UserVO() {
     }
@@ -80,8 +83,9 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
                   List<LikeVO> likeReceived,
                   List<GraduationVO> userGraduations,
                   Usertype usertype, String password,
-                  List<MatchVO> matches
-    ) {
+                  List<MatchVO> matches,
+                  String avatar,
+                  List<ImageVO> images) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -94,6 +98,33 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         this.usertype = usertype;
         this.password = password;
         this.matches = matches;
+        this.avatar = avatar;
+        this.images = images;
+    }
+
+    public void addImage(ImageVO images) {
+        this.images.add(images);
+        images.setUser(this);
+    }
+
+    public void remove(ImageVO images) {
+        this.images.remove(images);
+    }
+    
+    public List<ImageVO> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ImageVO> images) {
+        this.images = images;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public List<String> getRoles() {
@@ -243,7 +274,6 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     public void setPassword(String password) {
         this.password = password;
     }
-
 
 
     @Override

@@ -2,10 +2,7 @@ package com.befree.adapter.custom;
 
 import com.befree.adapter.DozerConverter;
 import com.befree.data.model.*;
-import com.befree.data.model.vo.GraduationVO;
-import com.befree.data.model.vo.LikeVO;
-import com.befree.data.model.vo.MatchVO;
-import com.befree.data.model.vo.UserVO;
+import com.befree.data.model.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +32,8 @@ public class UserConverter {
         userVO.setAccountNonLocked(user.getAccountNonLocked());
         userVO.setEnabled(user.getEnabled());
         userVO.setMatches(DozerConverter.parseListObjects(user.getMatches(), MatchVO.class));
+        userVO.setImages(DozerConverter.parseListObjects(user.getImages(), ImageVO.class));
+        userVO.setAvatar(user.getAvatar());
         return userVO;
     }
 
@@ -56,7 +55,8 @@ public class UserConverter {
         userObject.setCredentialsNonExpired(voUser.getCredentialsNonExpired());
         userObject.setEnabled(voUser.getEnabled());
         userObject.setMatches(DozerConverter.parseListObjects(voUser.getMatches(), Match.class));
-
+        userObject.setAvatar(voUser.getAvatar());
+        userObject.setImages(DozerConverter.parseListObjects(voUser.getImages(),Image.class));
         return userObject;
     }
 
