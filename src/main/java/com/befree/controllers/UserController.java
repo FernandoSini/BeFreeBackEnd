@@ -89,5 +89,19 @@ public class UserController {
         return ResponseEntity.ok().body("User deleted successfully");
     }
 
+    @DeleteMapping(value = "/delete/id/{id}")
+    public ResponseEntity deleteUserById(@PathVariable("id") String id){
+        userServices.deleteById(id);
+        return ResponseEntity.ok().body("User Deleted Successfully");
+    }
+
+//    @PutMapping(value = "/update/{id}" ,
+//            produces={"application/json","application/xml","application/x-yaml"},
+//            consumes={"application/json","application/xml","application/x-yaml"})
+//    public ResponseEntity<UserVO> updateUser(@PathVariable("id") String id){
+//        userServices
+//                return ResponseEntity.ok()
+//    }
+
 
 }

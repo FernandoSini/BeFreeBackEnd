@@ -91,7 +91,7 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy = "you", orphanRemoval = true)
     private List<Match> matches;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",orphanRemoval = true)
     private List<Image> images;
 
     @Column(name = "avatar")

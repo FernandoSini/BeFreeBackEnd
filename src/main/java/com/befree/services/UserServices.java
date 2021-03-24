@@ -77,6 +77,12 @@ public class UserServices implements UserDetailsService {
 
     }
 
+    public void deleteById(String id) {
+        User entity = userRepository.findUserById(id).
+                orElseThrow(()-> new UserNotFoundException("User Not found"));
+        userRepository.deleteById(entity.getId());
+    }
+
     public UserVO convertToUserVo(User entity) {
         if (entity == null) return null;
         return DozerConverter.parseObject(entity, UserVO.class);
@@ -93,4 +99,6 @@ public class UserServices implements UserDetailsService {
             throw new UsernameNotFoundException("User with this username not found" +username);
         }
     }
+
+
 }
