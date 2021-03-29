@@ -1,18 +1,15 @@
 package com.befree.controllers;
 
-import com.befree.adapter.DozerConverter;
-import com.befree.data.model.Image;
 import com.befree.data.model.vo.ImageVO;
 import com.befree.data.model.vo.UserVO;
 import com.befree.services.ImageServices;
 import com.befree.services.UserServices;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/images")
@@ -33,18 +30,16 @@ public class ImageController {
 
             return ResponseEntity.ok().body(imageServices.saveImage(imageVO));
         }
-//    @PostMapping(value = "/{yourId}/",
-//            produces = {"application/json", "application/xml", "application/x-yaml"},
-//            consumes = {"application/json", "application/xml", "application/x-yaml"})
-//    public ResponseEntity<ImageVO> saveImage(@PathVariable("yourId")String yourId,@RequestBody ImageVO imageVO) {
-//        UserVO userVO = userServices.getUserById(yourId);
-//
-//        ImageVO imageToUpload = new ImageVO();
-//        imageToUpload.setUserVO(userVO);
-//        imageToUpload.setImageLink(imageVO.getImageLink());
-//
-//        return ResponseEntity.ok().body(imageServices.saveImage(imageToUpload));
-//    }
+    @PostMapping(value = "/{yourId}/saveImages",
+            produces = {"application/json", "application/xml", "application/x-yaml"},
+            consumes = {"application/json", "application/xml", "application/x-yaml"})
+    public List<ResponseEntity<ImageVO>> saveMultiImage(@PathVariable("yourId")String yourId, @RequestBody List<ImageVO> images) {
+        UserVO userVO = userServices.getUserById(yourId);
+
+
+
+        return images.stream().map(file -> saveImage(yourId,file)).collect(Collectors.toList());
+    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteUser(@PathVariable("id") String id) {

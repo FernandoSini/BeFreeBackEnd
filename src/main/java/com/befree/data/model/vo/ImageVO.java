@@ -19,7 +19,7 @@ public class ImageVO extends RepresentationModel implements Serializable {
     @JsonProperty("image_link")
     private String imageLink;
 
-    @JsonProperty("user_reference")
+    @JsonProperty(value = "user_reference", required = false)
     @JsonIgnoreProperties({
             "accountNonExpired",
             "accountNonLocked",

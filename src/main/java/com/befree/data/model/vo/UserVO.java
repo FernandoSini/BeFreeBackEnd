@@ -67,7 +67,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     @JsonProperty(value = "token", access = JsonProperty.Access.READ_ONLY)
     private String token;
     @JsonProperty(value = "images")
-    @JsonIgnoreProperties({"user","links"})
+    @JsonIgnoreProperties({"user","links","user_reference"})
     private List<ImageVO> images;
     @JsonProperty(value = "avatar")
     private String avatar;
