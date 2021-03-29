@@ -65,7 +65,7 @@ public class User implements UserDetails, Serializable {
     private Usertype usertype;
 
     @Column(name = "birthday")
-    private String birthDay;
+    private String birthday;
 
     @Column(name = "password")
     @JsonIgnore
@@ -107,7 +107,7 @@ public class User implements UserDetails, Serializable {
                 String lastName, Gender gender, List<Like> likesSended,
                 List<Like> likeReceived, List<Graduation> userGraduations,
                 List<Match> matches,
-                String email, Usertype usertype, String birthDay,
+                String email, Usertype usertype, String birthday,
                 List<Image> images, String avatar,
                 String password, String token) {
         this.id = id;
@@ -120,7 +120,7 @@ public class User implements UserDetails, Serializable {
         this.userGraduations = userGraduations;
         this.email = email;
         this.usertype = usertype;
-        this.birthDay = birthDay;
+        this.birthday = birthday;
         this.password = password;
         this.matches = matches;
         this.token = token;
@@ -232,7 +232,7 @@ public class User implements UserDetails, Serializable {
         this.userGraduations = userGraduations;
     }
 
-    public String getBirthDay() {
+    public String getBirthday() {
 //        LocalDate localDateTime =  LocalDate.now();
 //        DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 //        localDateTime.format(dateFormat);
@@ -242,7 +242,7 @@ public class User implements UserDetails, Serializable {
 
         // int data = (yearNow - birthdayYear);
         // return String.valueOf(data);
-        return birthDay;
+        return birthday;
     }
 
     //pegando as funcoes dos usuários
@@ -254,8 +254,8 @@ public class User implements UserDetails, Serializable {
         return roles;
     }
 
-    public void setBirthday(String birthDay) {
-        this.birthDay = birthDay;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     public List<Permission> getPermissions() {

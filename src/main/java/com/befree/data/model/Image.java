@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "Images")
-@JsonIgnoreProperties("links")
+@JsonIgnoreProperties({"links"})
 public class Image implements Serializable {
 
     @Id
@@ -20,7 +20,7 @@ public class Image implements Serializable {
     @Column(name = "image_link")
     private String imageLink;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = User.class)
     @JsonIgnoreProperties({"likesSended","likeReceived","accountNonLocked",
             "accountNonExpired","credentialsNonExpired", "enabled","username", "token","images"})
     private User user;

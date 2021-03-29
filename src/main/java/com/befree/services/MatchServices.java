@@ -3,7 +3,7 @@ package com.befree.services;
 import com.befree.adapter.DozerConverter;
 import com.befree.adapter.custom.MatchConverter;
 import com.befree.data.model.ChatRoom;
-import com.befree.data.model.ChatRoomVO;
+import com.befree.data.model.vo.ChatRoomVO;
 import com.befree.data.model.Match;
 import com.befree.data.model.vo.MatchVO;
 import com.befree.data.model.vo.UserVO;

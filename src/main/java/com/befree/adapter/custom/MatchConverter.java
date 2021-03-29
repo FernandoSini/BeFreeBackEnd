@@ -2,7 +2,7 @@ package com.befree.adapter.custom;
 
 import com.befree.adapter.DozerConverter;
 import com.befree.data.model.ChatRoom;
-import com.befree.data.model.ChatRoomVO;
+import com.befree.data.model.vo.ChatRoomVO;
 import com.befree.data.model.Match;
 import com.befree.data.model.User;
 import com.befree.data.model.vo.MatchVO;

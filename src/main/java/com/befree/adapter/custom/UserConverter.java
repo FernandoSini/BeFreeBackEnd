@@ -16,7 +16,7 @@ public class UserConverter {
     public UserVO convertUserToVO(User user) {
         UserVO userVO = new UserVO();
         userVO.setUserName(user.getUsername());
-        userVO.setBirthday(user.getBirthDay());
+        userVO.setBirthday(user.getBirthday());
         userVO.setEmail(user.getEmail());
         userVO.setFirstName(user.getFirstName());
         userVO.setLastName(user.getLastName());

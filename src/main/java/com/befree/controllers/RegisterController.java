@@ -59,12 +59,14 @@ public class RegisterController {
         permissions.add(permission);
         userData.setPermissions(permissions);
 
-        List<ImageVO> images =new ArrayList<>();
-        for (ImageVO imageObject: userData.getImages()) {
-            var imageVo = imageServices.saveImage(imageObject);
-            images.add(imageVo);
-        }
-        userData.setImages(images);
+//        List<ImageVO> images =new ArrayList<>();
+//        for (ImageVO imageObject: userData.getImages()) {
+//            imageObject.setUserVO(userData);
+//            var imageVo = imageServices.saveImage(imageObject);
+//            images.add(imageVo);
+//
+//        }
+//        userData.setImages(images);
 
 
 

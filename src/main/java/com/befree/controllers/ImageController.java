@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/images")
 public class ImageController {
@@ -21,15 +24,27 @@ public class ImageController {
     private UserServices userServices;
 
 
-    @PostMapping(value = "/save",
+    @PostMapping(value = "/{yourId}/save",
             produces = {"application/json", "application/xml", "application/x-yaml"},
             consumes = {"application/json", "application/xml", "application/x-yaml"})
-    public ResponseEntity<ImageVO> saveImage(@RequestBody ImageVO imageVO) {
+        public ResponseEntity<ImageVO> saveImage(@PathVariable("yourId") String yourId,@RequestBody ImageVO imageVO) {
+                UserVO userVO = userServices.getUserById(yourId);
+                imageVO.setUser(userVO);
 
-
-
-        return ResponseEntity.ok().body(imageServices.saveImage(imageVO));
-    }
+            return ResponseEntity.ok().body(imageServices.saveImage(imageVO));
+        }
+//    @PostMapping(value = "/{yourId}/",
+//            produces = {"application/json", "application/xml", "application/x-yaml"},
+//            consumes = {"application/json", "application/xml", "application/x-yaml"})
+//    public ResponseEntity<ImageVO> saveImage(@PathVariable("yourId")String yourId,@RequestBody ImageVO imageVO) {
+//        UserVO userVO = userServices.getUserById(yourId);
+//
+//        ImageVO imageToUpload = new ImageVO();
+//        imageToUpload.setUserVO(userVO);
+//        imageToUpload.setImageLink(imageVO.getImageLink());
+//
+//        return ResponseEntity.ok().body(imageServices.saveImage(imageToUpload));
+//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteUser(@PathVariable("id") String id) {

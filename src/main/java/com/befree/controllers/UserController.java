@@ -63,7 +63,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserVO> getUserById(@PathVariable("id") String id) {
-        UserVO userVO = DozerConverter.parseObject(userServices.getUserById(id),UserVO.class);
+        UserVO userVO = DozerConverter.parseObject(userServices.getUserById(id), UserVO.class);
         return ResponseEntity.ok().body(userVO);
     }
 
@@ -90,18 +90,18 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/delete/id/{id}")
-    public ResponseEntity deleteUserById(@PathVariable("id") String id){
+    public ResponseEntity deleteUserById(@PathVariable("id") String id) {
         userServices.deleteById(id);
         return ResponseEntity.ok().body("User Deleted Successfully");
     }
 
-//    @PutMapping(value = "/update/{id}" ,
-//            produces={"application/json","application/xml","application/x-yaml"},
-//            consumes={"application/json","application/xml","application/x-yaml"})
-//    public ResponseEntity<UserVO> updateUser(@PathVariable("id") String id){
-//        userServices
-//                return ResponseEntity.ok()
-//    }
+    @PutMapping(value = "/update/{id}",
+            produces = {"application/json", "application/xml", "application/x-yaml"},
+            consumes = {"application/json", "application/xml", "application/x-yaml"})
+    public ResponseEntity<UserVO> updateUser(@PathVariable("id") String id, @RequestBody UserVO userVO) {
+        UserVO updatedUser = userServices.update(userVO);
+        return ResponseEntity.ok(updatedUser);
+    }
 
 
 }

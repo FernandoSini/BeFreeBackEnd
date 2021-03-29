@@ -2,7 +2,7 @@ package com.befree.services;
 
 import com.befree.adapter.DozerConverter;
 import com.befree.data.model.ChatRoom;
-import com.befree.data.model.ChatRoomVO;
+import com.befree.data.model.vo.ChatRoomVO;
 import com.befree.data.model.vo.MatchVO;
 import com.befree.repository.ChatRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;

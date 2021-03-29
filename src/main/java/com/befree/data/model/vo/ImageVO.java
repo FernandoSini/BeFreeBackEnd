@@ -9,7 +9,7 @@ import org.springframework.hateoas.RepresentationModel;
 import java.io.Serializable;
 
 @JsonPropertyOrder({"image_id", "image_link","user_reference"})
-@JsonIgnoreProperties("links")
+@JsonIgnoreProperties({"links","user"})
 public class ImageVO extends RepresentationModel implements Serializable {
 
     @Mapping("id")
@@ -20,9 +20,13 @@ public class ImageVO extends RepresentationModel implements Serializable {
     private String imageLink;
 
     @JsonProperty("user_reference")
-    @JsonIgnoreProperties({"accountNonExpired",
-            "accountNonLocked", "credentialsNonExpired", "roles",
-            "enabled", "username", "authorities", "permissions","token", "links","images"})
+    @JsonIgnoreProperties({
+            "accountNonExpired",
+            "accountNonLocked",
+            "credentialsNonExpired",
+            "roles",
+            "enabled", "username", "authorities", "permissions","token", "links",
+            "images","matches","likesSended","likeReceived"})
     private UserVO userVO;
 
     public ImageVO(String id, String imageLink, UserVO userVO) {

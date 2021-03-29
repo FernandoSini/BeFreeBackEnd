@@ -19,6 +19,7 @@ public class ImageServices {
     private ImageConverter converter;
 
     public ImageVO saveImage(ImageVO imageVO) {
+        System.out.println(imageVO.getUser());
         var entity = imageRepository.save(converter.convertVoToEntity(imageVO));
         var vo = DozerConverter.parseObject(entity, ImageVO.class);
         return vo;

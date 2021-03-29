@@ -1,7 +1,7 @@
-package com.befree.data.model;
+package com.befree.data.model.vo;
 
 
-import com.befree.data.model.vo.MatchVO;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dozermapper.core.Mapping;
 import lombok.AllArgsConstructor;

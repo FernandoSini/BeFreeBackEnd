@@ -3,6 +3,9 @@ package com.befree.services;
 
 import com.befree.adapter.DozerConverter;
 import com.befree.adapter.custom.UserConverter;
+import com.befree.data.model.Image;
+import com.befree.data.model.Like;
+import com.befree.data.model.Match;
 import com.befree.data.model.User;
 import com.befree.data.model.vo.UserVO;
 import com.befree.exceptions.CreateUserException;
@@ -81,6 +84,25 @@ public class UserServices implements UserDetailsService {
         User entity = userRepository.findUserById(id).
                 orElseThrow(()-> new UserNotFoundException("User Not found"));
         userRepository.deleteById(entity.getId());
+    }
+    public UserVO update(UserVO u){
+        var entity  = userRepository.findUserById(u.getId())
+                .orElseThrow(()-> new UserNotFoundException("User not found!"));
+
+        entity.setAvatar(u.getAvatar());
+        entity.setMatches(DozerConverter.parseListObjects(u.getMatches(), Match.class));
+        entity.setUserName(u.getUserName());
+        entity.setBirthday(u.getBirthday());
+        entity.setEmail(u.getEmail());
+        entity.setGender(u.getGender());
+        entity.setLastName(u.getLastName());
+        entity.setLikeReceived(DozerConverter.parseListObjects(u.getLikeReceived(), Like.class));
+        entity.setLikesSended(DozerConverter.parseListObjects(u.getLikesSended(),Like.class));
+        entity.setFirstName(u.getFirstName());
+        entity.setImages(DozerConverter.parseListObjects(u.getImages(), Image.class));
+
+        var vo = DozerConverter.parseObject(userRepository.save(entity),UserVO.class);
+        return vo;
     }
 
     public UserVO convertToUserVo(User entity) {

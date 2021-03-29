@@ -1,6 +1,6 @@
 package com.befree.data.model.vo;
 
-import com.befree.data.model.ChatRoomVO;
+import com.befree.data.model.vo.ChatRoomVO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

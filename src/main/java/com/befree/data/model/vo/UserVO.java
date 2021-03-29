@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@JsonPropertyOrder({"id","avatar", "userName", "firstName",
+@JsonPropertyOrder({"id", "avatar", "userName", "firstName",
         "lastName", "gender", "birthday", "email", "usertype", "userGraduations", "matches",
-        "likesSended", "likeReceived","images"})
+        "likesSended", "likeReceived", "images"})
 @JsonIgnoreProperties({"accountNonExpired",
         "accountNonLocked", "credentialsNonExpired", "roles",
         "enabled", "username", "authorities", "permissions", "links"})
@@ -41,7 +41,6 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     @JsonProperty("last_name")
     private String lastName;
     private Gender gender;
-    @JsonProperty("birthday")
     private String birthday;
     @JsonProperty("email")
     private String email;
@@ -68,7 +67,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     @JsonProperty(value = "token", access = JsonProperty.Access.READ_ONLY)
     private String token;
     @JsonProperty(value = "images")
-    @JsonIgnoreProperties({"user"})
+    @JsonIgnoreProperties({"user","links"})
     private List<ImageVO> images;
     @JsonProperty(value = "avatar")
     private String avatar;
@@ -111,7 +110,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     public void remove(ImageVO images) {
         this.images.remove(images);
     }
-    
+
     public List<ImageVO> getImages() {
         return images;
     }
