@@ -30,15 +30,15 @@ public class ImageController {
 
             return ResponseEntity.ok().body(imageServices.saveImage(imageVO));
         }
-    @PostMapping(value = "/{yourId}/saveImages",
+    @PostMapping(value = "/{id}/saveImages",
             produces = {"application/json", "application/xml", "application/x-yaml"},
             consumes = {"application/json", "application/xml", "application/x-yaml"})
-    public List<ResponseEntity<ImageVO>> saveMultiImage(@PathVariable("yourId")String yourId, @RequestBody List<ImageVO> images) {
-        UserVO userVO = userServices.getUserById(yourId);
+    public List<ResponseEntity<ImageVO>> saveMultiImage(@PathVariable("id")String id, @RequestBody List<ImageVO> images) {
+        UserVO userVO = userServices.getUserById(id);
 
+// lembrar que para enviar um array de items por json deve comecar com colchetes só
 
-
-        return images.stream().map(file -> saveImage(yourId,file)).collect(Collectors.toList());
+        return images.stream().map(file -> saveImage(id,file)).collect(Collectors.toList());
     }
 
     @DeleteMapping("/delete/{id}")
