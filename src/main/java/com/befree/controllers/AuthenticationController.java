@@ -73,7 +73,7 @@ public class AuthenticationController {
 
             return ResponseEntity.ok(user);
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid username or password! " + e);
+            throw new BadCredentialsException("Invalid username or password!");
         }
 
 
