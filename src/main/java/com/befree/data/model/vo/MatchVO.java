@@ -18,7 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @JsonPropertyOrder({"match_id","hisHerId" ,"match_room","you_user"})
-//@JsonIgnoreProperties({"matchRoom"})
+@JsonIgnoreProperties({"links"})
 public class MatchVO extends RepresentationModel implements Serializable {
 
 
