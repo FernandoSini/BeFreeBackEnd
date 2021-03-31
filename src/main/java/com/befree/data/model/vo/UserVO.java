@@ -44,9 +44,9 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     private String birthday;
     @JsonProperty("email")
     private String email;
-    @JsonIgnoreProperties({"userSendLike", "matches"})
+    @JsonIgnoreProperties({"userSendLike", "matches", "links"})
     private List<LikeVO> likesSended;
-    @JsonIgnoreProperties({"userLiked", "matches"})
+    @JsonIgnoreProperties({"userLiked", "matches","links"})
     private List<LikeVO> likeReceived;
     @JsonProperty("userGraduations")
     @JsonIgnoreProperties({"users", "links"})
