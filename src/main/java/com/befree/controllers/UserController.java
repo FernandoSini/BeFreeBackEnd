@@ -1,6 +1,7 @@
 package com.befree.controllers;
 
 import com.befree.adapter.DozerConverter;
+import com.befree.data.model.Gender;
 import com.befree.data.model.Usertype;
 import com.befree.data.model.vo.GraduationVO;
 import com.befree.data.model.vo.UserVO;
@@ -101,6 +102,21 @@ public class UserController {
     public ResponseEntity<UserVO> updateUser(@PathVariable("id") String id, @RequestBody UserVO userVO) {
         UserVO updatedUser = userServices.update(userVO);
         return ResponseEntity.ok(updatedUser);
+    }
+
+    @GetMapping(value = "/gender/find/different/{gender}", produces = {"application/json", "application/xml", "application/x-yaml"})
+    public ResponseEntity<List<UserVO>> getUsersByGenderDifferentThanYour(@PathVariable("gender") Gender gender) {
+        System.out.println(gender.ordinal());
+        List<UserVO> users = userServices.getUsersByDiferentThenYourGender(gender);
+        return ResponseEntity.ok(users);
+
+    }
+    @GetMapping(value = "/gender/find/{gender}", produces = {"application/json", "application/xml", "application/x-yaml"})
+    public ResponseEntity<List<UserVO>> getUsersByOneGender(@PathVariable("gender") Gender gender) {
+        System.out.println(gender.ordinal());
+        List<UserVO> users = userServices.getUsersByOneGender(gender);
+        return ResponseEntity.ok(users);
+
     }
 
 

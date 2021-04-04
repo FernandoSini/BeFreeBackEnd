@@ -3,10 +3,7 @@ package com.befree.services;
 
 import com.befree.adapter.DozerConverter;
 import com.befree.adapter.custom.UserConverter;
-import com.befree.data.model.Image;
-import com.befree.data.model.Like;
-import com.befree.data.model.Match;
-import com.befree.data.model.User;
+import com.befree.data.model.*;
 import com.befree.data.model.vo.UserVO;
 import com.befree.exceptions.CreateUserException;
 import com.befree.exceptions.ResourceNotFoundException;
@@ -72,6 +69,22 @@ public class UserServices implements UserDetailsService {
         var vo = DozerConverter.parseListObjects(userRepository.findAll(), UserVO.class);
         return vo;
     }
+
+    public List<UserVO> getUsersByDiferentThenYourGender(Gender gender){
+        System.out.println(gender);
+        var  entity = userRepository.findUserByGenders(gender)
+                .orElseThrow(()-> new ResourceNotFoundException("User not found"));
+        var vo = DozerConverter.parseListObjects(entity, UserVO.class);
+        return vo;
+    }
+    public List<UserVO> getUsersByOneGender(Gender gender){
+        System.out.println(gender);
+        var  entity = userRepository.findUsersByOneGender(gender)
+                .orElseThrow(()-> new ResourceNotFoundException("User not found"));
+        var vo = DozerConverter.parseListObjects(entity, UserVO.class);
+        return vo;
+    }
+
 
     public void deleteUser(String userName) {
         User entity = userRepository.findOneUserByUserName(userName)

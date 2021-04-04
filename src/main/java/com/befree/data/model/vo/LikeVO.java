@@ -11,6 +11,7 @@ import java.io.Serializable;
 
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @JsonPropertyOrder({"id","userSendLike", "userLiked"})
+@JsonIgnoreProperties({"links"})
 public class LikeVO extends RepresentationModel implements Serializable {
 
     /**
