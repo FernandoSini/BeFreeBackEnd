@@ -4,10 +4,8 @@ import com.befree.data.model.Gender;
 import com.befree.data.model.Match;
 import com.befree.data.model.Permission;
 import com.befree.data.model.Usertype;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.dozermapper.core.Mapping;
 import lombok.Data;
 import lombok.ToString;
@@ -27,6 +25,7 @@ import java.util.List;
 @JsonIgnoreProperties({"accountNonExpired",
         "accountNonLocked", "credentialsNonExpired", "roles",
         "enabled", "username", "authorities", "permissions", "links"})
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class UserVO extends RepresentationModel implements UserDetails, Serializable {
 

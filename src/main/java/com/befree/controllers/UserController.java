@@ -113,7 +113,6 @@ public class UserController {
     }
     @GetMapping(value = "/gender/find/{gender}", produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<List<UserVO>> getUsersByOneGender(@PathVariable("gender") Gender gender) {
-        System.out.println(gender.ordinal());
         List<UserVO> users = userServices.getUsersByOneGender(gender);
         return ResponseEntity.ok(users);
 

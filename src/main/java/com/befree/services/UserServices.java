@@ -37,16 +37,16 @@ public class UserServices implements UserDetailsService {
         var entity = DozerConverter.parseObject(userVO, User.class);
         Optional<User> userExists = userRepository.findOneUserByUserName(entity.getUsername());
         Optional<Boolean> emailExists = userRepository.findUserByEmail(entity.getEmail());
-        if (!userExists.isPresent() || userExists.isEmpty() || userExists == null || !emailExists.isPresent()|| emailExists.isEmpty()) {
-           if(!emailExists.isPresent() || emailExists.isEmpty() || emailExists ==null) {
+        if (!userExists.isPresent() || userExists.isEmpty() || userExists == null || !emailExists.isPresent() || emailExists.isEmpty()) {
+            if (!emailExists.isPresent() || emailExists.isEmpty() || emailExists == null) {
                 System.out.println(entity.getUserGraduations());
                 var voUser = DozerConverter.parseObject(userRepository.saveAndFlush(entity), UserVO.class);
                 System.out.println(entity.getUsername());
 
                 return voUser;
-            }else{
-               throw new CreateUserException("Email already in use");
-           }
+            } else {
+                throw new CreateUserException("Email already in use");
+            }
         } else {
             throw new CreateUserException("User already exist");
         }
@@ -70,17 +70,17 @@ public class UserServices implements UserDetailsService {
         return vo;
     }
 
-    public List<UserVO> getUsersByDiferentThenYourGender(Gender gender){
-        System.out.println(gender);
-        var  entity = userRepository.findUserByGenders(gender)
-                .orElseThrow(()-> new ResourceNotFoundException("User not found"));
+    public List<UserVO> getUsersByDiferentThenYourGender(Gender gender) {
+
+        var entity = userRepository.findUserByGenders(gender)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         var vo = DozerConverter.parseListObjects(entity, UserVO.class);
         return vo;
     }
-    public List<UserVO> getUsersByOneGender(Gender gender){
-        System.out.println(gender);
-        var  entity = userRepository.findUsersByOneGender(gender)
-                .orElseThrow(()-> new ResourceNotFoundException("User not found"));
+
+    public List<UserVO> getUsersByOneGender(Gender gender) {
+        var entity = userRepository.findUsersByOneGender(gender)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         var vo = DozerConverter.parseListObjects(entity, UserVO.class);
         return vo;
     }
@@ -95,27 +95,57 @@ public class UserServices implements UserDetailsService {
 
     public void deleteById(String id) {
         User entity = userRepository.findUserById(id).
-                orElseThrow(()-> new UserNotFoundException("User Not found"));
+                orElseThrow(() -> new UserNotFoundException("User Not found"));
         userRepository.deleteById(entity.getId());
     }
-    public UserVO update(UserVO u){
-        var entity  = userRepository.findUserById(u.getId())
-                .orElseThrow(()-> new UserNotFoundException("User not found!"));
+
+    public UserVO update(UserVO u) {
+        var entity = userRepository.findUserById(u.getId())
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
         entity.setAvatar(u.getAvatar());
-        entity.setMatches(DozerConverter.parseListObjects(u.getMatches(), Match.class));
-        entity.setUserName(u.getUserName());
-        entity.setBirthday(u.getBirthday());
-        entity.setEmail(u.getEmail());
-        entity.setGender(u.getGender());
-        entity.setLastName(u.getLastName());
-        entity.setLikeReceived(DozerConverter.parseListObjects(u.getLikeReceived(), Like.class));
-        entity.setLikesSended(DozerConverter.parseListObjects(u.getLikesSended(),Like.class));
-        entity.setFirstName(u.getFirstName());
-        entity.setImages(DozerConverter.parseListObjects(u.getImages(), Image.class));
+//        entity.setMatches(DozerConverter.parseListObjects(u.getMatches(), Match.class));
+        if (u.getUserName() == null || u.getUserName().isEmpty()) {
+            entity.setUserName(entity.getUserName());
+        } else {
+            entity.setUserName(u.getUserName());
+        }
+        if (u.getBirthday() == null || u.getBirthday().isEmpty()) {
+            entity.setBirthday(entity.getBirthday());
+        } else {
+            entity.setBirthday(u.getBirthday());
+        }
+        if (u.getEmail() == null || u.getEmail().isEmpty()){
+            entity.setEmail(entity.getEmail());
+        }else{
+            entity.setEmail(u.getEmail());
+        }
+        if(u.getGender() == null){
+            entity.setGender(entity.getGender());
+        }else{
+            entity.setGender(u.getGender());
+        }
+        if(u.getLastName() ==null || u.getLastName().isEmpty()){
+            entity.setLastName(entity.getLastName());
+        }else{
+            entity.setLastName(u.getLastName());
+        }
+        if(u.getFirstName() == null || u.getFirstName().isEmpty()){
+            entity.setFirstName(entity.getFirstName());
+        }else{
+            entity.setFirstName(u.getFirstName());
+        }
 
-        var vo = DozerConverter.parseObject(userRepository.save(entity),UserVO.class);
+
+
+
+//        entity.setLikeReceived(DozerConverter.parseListObjects(u.getLikeReceived(), Like.class));
+//        entity.setLikesSended(DozerConverter.parseListObjects(u.getLikesSended(),Like.class));
+//        entity.setImages(DozerConverter.parseListObjects(u.getImages(), Image.class));
+
+        var vo = DozerConverter.parseObject(userRepository.save(entity), UserVO.class);
         return vo;
+
     }
 
     public UserVO convertToUserVo(User entity) {
@@ -127,11 +157,11 @@ public class UserServices implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new UserNotFoundException("User "+username+" not found"));
-        if(user !=null){
+                .orElseThrow(() -> new UserNotFoundException("User " + username + " not found"));
+        if (user != null) {
             return user;
-        } else{
-            throw new UsernameNotFoundException("User with this username not found" +username);
+        } else {
+            throw new UsernameNotFoundException("User with this username not found" + username);
         }
     }
 

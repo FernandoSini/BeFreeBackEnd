@@ -2,6 +2,7 @@ package com.befree.data.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,7 @@ import java.util.List;
 @Table(name = "users")
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 //@JsonIgnoreProperties({"hibernateLazyInitializer","handler", "likeReceived"})
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User implements UserDetails, Serializable {
 
     /**
