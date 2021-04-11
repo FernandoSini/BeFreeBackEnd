@@ -50,7 +50,7 @@ public class AuthenticationController {
 
 
 
-    @PostMapping(value = "/login/user",
+    @PostMapping(value = "/user/login",
             produces = {"application/json", "application/xml", "application/x-yaml"},
             consumes = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<UserVO> login(@RequestBody AuthenticationCredentialsVO data) {
@@ -90,7 +90,7 @@ public class AuthenticationController {
 
     }
 
-        @PostMapping(value = "/login/eventowner",
+        @PostMapping(value = "/eventowner/login",
             produces = {"application/json", "application/xml", "application/x-yaml"},
             consumes = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<EventOwnerVO> loginOwner(@RequestBody AuthenticationCredentialsVO data) {

@@ -188,9 +188,7 @@ public class UserServices implements UserDetailsService {
             }else {
                 throw new UsernameNotFoundException("EventOwner with this username not found " + eventOwnerName);
             }
-        }
-
-        if(!username.contains(":")) {
+        }else{
             var user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new UserNotFoundException("User " + username + " not found"));
             if (user != null) {
@@ -199,6 +197,6 @@ public class UserServices implements UserDetailsService {
                 throw new UsernameNotFoundException("User with this username not found" + username);
             }
         }
-        return null;
+
     }
 }
