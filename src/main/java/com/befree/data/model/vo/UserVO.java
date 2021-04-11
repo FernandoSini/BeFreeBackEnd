@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 @JsonPropertyOrder({"id", "avatar", "userName", "firstName",
-        "lastName", "gender", "birthday", "email", "usertype", "userGraduations", "matches",
+        "lastName", "gender", "birthday", "email", "usertype","about", "userGraduations", "matches",
         "likesSended", "likeReceived", "images"})
 @JsonIgnoreProperties({"accountNonExpired",
         "accountNonLocked", "credentialsNonExpired", "roles",
@@ -70,6 +70,8 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     private List<ImageVO> images;
     @JsonProperty(value = "avatar")
     private String avatar;
+    @JsonProperty(value = "about")
+    private String about;
 
     public UserVO() {
     }
@@ -84,7 +86,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
                   Usertype usertype, String password,
                   List<MatchVO> matches,
                   String avatar,
-                  List<ImageVO> images) {
+                  List<ImageVO> images, String about) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -99,6 +101,15 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         this.matches = matches;
         this.avatar = avatar;
         this.images = images;
+        this.about = about;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
     }
 
     public void addImage(ImageVO images) {

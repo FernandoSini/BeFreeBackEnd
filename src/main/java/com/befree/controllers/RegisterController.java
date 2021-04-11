@@ -1,13 +1,12 @@
 package com.befree.controllers;
 
-import com.befree.data.model.Image;
 import com.befree.data.model.Permission;
 import com.befree.data.model.Usertype;
+import com.befree.data.model.vo.EventOwnerVO;
 import com.befree.data.model.vo.GraduationVO;
-import com.befree.data.model.vo.ImageVO;
 import com.befree.data.model.vo.UserVO;
+import com.befree.services.EventOwnerServices;
 import com.befree.services.GraduationServices;
-import com.befree.services.ImageServices;
 import com.befree.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,8 +25,10 @@ public class RegisterController {
     private UserServices userServices;
     @Autowired
     private GraduationServices graduationServices;
+
     @Autowired
-    private ImageServices imageServices;
+    private EventOwnerServices eventOwnerServices;
+
 
 
     @PostMapping(value = "/register", produces = {"application/json", "application/xml", "application/x-yaml"},
@@ -74,4 +75,28 @@ public class RegisterController {
         return userServices.criandoUser(userData);
 
     }
+
+    @PostMapping(value = "/register/eventowner", produces = {"application/json", "application/xml", "application/x-yaml"},
+            consumes = {"application/json", "application/xml", "application/x-yaml"})
+    public EventOwnerVO registerEventOwner(@RequestBody EventOwnerVO eventOwnerVO){
+        EventOwnerVO vo = new EventOwnerVO();
+        vo.setDocumentNumber(eventOwnerVO.getDocumentNumber());
+        BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
+        vo.setPassword(bCrypt.encode(eventOwnerVO.getPassword()));
+        vo.setOwnerName(eventOwnerVO.getOwnerName());
+        Permission permission = new Permission();
+        permission.setId(3L);
+        List<Permission> permissions = new ArrayList<>();
+        permissions.add(permission);
+        vo.setPermissions(permissions);
+        vo.setAccountNonExpired(true);
+        vo.setAccountNonLocked(true);
+        vo.setCredentialsNonExpired(true);
+        vo.setEnabled(true);
+        return eventOwnerServices.createOwner(vo);
+    }
+
+
+
+
 }

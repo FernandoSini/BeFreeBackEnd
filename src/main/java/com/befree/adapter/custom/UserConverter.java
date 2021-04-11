@@ -34,6 +34,7 @@ public class UserConverter {
         userVO.setMatches(DozerConverter.parseListObjects(user.getMatches(), MatchVO.class));
         userVO.setImages(DozerConverter.parseListObjects(user.getImages(), ImageVO.class));
         userVO.setAvatar(user.getAvatar());
+        userVO.setAbout(user.getAbout());
         return userVO;
     }
 
@@ -56,6 +57,7 @@ public class UserConverter {
         userObject.setEnabled(voUser.getEnabled());
         userObject.setMatches(DozerConverter.parseListObjects(voUser.getMatches(), Match.class));
         userObject.setAvatar(voUser.getAvatar());
+        userObject.setAbout(voUser.getAbout());
         userObject.setImages(DozerConverter.parseListObjects(voUser.getImages(),Image.class));
         return userObject;
     }

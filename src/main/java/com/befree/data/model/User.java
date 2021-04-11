@@ -99,6 +99,12 @@ public class User implements UserDetails, Serializable {
     @Column(name = "avatar")
     private String avatar;
 
+    @Column(name = "about")
+    @Size(min = 0, max = 150)
+    private String about;
+    @ManyToMany
+    private List<Event> events;
+
     @Transient
     private String token;
 
@@ -111,7 +117,7 @@ public class User implements UserDetails, Serializable {
                 List<Match> matches,
                 String email, Usertype usertype, String birthday,
                 List<Image> images, String avatar,
-                String password, String token) {
+                String password, String token, String about,List<Event> events) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -128,6 +134,24 @@ public class User implements UserDetails, Serializable {
         this.token = token;
         this.images = images;
         this.avatar = avatar;
+        this.about = about;
+        this.events = events;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
     }
 
     public List<Image> getImages() {

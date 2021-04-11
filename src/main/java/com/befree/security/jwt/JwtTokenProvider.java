@@ -4,9 +4,7 @@ import com.befree.exceptions.InvalidJwtAuthenticationException;
 import com.befree.exceptions.UserNotFoundException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +32,7 @@ public class JwtTokenProvider {
     @Autowired
     private UserDetailsService userDetailsService;
 
+
     @PostConstruct
     //após injetar a dependencia, iremos encodar a secrete key
     public void init() {
@@ -60,13 +59,29 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    //criando um token para o event owner
+    public String createTokenEventOwner(String eventOwnerUsername, List<String> roles) {
+        Claims claims = Jwts.claims().setSubject(eventOwnerUsername);
+        claims.put("roles", roles);
+        //param serve para diferenciar se é requisicao vinda de um param eventowner ou user
+        Date now = new Date();
+        Date validade = new Date(now.getTime() + validityInMillyseconds);
+
+        return Jwts.builder().setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validade)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
+
     //pegar a authenitcation
     public Authentication getAuthentication(String token) {
         //vamos procurar pelo usuario e associá-lo ao token
-        try{
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-        }catch (UserNotFoundException e){
+        try {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
+            return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        } catch (UserNotFoundException e) {
             throw new UserNotFoundException("User was deleted or not found in our database with this token");
         }
     }
@@ -83,6 +98,7 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
+
         //vamos definir o token como bearer
         //ou seja, ele vai pegar o parametro pelo cabeçalho da request chamdo authorization
         String bearerToken = request.getHeader("Authorization");

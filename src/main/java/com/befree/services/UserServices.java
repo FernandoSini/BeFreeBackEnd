@@ -4,10 +4,12 @@ package com.befree.services;
 import com.befree.adapter.DozerConverter;
 import com.befree.adapter.custom.UserConverter;
 import com.befree.data.model.*;
+import com.befree.data.model.vo.EventOwnerVO;
 import com.befree.data.model.vo.UserVO;
 import com.befree.exceptions.CreateUserException;
 import com.befree.exceptions.ResourceNotFoundException;
 import com.befree.exceptions.UserNotFoundException;
+import com.befree.repository.EventOwnerRepository;
 import com.befree.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +28,8 @@ public class UserServices implements UserDetailsService {
     private UserRepository userRepository;
     @Autowired
     private UserConverter userConverter;
+    @Autowired
+    private EventOwnerRepository eventOwnerRepository;
 
     public UserServices(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -115,28 +119,31 @@ public class UserServices implements UserDetailsService {
         } else {
             entity.setBirthday(u.getBirthday());
         }
-        if (u.getEmail() == null || u.getEmail().isEmpty()){
+        if (u.getEmail() == null || u.getEmail().isEmpty()) {
             entity.setEmail(entity.getEmail());
-        }else{
+        } else {
             entity.setEmail(u.getEmail());
         }
-        if(u.getGender() == null){
+        if (u.getGender() == null) {
             entity.setGender(entity.getGender());
-        }else{
+        } else {
             entity.setGender(u.getGender());
         }
-        if(u.getLastName() ==null || u.getLastName().isEmpty()){
+        if (u.getLastName() == null || u.getLastName().isEmpty()) {
             entity.setLastName(entity.getLastName());
-        }else{
+        } else {
             entity.setLastName(u.getLastName());
         }
-        if(u.getFirstName() == null || u.getFirstName().isEmpty()){
+        if (u.getFirstName() == null || u.getFirstName().isEmpty()) {
             entity.setFirstName(entity.getFirstName());
-        }else{
+        } else {
             entity.setFirstName(u.getFirstName());
         }
-
-
+        if (u.getAbout() == null || u.getAbout().isEmpty()) {
+            entity.setAbout(entity.getAbout());
+        } else {
+            entity.setAbout(u.getAbout());
+        }
 
 
 //        entity.setLikeReceived(DozerConverter.parseListObjects(u.getLikeReceived(), Like.class));
@@ -154,16 +161,44 @@ public class UserServices implements UserDetailsService {
     }
 
 
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        var user = userRepository.findByUsername(username)
+//                .orElseThrow(() -> new UserNotFoundException("User " + username + " not found"));
+//
+//        if (user != null) {
+//            return user;
+//        } else {
+//            throw new UsernameNotFoundException("User with this username not found" + username);
+//        }
+//    }
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("User " + username + " not found"));
-        if (user != null) {
-            return user;
-        } else {
-            throw new UsernameNotFoundException("User with this username not found" + username);
+        if (username.contains(":")) {
+            int colonIndex = username.indexOf(":");
+//            int event_ownerIndex = username.indexOf("event_owner");
+            String eventOwnerName = username.substring(0,colonIndex);
+            System.out.println(eventOwnerName);
+            var eventOwner = eventOwnerRepository.findByEventOwnerName(eventOwnerName)
+                    .orElseThrow(() -> new UserNotFoundException("EventOwner:" + eventOwnerName + " not found"));
+            if (eventOwner != null) {
+                return eventOwner;
+            }else {
+                throw new UsernameNotFoundException("EventOwner with this username not found " + eventOwnerName);
+            }
         }
+
+        if(!username.contains(":")) {
+            var user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new UserNotFoundException("User " + username + " not found"));
+            if (user != null) {
+                return user;
+            } else {
+                throw new UsernameNotFoundException("User with this username not found" + username);
+            }
+        }
+        return null;
     }
-
-
 }
