@@ -28,14 +28,15 @@ public class EventOwner implements Serializable, UserDetails {
     @Column(name = "event_owner_id",unique = true)
     private String id;
 
-
     @Column(name = "event_owner_name",unique = true)
     private String ownerName;
     //this can be user document number, or company number
     @Column(name = "document_number")
     private int documentNumber;
+    @Column(name = "event_owner_email")
+    private String email;
 
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(mappedBy = "owner",orphanRemoval = true)
     private List<Event> events;
 
     @Column(name = "password")
@@ -59,6 +60,8 @@ public class EventOwner implements Serializable, UserDetails {
     @JoinTable(name = "event_owner_permissions", joinColumns = {@JoinColumn(name = "id_event_owner", referencedColumnName = "event_owner_id")},
             inverseJoinColumns = {@JoinColumn(name = "id_permission")})
     private List<Permission> permissions;
+    @Transient
+    private String token;
 
     //pegando as funcoes dos usuários
     public List<String> getRoles() {

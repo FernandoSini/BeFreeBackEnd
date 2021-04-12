@@ -99,7 +99,7 @@ public class AuthenticationController {
             var password = data.getPassword();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
-            var eventOwner = eventOwnerServices.getEventOwnerByUserName(username.substring(0,username.indexOf(":")) );
+            var eventOwner = eventOwnerServices.getEventOwnerByUserName(username.substring(0,username.indexOf(":")));
             var token = "";
             if (eventOwner != null) {
                 eventOwner.setToken(tokenProvider.createTokenEventOwner(username, eventOwner.getRoles()));

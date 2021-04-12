@@ -7,6 +7,9 @@ import com.befree.exceptions.UserNotFoundException;
 import com.befree.repository.EventOwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class EventOwnerServices {
 
@@ -27,6 +30,19 @@ public class EventOwnerServices {
         return DozerConverter.parseObject(entity, EventOwnerVO.class);
     }
 
+
+    public EventOwnerVO getEventOwnerByName(String eventOwnerName){
+        var entity = eventOwnerRepository.findByEventOwnerName(eventOwnerName)
+                .orElseThrow(()-> new UserNotFoundException("EventOwner not found"));
+        return DozerConverter.parseObject(entity, EventOwnerVO.class);
+    }
+
+
+    public List<EventOwnerVO> getAllOwners() {
+        var entity = eventOwnerRepository.findAll();
+        var voList = DozerConverter.parseListObjects(entity, EventOwnerVO.class);
+        return voList;
+    }
 
 
 }

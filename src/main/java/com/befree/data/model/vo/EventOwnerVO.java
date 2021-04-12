@@ -8,6 +8,7 @@ import com.github.dozermapper.core.Mapping;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,14 +33,16 @@ public class EventOwnerVO extends RepresentationModel implements UserDetails, Se
     private String ownerName;
     @JsonProperty(value = "document_number")
     private int documentNumber;
+    private String email;
+    @JsonIgnoreProperties({"links"})
+    @ToString.Exclude
+    private List<EventVO> events;
     @JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    @JsonIgnoreProperties({"links"})
-    private List<EventVO> events;
-    private String avatar;
     private Boolean accountNonExpired;
     private Boolean accountNonLocked;
     private Boolean credentialsNonExpired;
+    private String avatar;
     private Boolean enabled;
     private List<Permission> permissions;
     @JsonProperty(value = "token", access = JsonProperty.Access.READ_ONLY)

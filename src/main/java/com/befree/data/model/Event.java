@@ -22,12 +22,18 @@ public class Event implements Serializable {
     @Column(name = "event_id")
     private String id;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = EventOwner.class)
+    @JoinColumn(name = "event_owner_id")
     private EventOwner owner;
 
-    @ManyToMany
+    @Column(name = "event_name")
+    private String eventName;
+    @Column(name = "event_cover")
+    private String eventCover;
+
+    @ManyToMany(mappedBy = "events")
     private List<User> users;
-    @Transient
-    private String token;
+
+
 
 }

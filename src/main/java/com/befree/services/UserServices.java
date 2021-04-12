@@ -180,7 +180,6 @@ public class UserServices implements UserDetailsService {
             int colonIndex = username.indexOf(":");
 //            int event_ownerIndex = username.indexOf("event_owner");
             String eventOwnerName = username.substring(0,colonIndex);
-            System.out.println(eventOwnerName);
             var eventOwner = eventOwnerRepository.findByEventOwnerName(eventOwnerName)
                     .orElseThrow(() -> new UserNotFoundException("EventOwner:" + eventOwnerName + " not found"));
             if (eventOwner != null) {

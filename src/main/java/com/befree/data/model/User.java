@@ -103,6 +103,8 @@ public class User implements UserDetails, Serializable {
     @Size(min = 0, max = 150)
     private String about;
     @ManyToMany
+    @JoinTable(name = "events_users", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "event_id")})
     private List<Event> events;
 
     @Transient

@@ -93,6 +93,8 @@ public class RegisterController {
         vo.setAccountNonLocked(true);
         vo.setCredentialsNonExpired(true);
         vo.setEnabled(true);
+        vo.setEmail(eventOwnerVO.getEmail());
+        vo.setAvatar(eventOwnerVO.getAvatar());
         return eventOwnerServices.createOwner(vo);
     }
 
