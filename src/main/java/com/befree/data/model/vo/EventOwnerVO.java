@@ -1,6 +1,7 @@
 package com.befree.data.model.vo;
 
 import com.befree.data.model.Permission;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -14,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@JsonPropertyOrder({"event_owner_id", "event_owner_name", "document_number"})
+@JsonPropertyOrder({"event_owner_id", "event_owner_name", "document_number", "event_owner_email", "event_owner_avatar"})
 @JsonIgnoreProperties({"links", "roles", "authorities", "permissions",
         "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "enabled", "username"})
 public class EventOwnerVO extends RepresentationModel implements UserDetails, Serializable {
@@ -33,6 +35,7 @@ public class EventOwnerVO extends RepresentationModel implements UserDetails, Se
     private String ownerName;
     @JsonProperty(value = "document_number")
     private int documentNumber;
+    @JsonProperty(value="event_owner_email")
     private String email;
     @JsonIgnoreProperties({"links"})
     @ToString.Exclude
@@ -42,12 +45,14 @@ public class EventOwnerVO extends RepresentationModel implements UserDetails, Se
     private Boolean accountNonExpired;
     private Boolean accountNonLocked;
     private Boolean credentialsNonExpired;
+    @JsonProperty(value= "event_owner_avatar")
     private String avatar;
     private Boolean enabled;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime createdAt;
     private List<Permission> permissions;
-    @JsonProperty(value = "token", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "event_owner_token", access = JsonProperty.Access.READ_ONLY)
     private String token;
-
     //pegando as funcoes dos usuários
     public List<String> getRoles() {
         List<String> roles = new ArrayList<>();

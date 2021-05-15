@@ -2,8 +2,6 @@ package com.befree.services;
 
 import com.befree.adapter.DozerConverter;
 import com.befree.adapter.custom.MatchConverter;
-import com.befree.data.model.ChatRoom;
-import com.befree.data.model.vo.ChatRoomVO;
 import com.befree.data.model.Match;
 import com.befree.data.model.vo.MatchVO;
 import com.befree.data.model.vo.UserVO;
@@ -19,8 +17,6 @@ public class MatchServices {
 
     @Autowired
     private MatchRepository matchRepository;
-    @Autowired
-    private ChatRoomServices chatRoomServices;
     @Autowired
     private MatchConverter converter;
 
@@ -76,51 +72,72 @@ public class MatchServices {
         // if (matchData.isPresent() || !matchData.isEmpty() || matchData != null) {
         //     return DozerConverter.parseObject(matchData, MatchVO.class);
         // }
-       if(!matchData.isPresent() || matchData.isEmpty() || matchData == null) {
+        if (!matchData.isPresent() || matchData.isEmpty() || matchData == null) {
             var matchId = String.format("%s_%s", yourData.getId(),
                     hisOrHerData.getId());
-            ChatRoom chatRoom = ChatRoom.builder().chatId(
-                    String.valueOf(chatRoomServices.getChatId(yourData.getId(), hisOrHerData.getId(), true)))
-                    .build();
-        var chatRoomVO = DozerConverter.parseObject(chatRoom,ChatRoomVO.class);
-            MatchVO matchByYou = MatchVO.builder()
-                    .id(matchId)
-                    .you(yourData)
-                    .hisHerId(hisOrHerData.getId())
-                    .matchRoomVO(chatRoomVO)
-                    .build();
-            MatchVO hisHerMatch = MatchVO.builder()
-                    .id(matchId)
-                    .you(hisOrHerData)
-                    .hisHerId(yourData.getId())
-                    .matchRoomVO(chatRoomVO)
-                    .build();
+//            ChatRoom chatRoom = ChatRoom.builder().chatId(
+//                    String.valueOf(chatRoomServices.getChatId(yourData.getId(), hisOrHerData.getId(), true)))
+//                    .build();
+//        var chatRoomVO = DozerConverter.parseObject(chatRoom,ChatRoomVO.class);
+//           ChatRoomVO yourChatRoomVO = new ChatRoomVO();
+//           yourChatRoomVO.setSenderId(yourData.getId());
+//           yourChatRoomVO.setReceiverId(hisOrHerData.getId());
+//
+//           ChatRoomVO hisHerChatRoom = new ChatRoomVO();
+//           hisHerChatRoom.setSenderId(hisOrHerData.getId());
+//           hisHerChatRoom.setReceiverId(yourData.getId());
+
+
+            MatchVO matchByYou = new MatchVO();
+            matchByYou.setYou(yourData);
+            matchByYou.setHisHer(hisOrHerData);
+
+            MatchVO hisHerMatch = new MatchVO();
+            hisHerMatch.setYou(hisOrHerData);
+            hisHerMatch.setHisHer(yourData);
+
             yourData.addMatch(matchByYou);
             hisOrHerData.addMatch(hisHerMatch);
             saveMatch(matchByYou);
             saveMatch(hisHerMatch);
 
+//            chatRoomServices.createChatRoom(yourChatRoomVO);
+//            chatRoomServices.createChatRoom(hisHerChatRoom);
+
             return matchByYou;
-        }else if(matchData.isPresent() || !matchData.isEmpty() || matchData == null){
-             return DozerConverter.parseObject(matchData.get(), MatchVO.class);
-        }else{
+        } else if (matchData.isPresent() || !matchData.isEmpty() || matchData == null) {
+            return DozerConverter.parseObject(matchData.get(), MatchVO.class);
+        } else {
             throw new ResourceNotFoundException("Not Found Match");
         }
     }
 
 
-
     public List<MatchVO> getYourMatchesByYourId(String yourId) {
-            var matchList = matchRepository.findAllYourMatchesByYourId(yourId)
-                    .orElseThrow(()-> new ResourceNotFoundException("Not Found Matches with your id"));
-            var matchListVO = DozerConverter.parseListObjects(matchList, MatchVO.class);
-            return matchListVO;
+        var matchList = matchRepository.findAllYourMatchesByYourId(yourId)
+                .orElseThrow(() -> new ResourceNotFoundException("Not Found Matches with your id"));
+        var matchListVO = DozerConverter.parseListObjects(matchList, MatchVO.class);
+        return matchListVO;
     }
 
-    public MatchVO getMatchToChatRoom(String yourId, String herHisId){
-        var match = matchRepository.findMatchByHisHerIdAndYouId(yourId,herHisId);
-        var matchVO = DozerConverter.parseObject(match, MatchVO.class);
-        return matchVO;
+    public MatchVO getMatchByMessageSenderAndReceiver(String yourId, String hisHerId) {
+        var match = matchRepository.findMatchByHisHerIdAndYouId(yourId, hisHerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Match Not found"));
+        MatchVO vo = DozerConverter.parseObject(match, MatchVO.class);
+        return vo;
     }
+
+    public MatchVO getMatchByMatchId(String matchId){
+        var match = matchRepository.findById(matchId).
+                orElseThrow(()-> new ResourceNotFoundException("Match not found"));
+        var vo = DozerConverter.parseObject(match, MatchVO.class);
+        return vo;
+    }
+//
+//    public MatchVO getMatchToChatRoom(String yourId, String herHisId) {
+//        var match = matchRepository.findMatchByHisHerIdAndYouId(yourId, herHisId);
+//        var matchVO = DozerConverter.parseObject(match, MatchVO.class);
+//        return matchVO;
+//    }
 
 }

@@ -4,9 +4,7 @@ import com.befree.data.model.vo.EventOwnerVO;
 import com.befree.services.EventOwnerServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,4 +21,14 @@ public class EventOwnerController {
         List<EventOwnerVO> ownersList = services.getAllOwners();
         return ResponseEntity.ok(ownersList);
     }
+
+    @PutMapping(value = "/updateOwner/{ownerId}",
+            produces = {"application/json", "application/xml", "application/x-yaml"},
+            consumes = {"application/json", "application/xml", "application/x-yaml"})
+    public ResponseEntity<EventOwnerVO> updateEventOwner(@PathVariable("ownerId") String ownerId){
+        EventOwnerVO ownerVO = services.findEventOwnerById(ownerId);
+
+        return ResponseEntity.ok().body(services.updateOwner(ownerVO));
+    }
+
 }

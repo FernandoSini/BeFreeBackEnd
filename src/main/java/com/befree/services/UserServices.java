@@ -37,13 +37,12 @@ public class UserServices implements UserDetailsService {
 
     //criar o user No banco
     //o problema é que o converter n esta convertendo a graduacao do vo
-    public UserVO criandoUser(UserVO userVO) {
+    public UserVO createUser(UserVO userVO) {
         var entity = DozerConverter.parseObject(userVO, User.class);
         Optional<User> userExists = userRepository.findOneUserByUserName(entity.getUsername());
         Optional<Boolean> emailExists = userRepository.findUserByEmail(entity.getEmail());
         if (!userExists.isPresent() || userExists.isEmpty() || userExists == null || !emailExists.isPresent() || emailExists.isEmpty()) {
             if (!emailExists.isPresent() || emailExists.isEmpty() || emailExists == null) {
-                System.out.println(entity.getUserGraduations());
                 var voUser = DozerConverter.parseObject(userRepository.saveAndFlush(entity), UserVO.class);
                 System.out.println(entity.getUsername());
 
@@ -107,8 +106,11 @@ public class UserServices implements UserDetailsService {
         var entity = userRepository.findUserById(u.getId())
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
-        entity.setAvatar(u.getAvatar());
-//        entity.setMatches(DozerConverter.parseListObjects(u.getMatches(), Match.class));
+        if (u.getAvatar() == null || u.getAvatar().isEmpty()) {
+            entity.setAvatar(entity.getAvatar());
+        } else {
+            entity.setAvatar(u.getAvatar());
+        }
         if (u.getUserName() == null || u.getUserName().isEmpty()) {
             entity.setUserName(entity.getUserName());
         } else {
@@ -144,7 +146,26 @@ public class UserServices implements UserDetailsService {
         } else {
             entity.setAbout(u.getAbout());
         }
-
+        if(u.getJob() == null || u.getJob().isEmpty()){
+            entity.setJob(entity.getJob());
+        }else{
+            entity.setJob(u.getJob());
+        }
+        if(u.getCompany() == null || u.getCompany().isEmpty()){
+            entity.setCompany(entity.getJob());
+        }else{
+            entity.setCompany(u.getCompany());
+        }
+        if(u.getSchool() == null || u.getSchool().isEmpty()){
+            entity.setSchool(entity.getSchool());
+        }else {
+            entity.setSchool(u.getSchool());
+        }
+        if(u.getLivesIn() == null || u.getLivesIn().isEmpty()){
+            entity.setLivesIn(entity.getLivesIn());
+        }else{
+            entity.setLivesIn(u.getLivesIn());
+        }
 
 //        entity.setLikeReceived(DozerConverter.parseListObjects(u.getLikeReceived(), Like.class));
 //        entity.setLikesSended(DozerConverter.parseListObjects(u.getLikesSended(),Like.class));
@@ -179,15 +200,15 @@ public class UserServices implements UserDetailsService {
         if (username.contains(":")) {
             int colonIndex = username.indexOf(":");
 //            int event_ownerIndex = username.indexOf("event_owner");
-            String eventOwnerName = username.substring(0,colonIndex);
+            String eventOwnerName = username.substring(0, colonIndex);
             var eventOwner = eventOwnerRepository.findByEventOwnerName(eventOwnerName)
                     .orElseThrow(() -> new UserNotFoundException("EventOwner:" + eventOwnerName + " not found"));
             if (eventOwner != null) {
                 return eventOwner;
-            }else {
+            } else {
                 throw new UsernameNotFoundException("EventOwner with this username not found " + eventOwnerName);
             }
-        }else{
+        } else {
             var user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new UserNotFoundException("User " + username + " not found"));
             if (user != null) {

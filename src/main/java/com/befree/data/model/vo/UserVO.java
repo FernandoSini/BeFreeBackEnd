@@ -1,11 +1,9 @@
 package com.befree.data.model.vo;
 
 import com.befree.data.model.Gender;
-import com.befree.data.model.Match;
 import com.befree.data.model.Permission;
 import com.befree.data.model.Usertype;
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.dozermapper.core.Mapping;
 import lombok.Data;
 import lombok.ToString;
@@ -13,14 +11,16 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @JsonPropertyOrder({"id", "avatar", "userName", "firstName",
-        "lastName", "gender", "birthday", "email", "usertype","about", "userGraduations", "matches",
+        "lastName", "gender", "birthday", "email", "usertype", "about", "job_title",
+        "company", "school", "livesIn","createdAt",
+         "matches", "events",
         "likesSended", "likeReceived", "images"})
 @JsonIgnoreProperties({"accountNonExpired",
         "accountNonLocked", "credentialsNonExpired", "roles",
@@ -45,11 +45,8 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     private String email;
     @JsonIgnoreProperties({"userSendLike", "matches", "links"})
     private List<LikeVO> likesSended;
-    @JsonIgnoreProperties({"userLiked", "matches","links"})
+    @JsonIgnoreProperties({"userLiked", "matches", "links"})
     private List<LikeVO> likeReceived;
-    @JsonProperty("userGraduations")
-    @JsonIgnoreProperties({"users", "links"})
-    private List<GraduationVO> userGraduations;
     @JsonProperty(value = "usertype")
     private Usertype usertype;
     @JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
@@ -63,15 +60,32 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     @ToString.Exclude
     @JsonIgnoreProperties({"userSendLike", "userLiked"})
     private List<MatchVO> matches;
+    @ToString.Exclude
+    @JsonIgnore
+    private List<MatchVO> hisHerMatch;
     @JsonProperty(value = "token", access = JsonProperty.Access.READ_ONLY)
     private String token;
     @JsonProperty(value = "images")
-    @JsonIgnoreProperties({"user","links","user_reference"})
+    @JsonIgnoreProperties({"user", "links", "user_reference"})
     private List<ImageVO> images;
     @JsonProperty(value = "avatar")
     private String avatar;
     @JsonProperty(value = "about")
     private String about;
+    @JsonProperty(value = "events")
+    @ToString.Exclude
+    @JsonIgnoreProperties({"users"})
+    private List<EventVO> events;
+    @JsonProperty(value = "job_title")
+    private String job;
+    @JsonProperty(value = "company")
+    private String company;
+    @JsonProperty(value = "school")
+    private String school;
+    @JsonProperty(value = "livesIn")
+    private String livesIn;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime createdAt;
 
     public UserVO() {
     }
@@ -80,28 +94,96 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
                   String firstName,
                   String lastName, Gender gender,
                   String birthday,
+                  String email,
                   List<LikeVO> likesSended,
                   List<LikeVO> likeReceived,
-                  List<GraduationVO> userGraduations,
                   Usertype usertype, String password,
                   List<MatchVO> matches,
+                  List<MatchVO> hisHerMatch,
                   String avatar,
-                  List<ImageVO> images, String about) {
+                  List<ImageVO> images, String about,
+                  List<EventVO> events,
+                  String job, String company, String school, String livesIn,
+                  LocalDateTime createdAt) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
         this.gender = gender;
         this.birthday = birthday;
         this.likesSended = likesSended;
         this.likeReceived = likeReceived;
-        this.userGraduations = userGraduations;
         this.usertype = usertype;
         this.password = password;
         this.matches = matches;
         this.avatar = avatar;
+        this.hisHerMatch = hisHerMatch;
         this.images = images;
         this.about = about;
+        this.events = events;
+        this.job = job;
+        this.company = company;
+        this.school = school;
+        this.livesIn = livesIn;
+        this.createdAt = createdAt;
+
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public List<EventVO> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<EventVO> events) {
+        this.events = events;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    public String getLivesIn() {
+        return livesIn;
+    }
+
+    public void setLivesIn(String livesIn) {
+        this.livesIn = livesIn;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public List<MatchVO> getHisHerMatch() {
+        return hisHerMatch;
+    }
+
+    public void setHisHerMatch(List<MatchVO> hisHerMatch) {
+        this.hisHerMatch = hisHerMatch;
     }
 
     public String getAbout() {
@@ -114,7 +196,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
 
     public void addImage(ImageVO images) {
         this.images.add(images);
-        images.setUser(this);
+        images.setUserVO(this);
     }
 
     public void remove(ImageVO images) {
@@ -217,13 +299,6 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         this.likeReceived = likeReceived;
     }
 
-    public List<GraduationVO> getUserGraduations() {
-        return userGraduations;
-    }
-
-    public void setUserGraduations(List<GraduationVO> userGraduations) {
-        this.userGraduations = userGraduations;
-    }
 
     public Usertype getUsertype() {
         return usertype;
@@ -291,7 +366,6 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         return this.permissions;
     }
 
-
     @Override
     public String getPassword() {
         return this.password;
@@ -317,11 +391,11 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         return this.credentialsNonExpired;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return this.enabled;
     }
-
 
     public Boolean getAccountNonExpired() {
         return accountNonExpired;

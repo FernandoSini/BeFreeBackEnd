@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -46,10 +47,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()//autorizando requisicoes
                 .antMatchers("/auth/login", "/api-docs/**", "swagger-ui.html**",
-                        "/auth/register","/graduations").permitAll()
+                        "/auth/register").permitAll()
                 // os endpoints que permitirao acesso o/** permitira acesso a tudo de api docs, ou seja,
                 //(continuacao de cima) todas as urls compativeis com essas definidas vai permitir acesso sem autenticacao
-                .antMatchers("/api/**").authenticated()//todos que chegarem em /api precisam estar autenticados, todos os /apis precisam de senha
+                .antMatchers("/api/*").authenticated()//todos que chegarem em /api precisam estar autenticados, todos os /apis precisam de senha
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/api/images/data/**").permitAll()
+                .and()
+                .authorizeRequests()
                 .and()
                 .apply(new JwtConfigurer(tokenProvider))
                 .and()

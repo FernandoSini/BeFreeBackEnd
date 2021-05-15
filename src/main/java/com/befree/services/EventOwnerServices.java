@@ -4,6 +4,7 @@ import com.befree.adapter.DozerConverter;
 import com.befree.data.model.EventOwner;
 import com.befree.data.model.vo.EventOwnerVO;
 import com.befree.exceptions.CreateUserException;
+import com.befree.exceptions.ResourceNotFoundException;
 import com.befree.exceptions.UserNotFoundException;
 import com.befree.repository.EventOwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ public class EventOwnerServices {
 
 
     public EventOwnerVO createOwner(EventOwnerVO eventOwnerVO) {
-
 //        var entity = DozerConverter.parseObject(eventOwnerVO, EventOwner.class);
 //        var voEventOwner = DozerConverter.parseObject(eventOwnerRepository.save(entity), EventOwnerVO.class);
 //        return voEventOwner;
@@ -55,5 +55,15 @@ public class EventOwnerServices {
         return voList;
     }
 
+    public EventOwnerVO findEventOwnerById(String ownerId){
+        var entity = eventOwnerRepository.findById(ownerId)
+                .orElseThrow(()-> new ResourceNotFoundException("We didn't not found Event Owner with this Id!"));
+        var vo = DozerConverter.parseObject(entity, EventOwnerVO.class);
+        return vo;
+    }
 
+
+    public EventOwnerVO updateOwner(EventOwnerVO eventOwnerVO) {
+        return null;
+    }
 }

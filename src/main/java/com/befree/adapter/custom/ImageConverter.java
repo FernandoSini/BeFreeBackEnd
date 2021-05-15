@@ -12,17 +12,25 @@ public class ImageConverter {
 
     public ImageVO convertEntitytoVO(Image entity){
         ImageVO imageVO =new ImageVO();
-        imageVO.setUser(DozerConverter.parseObject(entity.getUser(), UserVO.class));
-        imageVO.setImageLink(entity.getImageLink());
+        imageVO.setUserVO(DozerConverter.parseObject(entity.getUser(), UserVO.class));
+        imageVO.setName(entity.getName());
+        imageVO.setData(entity.getData());
+        imageVO.setSize(entity.getSize());
+        imageVO.setContentType(entity.getContentType());
         imageVO.setId(entity.getId());
+        imageVO.setUrl(entity.getUrl());
         return imageVO;
     }
 
     public Image convertVoToEntity(ImageVO vo){
         Image image  = new Image();
         image.setId(vo.getId());
-        image.setImageLink(vo.getImageLink());
-        image.setUser(DozerConverter.parseObject(vo.getUser(), User.class));
+        image.setName(vo.getName());
+        image.setContentType(vo.getContentType());
+        image.setData(vo.getData());
+        image.setSize(vo.getSize());
+        image.setUser(DozerConverter.parseObject(vo.getUserVO(), User.class));
+        image.setUrl(vo.getUrl());
         return image;
     }
 }

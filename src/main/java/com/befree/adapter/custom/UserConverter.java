@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserConverter {
 
-    private GraduationConverter graduationConverter;
 
     public UserVO convertUserToVO(User user) {
         UserVO userVO = new UserVO();
@@ -23,7 +22,6 @@ public class UserConverter {
         userVO.setGender(user.getGender());
         userVO.setId(user.getId());
         userVO.setUsertype(user.getUsertype());
-        userVO.setUserGraduations(DozerConverter.parseListObjects(user.getUserGraduations(), GraduationVO.class));
         userVO.setLikesSended(DozerConverter.parseListObjects(user.getLikesSended(), LikeVO.class));
         userVO.setLikeReceived(DozerConverter.parseListObjects(user.getLikeReceived(), LikeVO.class));
         userVO.setPermissions(DozerConverter.parseListObjects(user.getPermissions(), Permission.class));
@@ -35,6 +33,11 @@ public class UserConverter {
         userVO.setImages(DozerConverter.parseListObjects(user.getImages(), ImageVO.class));
         userVO.setAvatar(user.getAvatar());
         userVO.setAbout(user.getAbout());
+        userVO.setCompany(user.getCompany());
+        userVO.setJob(user.getJob());
+        userVO.setSchool(user.getSchool());
+        userVO.setLivesIn(user.getLivesIn());
+        userVO.setEvents(DozerConverter.parseListObjects(user.getEvents(),EventVO.class));
         return userVO;
     }
 
@@ -46,7 +49,6 @@ public class UserConverter {
         userObject.setLastName(voUser.getLastName());
         userObject.setEmail(voUser.getEmail());
         userObject.setGender(voUser.getGender());
-        userObject.setUserGraduations(DozerConverter.parseListObjects(voUser.getUserGraduations(), Graduation.class)/*voUser.getUserGraduations().stream().map(data-> graduationConverter.convertVoToEntity(data)).collect(Collectors.toList())*/);
         userObject.setUsertype(voUser.getUsertype());
         userObject.setBirthday(voUser.getBirthday());
         userObject.setLikesSended(DozerConverter.parseListObjects(voUser.getLikesSended(), Like.class));
@@ -59,6 +61,12 @@ public class UserConverter {
         userObject.setAvatar(voUser.getAvatar());
         userObject.setAbout(voUser.getAbout());
         userObject.setImages(DozerConverter.parseListObjects(voUser.getImages(),Image.class));
+        userObject.setCompany(voUser.getCompany());
+        userObject.setLivesIn(voUser.getLivesIn());
+        userObject.setSchool(voUser.getSchool());
+        userObject.setJob(voUser.getJob());
+        userObject.setEvents(DozerConverter.parseListObjects(voUser.getEvents(), Event.class));
+
         return userObject;
     }
 

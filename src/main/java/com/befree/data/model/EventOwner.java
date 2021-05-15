@@ -1,5 +1,6 @@
 package com.befree.data.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -55,6 +57,8 @@ public class EventOwner implements Serializable, UserDetails {
 
     @Column(name = "enabled")
     private Boolean enabled;
+    @Column(name="createdAt")
+    private LocalDateTime createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "event_owner_permissions", joinColumns = {@JoinColumn(name = "id_event_owner", referencedColumnName = "event_owner_id")},
@@ -62,6 +66,7 @@ public class EventOwner implements Serializable, UserDetails {
     private List<Permission> permissions;
     @Transient
     private String token;
+
 
     //pegando as funcoes dos usuários
     public List<String> getRoles() {

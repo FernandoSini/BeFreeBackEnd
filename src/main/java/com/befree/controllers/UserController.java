@@ -2,16 +2,12 @@ package com.befree.controllers;
 
 import com.befree.adapter.DozerConverter;
 import com.befree.data.model.Gender;
-import com.befree.data.model.Usertype;
-import com.befree.data.model.vo.GraduationVO;
 import com.befree.data.model.vo.UserVO;
-import com.befree.services.GraduationServices;
 import com.befree.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,8 +16,8 @@ public class UserController {
 
     @Autowired
     private UserServices userServices;
-    @Autowired
-    private GraduationServices graduationServices;
+//    @Autowired
+//    private GraduationServices graduationServices;
 
 
     //    @PostMapping(value = "/create")
@@ -106,7 +102,6 @@ public class UserController {
 
     @GetMapping(value = "/gender/find/different/{gender}", produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<List<UserVO>> getUsersByGenderDifferentThanYour(@PathVariable("gender") Gender gender) {
-        System.out.println(gender.ordinal());
         List<UserVO> users = userServices.getUsersByDiferentThenYourGender(gender);
         return ResponseEntity.ok(users);
 

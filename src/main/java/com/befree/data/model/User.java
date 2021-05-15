@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,9 +22,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User implements UserDetails, Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -53,15 +51,6 @@ public class User implements UserDetails, Serializable {
 
     @OneToMany(mappedBy = "userLiked", orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Like> likeReceived;
-
-    @ManyToMany(targetEntity = Graduation.class,
-            fetch = FetchType.LAZY
-            /*, cascade = CascadeType.ALL*/)
-    @JoinTable(name = "graduation_user",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "graduation_id", referencedColumnName = "graduation_id")})
-    @JsonIgnoreProperties({"users"})
-    private List<Graduation> userGraduations;
 
     @Enumerated(EnumType.ORDINAL)
     private Usertype usertype;
@@ -93,7 +82,10 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy = "you", orphanRemoval = true)
     private List<Match> matches;
 
-    @OneToMany(mappedBy = "user",orphanRemoval = true)
+    @OneToMany(mappedBy = "hisHer", orphanRemoval = true)
+    private List<Match> hisHerMatch;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Image> images;
 
     @Column(name = "avatar")
@@ -102,10 +94,20 @@ public class User implements UserDetails, Serializable {
     @Column(name = "about")
     @Size(min = 0, max = 150)
     private String about;
-    @ManyToMany
-    @JoinTable(name = "events_users", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "event_id")})
+    @ManyToMany(mappedBy = "users")
     private List<Event> events;
+
+    @Column(name = "job_title")
+    private String job;
+
+    @Column(name = "company")
+    private String company;
+    @Column(name = "school")
+    private String school;
+    @Column(name = "lives_in")
+    private String livesIn;
+    @Column(name="createdAt")
+    private LocalDateTime createdAt;
 
     @Transient
     private String token;
@@ -115,11 +117,12 @@ public class User implements UserDetails, Serializable {
 
     public User(String id, @Size(min = 3) String userName, String firstName,
                 String lastName, Gender gender, List<Like> likesSended,
-                List<Like> likeReceived, List<Graduation> userGraduations,
-                List<Match> matches,
+                List<Like> likeReceived,
+                List<Match> matches, List<Match> hisHerMatch,
                 String email, Usertype usertype, String birthday,
                 List<Image> images, String avatar,
-                String password, String token, String about,List<Event> events) {
+                String password, String token, String about,
+                List<Event> events, String job, String company, String school, String livesIn,LocalDateTime createdAt) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -127,17 +130,70 @@ public class User implements UserDetails, Serializable {
         this.gender = gender;
         this.likesSended = likesSended;
         this.likeReceived = likeReceived;
-        this.userGraduations = userGraduations;
         this.email = email;
         this.usertype = usertype;
         this.birthday = birthday;
         this.password = password;
         this.matches = matches;
+        this.hisHerMatch = hisHerMatch;
         this.token = token;
         this.images = images;
         this.avatar = avatar;
         this.about = about;
         this.events = events;
+        this.job = job;
+        this.company = company;
+        this.school = school;
+        this.livesIn = livesIn;
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getLivesIn() {
+        return livesIn;
+    }
+
+    public void setLivesIn(String livesIn) {
+        this.livesIn = livesIn;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public List<Match> getHisHerMatch() {
+        return hisHerMatch;
+    }
+
+    public void setHisHerMatch(List<Match> hisHerMatch) {
+        this.hisHerMatch = hisHerMatch;
     }
 
     public List<Event> getEvents() {
@@ -250,14 +306,6 @@ public class User implements UserDetails, Serializable {
 
     public void setUsertype(Usertype usertype) {
         this.usertype = usertype;
-    }
-
-    public List<Graduation> getUserGraduations() {
-        return userGraduations;
-    }
-
-    public void setUserGraduations(List<Graduation> userGraduations) {
-        this.userGraduations = userGraduations;
     }
 
     public String getBirthday() {

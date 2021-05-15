@@ -47,5 +47,14 @@ public class CustomizedExceptionsHandler extends ResponseEntityExceptionHandler 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(AgeException.class)
+    public final ResponseEntity<ExceptionResponse> invalidAgeException(Exception exception, WebRequest request) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(new Date(), exception.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+
+
 
 }
