@@ -23,7 +23,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@JsonPropertyOrder({"event_owner_id", "event_owner_name", "document_number", "event_owner_email", "event_owner_avatar"})
+@JsonPropertyOrder({"event_owner_id", "event_owner_name",
+        "document_number", "event_owner_email", "event_owner_avatar", "createdAt"})
 @JsonIgnoreProperties({"links", "roles", "authorities", "permissions",
         "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "enabled", "username"})
 public class EventOwnerVO extends RepresentationModel implements UserDetails, Serializable {

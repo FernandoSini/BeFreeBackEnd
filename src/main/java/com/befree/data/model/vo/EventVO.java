@@ -13,6 +13,8 @@ import lombok.ToString;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class EventVO extends RepresentationModel implements Serializable {
     @JsonProperty("event_id")
     private String eventId;
     @JsonProperty("event_owner")
+    @ToString.Exclude
     @JsonIgnoreProperties({"events", "document_number"})
     private EventOwnerVO ownerVO;
     @JsonProperty("event_name")
@@ -39,10 +42,10 @@ public class EventVO extends RepresentationModel implements Serializable {
     @JsonProperty("event_location")
     private String eventLocation;
     @JsonProperty("start_date")
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss",timezone = "UTC")
     private LocalDateTime startDate;
     @JsonProperty("end_date")
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss", timezone = "UTC")
     private LocalDateTime endDate;
     @JsonProperty("event_description")
     private String eventDescription;

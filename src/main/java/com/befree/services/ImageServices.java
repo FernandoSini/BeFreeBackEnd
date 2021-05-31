@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,13 +57,13 @@ public class ImageServices {
             }
 
             ImageVO imageVO = new ImageVO();
-            imageVO.setName(filename);
+            imageVO.setName(UUID.randomUUID().toString() +filename);
             imageVO.setContentType(file.getContentType());
             imageVO.setData(file.getBytes());
             imageVO.setSize(file.getSize());
             imageVO.setUserVO(userVO);  String url = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/api/images/data/")
-                    .path(filename)
+                    .path(imageVO.getName())
                     .toUriString();
             imageVO.setUrl(url);
             var entity = converter.convertVoToEntity(imageVO);

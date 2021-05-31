@@ -7,11 +7,14 @@ import com.befree.data.model.EventStatus;
 import com.befree.data.model.vo.EventVO;
 import com.befree.exceptions.ResourceNotFoundException;
 import com.befree.repository.EventsRepository;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.*;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 @Service
@@ -71,20 +74,47 @@ public class EventsServices {
                 .orElseThrow(() -> new ResourceNotFoundException("Event doesn't exists"));
         //lembrar que se atualizar os dados e os dados forem modificados,
         // para mantê-los devemos usaros gets e setters igual fiz no update user
-        if (LocalDateTime.now().isAfter(event.getEndDate())) {
+//
+//        if (LocalDateTime.now().isBefore(event.getStartDate().atZone(ZoneId.systemDefault()).toLocalDateTime()) ==true) {
+//            System.out.println("filho da puta");
+//            event.setEventStatus(EventStatus.INCOMING);
+//            eventsRepository.updateEventStatus(
+//                    event.getEventStatus(), event.getId());
+//
+//        } else if (LocalDateTime.now().isAfter(event.getStartDate().atZone(ZoneId.systemDefault()).toLocalDateTime())
+//                && LocalDateTime.now().isBefore(event.getEndDate().atZone(ZoneId.systemDefault()).toLocalDateTime())) {
+//            System.out.println("pau no seu cu");
+//            event.setEventStatus(EventStatus.HAPPENING);
+//            eventsRepository.updateEventStatus(event.getEventStatus(), event.getId());
+//
+//        } else {
+//            System.out.println("foda-se");
+//            event.setEventStatus(EventStatus.ENDED);
+//            eventsRepository.updateEventStatus(event.getEventStatus(), event.getId());
+//
+//        }
+        if(Instant.now().atZone(ZoneId.of("America/Sao_Paulo")).toLocalDateTime().isEqual(event.getEndDate())||
+                Instant.now().atZone(ZoneId.of("America/Sao_Paulo")).toLocalDateTime().isAfter(event.getEndDate())){
             event.setEventStatus(EventStatus.ENDED);
-            eventsRepository.updateEventStatus(
-                    event.getEventStatus(), event.getId());
-
-        } else if (LocalDateTime.now().isAfter(event.getStartDate()) && LocalDateTime.now().isBefore(event.getEndDate())) {
+            eventsRepository.updateEventStatus(event.getEventStatus(),event.getId());
+        }else if(Instant.now().atZone(ZoneId.of("America/Sao_Paulo")).toLocalDateTime().isAfter(event.getStartDate())
+                && Instant.now().atZone(ZoneId.of("America/Sao_Paulo")).toLocalDateTime().isBefore(event.getEndDate())||
+            Instant.now().atZone(ZoneId.of("America/Sao_Paulo")).toLocalDateTime().isEqual(event.getStartDate())) {
             event.setEventStatus(EventStatus.HAPPENING);
-            eventsRepository.updateEventStatus(event.getEventStatus(), event.getId());
-
-        } else {
+            eventsRepository.updateEventStatus(event.getEventStatus(),event.getId());
+        }else{
             event.setEventStatus(EventStatus.INCOMING);
             eventsRepository.updateEventStatus(event.getEventStatus(), event.getId());
-
         }
+    }
+
+    public List<EventVO> findEventsByEventName(String eventName) {
+        var list = eventsRepository.findEventsByEventName(eventName)
+                .orElseThrow(() -> new ResourceNotFoundException("Event with this name: " + eventName + " not found!"));
+        var listVo = list.stream().map(event -> converter.convertEntityToVo(event))
+                .collect(Collectors.toList());
+        return listVo;
+
     }
 
     public EventVO findEventById(String eventId) {
@@ -98,44 +128,44 @@ public class EventsServices {
     public EventVO gotoEventVO(EventVO eventVO) {
 //        var event = DozerConverter.parseObject(eventVO, Event.class);
 //        var vo = DozerConverter.parseObject(eventsRepository.saveAndFlush(event), EventVO.class);
-        var event  = converter.convertVOtoEntity(eventVO);
+        var event = converter.convertVOtoEntity(eventVO);
         var vo = converter.convertEntityToVo(eventsRepository.saveAndFlush(event));
         return vo;
     }
 
-    public EventVO updateEvent(EventVO eventVO){
+    public EventVO updateEvent(EventVO eventVO) {
         var entity = eventsRepository.findById(eventVO.getEventId())
-                .orElseThrow(()-> new ResourceNotFoundException("Event not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
-        if(eventVO.getEventName() == null ||eventVO.getEventName().isEmpty()){
+        if (eventVO.getEventName() == null || eventVO.getEventName().isEmpty()) {
             entity.setEventName(entity.getEventName());
-        }else{
+        } else {
             entity.setEventName(eventVO.getEventName());
         }
-        if(eventVO.getEventLocation() == null || eventVO.getEventLocation().isEmpty()){
+        if (eventVO.getEventLocation() == null || eventVO.getEventLocation().isEmpty()) {
             entity.setEventLocation(entity.getEventLocation());
-        }else{
+        } else {
             entity.setEventLocation(eventVO.getEventLocation());
         }
-        if(eventVO.getEventCover() == null || eventVO.getEventCover().isEmpty()){
+        if (eventVO.getEventCover() == null || eventVO.getEventCover().isEmpty()) {
             entity.setEventCover(entity.getEventCover());
-        }else{
+        } else {
             entity.setEventCover(eventVO.getEventCover());
         }
-        if(eventVO.getEventDescription() == null || eventVO.getEventDescription().isEmpty()){
+        if (eventVO.getEventDescription() == null || eventVO.getEventDescription().isEmpty()) {
             entity.setEventDescription(entity.getEventDescription());
-        }else{
+        } else {
             entity.setEventDescription(eventVO.getEventDescription());
         }
-        if(eventVO.getStartDate().toString() == null || eventVO.getStartDate().toString().isEmpty()){
+        if (eventVO.getStartDate().toString() == null || eventVO.getStartDate().toString().isEmpty()) {
             entity.setStartDate(entity.getStartDate());
-        }else{
+        } else {
             entity.setStartDate(eventVO.getStartDate());
         }
-        if(eventVO.getEndDate().toString() == null || eventVO.getEndDate().toString().isEmpty()){
+        if (eventVO.getEndDate().toString() == null || eventVO.getEndDate().toString().isEmpty()) {
             entity.setEndDate(entity.getEndDate());
 
-        }else{
+        } else {
             entity.setEndDate(eventVO.getEndDate());
         }
 

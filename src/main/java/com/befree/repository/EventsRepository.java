@@ -19,16 +19,21 @@ public interface EventsRepository extends JpaRepository<Event, String> {
 
     @Query("Select e from Event e where e.owner.id =:eventOwnerId")
     Optional<List<Event>> findEventsByEventOwnerId(@Param("eventOwnerId") String eventOwnerId);
+
     @Query("Select e from Event e where e.eventStatus =:eventStatus")
-    Optional<List<Event>> findEventByStatus(@Param("eventStatus")EventStatus eventStatus);
+    Optional<List<Event>> findEventByStatus(@Param("eventStatus") EventStatus eventStatus);
 
     @Transactional
     @Modifying
     @Query("Update Event e set e.eventStatus =:eventStatus where e.id =:eventId")
-    void updateEventStatus(@Param("eventStatus") EventStatus eventStatus, @Param("eventId")String eventId);
+    void updateEventStatus(@Param("eventStatus") EventStatus eventStatus, @Param("eventId") String eventId);
 
     @Transactional
     @Modifying
     @Query(value = "Insert into (user_id,event_id) events_users eu VALUES(:userId, :eventId)", nativeQuery = true)
-    Event insertUsersOnEvent(@Param("user") String userId,  @Param("eventId") String eventId);
+    Event insertUsersOnEvent(@Param("user") String userId, @Param("eventId") String eventId);
+
+    @Query("Select e from Event e where e.eventName =:eventName")
+    Optional<List<Event>> findEventsByEventName(@Param("eventName") String eventName);
+    //insert into events (end_date, event_cover, event_description, event_location, event_name, event_status, event_owner_id, start_date, event_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?)
 }

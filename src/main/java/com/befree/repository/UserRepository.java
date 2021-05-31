@@ -32,6 +32,5 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("Select u from User u where u.gender =:genderToSearch")
     Optional<List<User>> findUsersByOneGender(@Param("genderToSearch") Gender genderToSearch);
 
-
     Optional<User> findUserById(String id);
 }

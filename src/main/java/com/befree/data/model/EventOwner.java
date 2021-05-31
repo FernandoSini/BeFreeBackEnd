@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,7 +38,7 @@ public class EventOwner implements Serializable, UserDetails {
     private int documentNumber;
     @Column(name = "event_owner_email")
     private String email;
-
+    @ToString.Exclude
     @OneToMany(mappedBy = "owner",orphanRemoval = true)
     private List<Event> events;
 

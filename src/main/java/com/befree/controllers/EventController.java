@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 @RestController
 @RequestMapping("/api/events")
@@ -31,22 +32,24 @@ public class EventController {
     @Autowired
     private UserServices userServices;
 
-    @PostMapping(value = "/create/{ownerName}",
+    @PostMapping(value = "/create/{ownerId}",
             produces = {"application/json", "application/xml", "application/x-yaml"},
             consumes = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<EventVO> createEvent(
-            @PathVariable("ownerName") String ownerName, @RequestBody EventVO voEvent) {
-
-        var ownerVO = eventOwnerServices.getEventOwnerByName(ownerName);
+            @PathVariable("ownerId") String ownerId, @RequestBody EventVO voEvent) {
+            System.out.println(TimeZone.getDefault());
+        var ownerVO = eventOwnerServices.findEventOwnerById(ownerId);
 //        EventVO voEvent = new EventVO();
         voEvent.setOwnerVO(ownerVO);
         voEvent.setEventName(voEvent.getEventName());
         voEvent.setEventCover(voEvent.getEventCover());
-        voEvent.setEventStatus(voEvent.getEventStatus());
+//        voEvent.setEventStatus(voEvent.getEventStatus());
         //caso queiramos converter uma string em date usaremos DateTimeFormatter
 //        DateTimeFormatter df =  DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         voEvent.setStartDate(voEvent.getStartDate());
         voEvent.setEndDate(voEvent.getEndDate());
+        System.out.println(voEvent.getStartDate().toString());
+        System.out.println(voEvent.getEndDate().toString());
         voEvent.setEventLocation(voEvent.getEventLocation());
         voEvent.setEventStatus(EventStatus.INCOMING); //adicionei essa linha
         voEvent.setEventDescription(voEvent.getEventDescription());
@@ -92,7 +95,6 @@ public class EventController {
     }
 
 
-
     @PostMapping(value = "/go/{eventId}",
             produces = {"application/json", "application/xml", "application/x-yaml"},
             consumes = {"application/json", "application/xml", "application/x-yaml"})
@@ -115,9 +117,16 @@ public class EventController {
             consumes = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<EventVO> updateEventData(
             @PathVariable("eventId") String eventId,
-            @RequestBody EventVO eventData){
-            EventVO event = eventsServices.updateEvent(eventData);
+            @RequestBody EventVO eventData) {
+        EventVO event = eventsServices.updateEvent(eventData);
         return ResponseEntity.ok().body(event);
+    }
+
+    @GetMapping(value = "/find/{eventName}",
+            produces = {"application/json", "application/xml", "application/x-yaml"})
+    public ResponseEntity<List<EventVO>> findEventsByName(@PathVariable("eventName") String eventName) {
+        List<EventVO> events = eventsServices.findEventsByEventName(eventName);
+        return ResponseEntity.ok().body(events);
     }
 
 }

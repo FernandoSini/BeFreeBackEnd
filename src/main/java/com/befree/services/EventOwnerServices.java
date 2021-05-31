@@ -44,7 +44,7 @@ public class EventOwnerServices {
 
     public EventOwnerVO getEventOwnerByName(String eventOwnerName){
         var entity = eventOwnerRepository.findByEventOwnerName(eventOwnerName)
-                .orElseThrow(()-> new UserNotFoundException("EventOwner not found"));
+                .orElseThrow(()-> new UserNotFoundException("EventOwner not found! "));
         return DozerConverter.parseObject(entity, EventOwnerVO.class);
     }
 
