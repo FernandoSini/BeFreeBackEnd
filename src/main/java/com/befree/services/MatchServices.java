@@ -9,10 +9,12 @@ import com.befree.exceptions.ResourceNotFoundException;
 import com.befree.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class MatchServices {
 
     @Autowired
@@ -123,7 +125,8 @@ public class MatchServices {
     public MatchVO getMatchByMessageSenderAndReceiver(String yourId, String hisHerId) {
         var match = matchRepository.findMatchByHisHerIdAndYouId(yourId, hisHerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Match Not found"));
-        MatchVO vo = DozerConverter.parseObject(match, MatchVO.class);
+//        MatchVO vo = DozerConverter.parseObject(match, MatchVO.class);
+        MatchVO vo = converter.convertEntityToVO(match);
         return vo;
     }
 

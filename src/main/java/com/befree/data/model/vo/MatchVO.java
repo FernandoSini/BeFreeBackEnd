@@ -7,6 +7,7 @@ import com.github.dozermapper.core.Mapping;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
@@ -29,7 +30,6 @@ public class MatchVO extends RepresentationModel implements Serializable {
         @JsonIgnoreProperties({"matches", /*--> esse matches esta dando infinito de looping pra resolver vou manter ativo*/
                 "likesSended",
                 "likeReceived",
-//            "matchRoom",
                 "accountNonExpired","accountNonLocked","credentialsNonExpired", "enabled","username", "token"})
         private UserVO you;
 
@@ -37,22 +37,15 @@ public class MatchVO extends RepresentationModel implements Serializable {
         @JsonIgnoreProperties({"matches", /*--> esse matches esta dando infinito de looping pra resolver vou manter ativo*/
                 "likesSended",
                 "likeReceived",
-//            "matchRoom",
                 "accountNonExpired","accountNonLocked","credentialsNonExpired", "enabled","username", "token"})
         private UserVO hisHer;
 
-//        @JsonProperty("match_room")
-//        @ToString.Exclude
-//        private ChatRoomVO matchRoomVO;
 
         @JsonProperty("messages")
+        @JsonIgnoreProperties("match")
+        @ToString.Exclude
         private List<MessageVO> messages;
 
-//        @Column(name = "id_userMatched")
-//        private User userMatched;
-//
-//        @Column("chat")
-//        private Chat chat;
 
 
 

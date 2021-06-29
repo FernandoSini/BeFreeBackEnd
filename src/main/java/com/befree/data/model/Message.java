@@ -13,26 +13,26 @@ import java.util.Date;
 
 
 @Entity
-@Table(name = "Messages")
+@Table(name = "message")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class Message implements Serializable {
-    //recomendacao do sensato tirar o chatroom
     @Id
     @GeneratedValue(generator = "uuid", strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "uuid", strategy = "uuid")
     @Column(name = "message_id")
     private String id;
-//    private String chatId;
     @ManyToOne
     private User sender;
     @ManyToOne
     private User receiver;
     @ManyToOne
+    @JoinColumn(name = "match_id",referencedColumnName = "match_id")
     private Match match;
     @Column(name = "content")
     private String content;
+    @Column(name="timestamp")
     private LocalDateTime timestamp;
     private MessageStatus messageStatus;
 

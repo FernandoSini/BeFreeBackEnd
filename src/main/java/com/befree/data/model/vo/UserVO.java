@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@JsonPropertyOrder({"id", "avatar", "userName", "firstName",
+@JsonPropertyOrder({"id","avatar_profile", "userName", "firstName",
         "lastName", "gender", "birthday", "email", "usertype", "about", "job_title",
         "company", "school", "livesIn","createdAt",
          "matches", "events",
@@ -51,10 +51,10 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     private Usertype usertype;
     @JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    private Boolean accountNonExpired;
-    private Boolean accountNonLocked;
-    private Boolean credentialsNonExpired;
-    private Boolean enabled;
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
     private List<Permission> permissions;
     @JsonProperty(value = "matches")
     @ToString.Exclude
@@ -68,8 +68,8 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
     @JsonProperty(value = "images")
     @JsonIgnoreProperties({"user", "links", "user_reference"})
     private List<ImageVO> images;
-    @JsonProperty(value = "avatar")
-    private String avatar;
+    @JsonProperty(value = "avatar_profile")
+    private AvatarVO avatarProfile;
     @JsonProperty(value = "about")
     private String about;
     @JsonProperty(value = "events")
@@ -100,7 +100,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
                   Usertype usertype, String password,
                   List<MatchVO> matches,
                   List<MatchVO> hisHerMatch,
-                  String avatar,
+                  AvatarVO avatarProfile,
                   List<ImageVO> images, String about,
                   List<EventVO> events,
                   String job, String company, String school, String livesIn,
@@ -117,7 +117,7 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         this.usertype = usertype;
         this.password = password;
         this.matches = matches;
-        this.avatar = avatar;
+        this.avatarProfile = avatarProfile;
         this.hisHerMatch = hisHerMatch;
         this.images = images;
         this.about = about;
@@ -211,12 +211,12 @@ public class UserVO extends RepresentationModel implements UserDetails, Serializ
         this.images = images;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public AvatarVO getAvatarProfile() {
+        return avatarProfile;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setAvatarProfile(AvatarVO avatarProfile) {
+        this.avatarProfile = avatarProfile;
     }
 
     public List<String> getRoles() {

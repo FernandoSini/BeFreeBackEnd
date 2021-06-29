@@ -31,7 +31,7 @@ public class UserConverter {
         userVO.setEnabled(user.getEnabled());
         userVO.setMatches(DozerConverter.parseListObjects(user.getMatches(), MatchVO.class));
         userVO.setImages(DozerConverter.parseListObjects(user.getImages(), ImageVO.class));
-        userVO.setAvatar(user.getAvatar());
+        userVO.setAvatarProfile(DozerConverter.parseObject(user.getAvatarProfile(),AvatarVO.class));
         userVO.setAbout(user.getAbout());
         userVO.setCompany(user.getCompany());
         userVO.setJob(user.getJob());
@@ -58,7 +58,7 @@ public class UserConverter {
         userObject.setCredentialsNonExpired(voUser.getCredentialsNonExpired());
         userObject.setEnabled(voUser.getEnabled());
         userObject.setMatches(DozerConverter.parseListObjects(voUser.getMatches(), Match.class));
-        userObject.setAvatar(voUser.getAvatar());
+        userObject.setAvatarProfile(DozerConverter.parseObject(voUser.getAvatarProfile(),Avatar.class));
         userObject.setAbout(voUser.getAbout());
         userObject.setImages(DozerConverter.parseListObjects(voUser.getImages(),Image.class));
         userObject.setCompany(voUser.getCompany());

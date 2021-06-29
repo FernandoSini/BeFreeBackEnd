@@ -23,8 +23,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@JsonPropertyOrder({"event_owner_id", "event_owner_name",
-        "document_number", "event_owner_email", "event_owner_avatar", "createdAt"})
+@JsonPropertyOrder({"event_owner_id", "event_owner_name", "avatar_profile_owner",
+        "document_number", "event_owner_email", "createdAt"})
 @JsonIgnoreProperties({"links", "roles", "authorities", "permissions",
         "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "enabled", "username"})
 public class EventOwnerVO extends RepresentationModel implements UserDetails, Serializable {
@@ -35,7 +35,7 @@ public class EventOwnerVO extends RepresentationModel implements UserDetails, Se
     @JsonProperty(value = "event_owner_name")
     private String ownerName;
     @JsonProperty(value = "document_number")
-    private int documentNumber;
+    private Integer documentNumber;
     @JsonProperty(value="event_owner_email")
     private String email;
     @JsonIgnoreProperties({"links"})
@@ -46,8 +46,8 @@ public class EventOwnerVO extends RepresentationModel implements UserDetails, Se
     private Boolean accountNonExpired;
     private Boolean accountNonLocked;
     private Boolean credentialsNonExpired;
-    @JsonProperty(value= "event_owner_avatar")
-    private String avatar;
+    @JsonProperty(value="avatar_profile_owner")
+    private EventOwnerAvatarVO avatarProfile;
     private Boolean enabled;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt;

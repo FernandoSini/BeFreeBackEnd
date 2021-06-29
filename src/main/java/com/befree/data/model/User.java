@@ -88,8 +88,8 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Image> images;
 
-    @Column(name = "avatar")
-    private String avatar;
+    @OneToOne(mappedBy = "user",orphanRemoval = true)
+    private Avatar avatarProfile;
 
     @Column(name = "about")
     @Size(min = 0, max = 150)
@@ -120,7 +120,8 @@ public class User implements UserDetails, Serializable {
                 List<Like> likeReceived,
                 List<Match> matches, List<Match> hisHerMatch,
                 String email, Usertype usertype, String birthday,
-                List<Image> images, String avatar,
+                List<Image> images,
+                Avatar avatarProfile,
                 String password, String token, String about,
                 List<Event> events, String job, String company, String school, String livesIn,LocalDateTime createdAt) {
         this.id = id;
@@ -138,7 +139,7 @@ public class User implements UserDetails, Serializable {
         this.hisHerMatch = hisHerMatch;
         this.token = token;
         this.images = images;
-        this.avatar = avatar;
+        this.avatarProfile = avatarProfile;
         this.about = about;
         this.events = events;
         this.job = job;
@@ -219,13 +220,13 @@ public class User implements UserDetails, Serializable {
     public void setImages(List<Image> images) {
         this.images = images;
     }
-
-    public String getAvatar() {
-        return avatar;
+    
+    public Avatar getAvatarProfile() {
+        return avatarProfile;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setAvatarProfile(Avatar avatarProfile) {
+        this.avatarProfile = avatarProfile;
     }
 
     public List<Match> getMatches() {

@@ -25,10 +25,10 @@ public class EventOwnerController {
     @PutMapping(value = "/updateOwner/{ownerId}",
             produces = {"application/json", "application/xml", "application/x-yaml"},
             consumes = {"application/json", "application/xml", "application/x-yaml"})
-    public ResponseEntity<EventOwnerVO> updateEventOwner(@PathVariable("ownerId") String ownerId){
-        EventOwnerVO ownerVO = services.findEventOwnerById(ownerId);
+    public ResponseEntity<EventOwnerVO> updateEventOwner(@PathVariable("ownerId") String ownerId, @RequestBody EventOwnerVO ownerVO){
+       EventOwnerVO owner = services.updateOwner(ownerVO);
 
-        return ResponseEntity.ok().body(services.updateOwner(ownerVO));
+        return ResponseEntity.ok().body(owner);
     }
 
 }

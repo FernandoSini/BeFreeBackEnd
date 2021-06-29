@@ -2,9 +2,10 @@ package com.befree.services;
 
 
 import com.befree.adapter.DozerConverter;
+import com.befree.adapter.custom.AvatarConverter;
 import com.befree.adapter.custom.UserConverter;
-import com.befree.data.model.*;
-import com.befree.data.model.vo.EventOwnerVO;
+import com.befree.data.model.Gender;
+import com.befree.data.model.User;
 import com.befree.data.model.vo.UserVO;
 import com.befree.exceptions.CreateUserException;
 import com.befree.exceptions.ResourceNotFoundException;
@@ -26,6 +27,8 @@ public class UserServices implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AvatarConverter converter;
     @Autowired
     private UserConverter userConverter;
     @Autowired
@@ -106,11 +109,6 @@ public class UserServices implements UserDetailsService {
         var entity = userRepository.findUserById(u.getId())
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
-        if (u.getAvatar() == null || u.getAvatar().isEmpty()) {
-            entity.setAvatar(entity.getAvatar());
-        } else {
-            entity.setAvatar(u.getAvatar());
-        }
         if (u.getUserName() == null || u.getUserName().isEmpty()) {
             entity.setUserName(entity.getUserName());
         } else {
@@ -175,6 +173,7 @@ public class UserServices implements UserDetailsService {
         return vo;
 
     }
+
 
     public UserVO convertToUserVo(User entity) {
         if (entity == null) return null;

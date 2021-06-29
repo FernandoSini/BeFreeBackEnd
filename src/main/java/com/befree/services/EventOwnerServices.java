@@ -26,25 +26,25 @@ public class EventOwnerServices {
 //        return voEventOwner;
         var entity = DozerConverter.parseObject(eventOwnerVO, EventOwner.class);
         Optional<EventOwner> eventOwnerExists = eventOwnerRepository.findByEventOwnerName(entity.getOwnerName());
-        if(!eventOwnerExists.isPresent() || eventOwnerExists.isEmpty() || eventOwnerExists ==null){
-            var voEventOwner = DozerConverter.parseObject(eventOwnerRepository.save(entity),EventOwnerVO.class);
+        if (!eventOwnerExists.isPresent() || eventOwnerExists.isEmpty() || eventOwnerExists == null) {
+            var voEventOwner = DozerConverter.parseObject(eventOwnerRepository.save(entity), EventOwnerVO.class);
             return voEventOwner;
-        }else{
+        } else {
             throw new CreateUserException("Event owner already Exists");
         }
     }
 
     public EventOwnerVO getEventOwnerByUserName(String eventOwnerName) {
         var entity = eventOwnerRepository.findByEventOwnerName(eventOwnerName)
-                .orElseThrow(() -> new UserNotFoundException("We not found in our database event owner with this name" +eventOwnerName));
+                .orElseThrow(() -> new UserNotFoundException("We not found in our database event owner with this name" + eventOwnerName));
 
         return DozerConverter.parseObject(entity, EventOwnerVO.class);
     }
 
 
-    public EventOwnerVO getEventOwnerByName(String eventOwnerName){
+    public EventOwnerVO getEventOwnerByName(String eventOwnerName) {
         var entity = eventOwnerRepository.findByEventOwnerName(eventOwnerName)
-                .orElseThrow(()-> new UserNotFoundException("EventOwner not found! "));
+                .orElseThrow(() -> new UserNotFoundException("EventOwner not found! "));
         return DozerConverter.parseObject(entity, EventOwnerVO.class);
     }
 
@@ -55,15 +55,33 @@ public class EventOwnerServices {
         return voList;
     }
 
-    public EventOwnerVO findEventOwnerById(String ownerId){
+    public EventOwnerVO findEventOwnerById(String ownerId) {
         var entity = eventOwnerRepository.findById(ownerId)
-                .orElseThrow(()-> new ResourceNotFoundException("We didn't not found Event Owner with this Id!"));
+                .orElseThrow(() -> new ResourceNotFoundException("We didn't not found Event Owner with this Id!"));
         var vo = DozerConverter.parseObject(entity, EventOwnerVO.class);
         return vo;
     }
 
 
     public EventOwnerVO updateOwner(EventOwnerVO eventOwnerVO) {
-        return null;
+        var entity = eventOwnerRepository.findById(eventOwnerVO.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Event owner not found"));
+        if (eventOwnerVO.getOwnerName() == null || eventOwnerVO.getOwnerName().isEmpty()) {
+            entity.setOwnerName(entity.getOwnerName());
+        } else {
+            entity.setOwnerName(eventOwnerVO.getOwnerName());
+        }
+        if (eventOwnerVO.getEmail() == null || eventOwnerVO.getEmail().isEmpty()) {
+            entity.setEmail(entity.getEmail());
+        } else {
+            entity.setEmail(eventOwnerVO.getEmail());
+        }
+        if (eventOwnerVO.getDocumentNumber() == null) {
+            entity.setDocumentNumber(entity.getDocumentNumber());
+        } else {
+            entity.setDocumentNumber(eventOwnerVO.getDocumentNumber());
+        }
+        var vo = DozerConverter.parseObject(eventOwnerRepository.save(entity), EventOwnerVO.class);
+        return vo;
     }
 }

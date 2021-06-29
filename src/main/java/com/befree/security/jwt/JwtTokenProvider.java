@@ -34,7 +34,7 @@ public class JwtTokenProvider {
 
 
     @PostConstruct
-    //após injetar a dependencia, iremos encodar a secrete key
+    //após injetar a dependencia, iremos encodar a secret key
     public void init() {
         //encriptografando a chave
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());

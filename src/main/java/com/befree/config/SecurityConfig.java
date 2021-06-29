@@ -17,7 +17,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@Order(1)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final long serialVersionUID = 1L;
@@ -47,6 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()//autorizando requisicoes
                 .antMatchers(HttpMethod.GET, "/api/images/data/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/avatar/data/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/avatarowner/data/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/socket/**").authenticated()
                 .antMatchers("/auth/login", "/api-docs/**", "swagger-ui.html**",
                         "/auth/register").permitAll()
                 // os endpoints que permitirao acesso o/** permitira acesso a tudo de api docs, ou seja,
@@ -60,11 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/auth/login").permitAll();
-//        http
-//                .csrf().disable()
-//                .authorizeRequests().anyRequest().authenticated()
-//                .and()
-//                .httpBasic();
 
 
     }

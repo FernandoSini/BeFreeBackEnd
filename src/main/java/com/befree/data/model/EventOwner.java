@@ -35,7 +35,7 @@ public class EventOwner implements Serializable, UserDetails {
     private String ownerName;
     //this can be user document number, or company number
     @Column(name = "document_number")
-    private int documentNumber;
+    private Integer documentNumber;
     @Column(name = "event_owner_email")
     private String email;
     @ToString.Exclude
@@ -53,8 +53,6 @@ public class EventOwner implements Serializable, UserDetails {
 
     @Column(name = "credentials_non_expired")
     private Boolean credentialsNonExpired;
-    @Column(name = "avatar")
-    private String avatar;
 
     @Column(name = "enabled")
     private Boolean enabled;
@@ -67,6 +65,8 @@ public class EventOwner implements Serializable, UserDetails {
     private List<Permission> permissions;
     @Transient
     private String token;
+    @OneToOne(mappedBy ="eventOwner" ,orphanRemoval = true)
+    private EventOwnerAvatar avatarProfile;
 
 
     //pegando as funcoes dos usuários

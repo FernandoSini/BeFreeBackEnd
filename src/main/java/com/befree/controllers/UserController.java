@@ -2,11 +2,14 @@ package com.befree.controllers;
 
 import com.befree.adapter.DozerConverter;
 import com.befree.data.model.Gender;
+import com.befree.data.model.vo.AvatarVO;
+import com.befree.data.model.vo.ImageVO;
 import com.befree.data.model.vo.UserVO;
 import com.befree.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -112,6 +115,7 @@ public class UserController {
         return ResponseEntity.ok(users);
 
     }
+
 
 
 }

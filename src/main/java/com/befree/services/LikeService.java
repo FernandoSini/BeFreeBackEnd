@@ -46,9 +46,9 @@ public class LikeService {
             //vamos verificar se o usuário que ele/ela curtiu já deu like nele, caso sim vamos realizar o match
             var himHerLikesYou = likeRepository.findIfIwasLikedByHim(
                     likeVo.getUserSendLike().getId(), likeVo.getUserLiked().getId());
-            if(himHerLikesYou.isPresent() || !himHerLikesYou.isEmpty()){
+            if (himHerLikesYou.isPresent() || !himHerLikesYou.isEmpty()) {
                 System.out.println("we have a match");
-                matchServices.setMatch(likeVo.getUserSendLike(),likeVo.getUserLiked());
+                matchServices.setMatch(likeVo.getUserSendLike(), likeVo.getUserLiked());
             }
 
             return likeVo;
