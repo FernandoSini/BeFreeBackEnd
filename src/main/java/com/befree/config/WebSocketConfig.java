@@ -22,7 +22,7 @@ import java.util.List;
 @EnableWebSocketMessageBroker
 @EnableWebSocket
 @Controller
-public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     //configuracao que vai controlar as mensagens
     @Override

@@ -81,7 +81,7 @@ public class MessageController {
             produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<List<MessageVO>>getAllMessagesMatch(@PathVariable("yourId") String yourId,
                                                           @PathVariable("heHerId")String heHerId){
-        List<MessageVO> messages = messageServices.getAllMatchMessages(yourId, heHerId);
+        List<MessageVO> messages = messageServices.findAllChatMessages(yourId, heHerId);
         return ResponseEntity.ok().body(messages);
     }
     @GetMapping(value="/message/{yourId}",produces = {"application/json", "application/xml", "application/x-yaml"})

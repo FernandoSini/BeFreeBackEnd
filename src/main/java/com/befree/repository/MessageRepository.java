@@ -20,8 +20,17 @@ public interface MessageRepository extends JpaRepository<Message, String> {
     @Query("Select m from Message m where m.sender.id=:senderId and m.receiver.id =:receiverId")
     List<Message> findMatchMessages(@Param("senderId") String senderId, @Param("receiverId") String receiverId);
 
-    @Query("Select m from Message m where m.sender.id=:senderId and m.receiver.id =:receiverId or m.sender.id=:receiverId and m.receiver=:senderId")
+
+    @Query("select m from Message m where m.sender.id =:senderId and m.receiver.id =:receiverId")
+    List<Message> findMessagesSent(@Param("senderId") String senderId, @Param("receiverId")String receiverId);
+
+    @Query("select m from Message m where m.sender.id =:receiverId and m.receiver.id =:senderId")
+    List<Message> findMessagesReceived(@Param("senderId") String senderId, @Param("receiverId")String receiverId);
+
+    @Transactional
+    @Query(value = "Select m from Message m where m.sender.id=:senderId and m.receiver.id =:receiverId or m.sender.id=:receiverId and m.receiver=:senderId")
     List<Message> findAllMatchMessages(@Param("senderId") String senderId, @Param("receiverId") String receiverId);
+
 
     @Transactional
     @Modifying
